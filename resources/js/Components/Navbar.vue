@@ -1,7 +1,12 @@
 <template>
     <div class="navbar">
         <div class="nav-content">
-            <Logo/>
+            <div class="big-logo">
+                <Logo/>
+            </div>
+            <div class="small-logo">
+                <SmallLogo/>
+            </div>
             <div class="right-side">
                 <a class="btn-secondary">
                     <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -40,13 +45,15 @@
     position: relative;
     background-color: var(--white);
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-
 }
 .nav-content {
     padding: 15px 30px;
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+.small-logo {
+    display: none;
 }
 .right-side {
     display: flex;
@@ -83,20 +90,42 @@
     text-align: center;
     color: black;
 }
-.more-lang {
-    color: black;
-    font-size: 12px;
+@media screen and (max-width: 800px) {
+    .big-logo {
+        display: none;
+    }
+    .btn-secondary {
+        font-size: 14px;
+        padding: 10px;
+    }
+    .btn-secondary img, .btn-secondary svg {
+        width: 18px;
+        height: 18px;
+    }
+    .small-logo {
+        display: block;
+    }
+    .nav-content {
+        padding: 15px 20px;
+    }
+    .navbar {
+        border-radius: 0;
+        position: fixed;
+        width: 100%;
+    }
 }
 </style>
 
 <script>
 import { Link } from '@inertiajs/vue3';
 import Logo from "@/Elements/Logo.vue";
+import SmallLogo from "@/Elements/SmallLogo.vue";
 export default {
     name: "Navbar",
     components: {
         Logo,
         Link,
+        SmallLogo
     },
     data() {
         return {

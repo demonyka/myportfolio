@@ -36,6 +36,12 @@ body {
     top: 20px;
     width: 80%;
 }
+@media screen and (max-width: 800px) {
+    #app {
+        width: 90%;
+        top: 0;
+    }
+}
 .fade-enter-active, .fade-leave-active {
     transition: opacity 0.3s ease;
 }

@@ -13,8 +13,8 @@
     .cookie-bg {
         overflow: hidden;
         position: fixed;
-        width: 100vw;
-        height: 100vh;
+        width: 100%;
+        height: 100%;
         background-color: #00000090;
         z-index: 1000;
         top: 0;
@@ -30,8 +30,15 @@
         box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
         padding: 20px 80px;
         border-radius: 20px;
-        max-width: 20vw;
+        max-width: 40vw;
         text-align: center;
+    }
+    @media screen and (max-width: 800px) {
+        .cookie-accept {
+            padding: 20px;
+            max-width: 80vw;
+        }
+
     }
 </style>
 
