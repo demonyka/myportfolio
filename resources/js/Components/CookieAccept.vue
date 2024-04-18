@@ -10,10 +10,8 @@
 </template>
 
 <style scoped>
-    body {
-        overflow: hidden;
-    }
     .cookie-bg {
+        overflow: hidden;
         position: fixed;
         width: 100vw;
         height: 100vh;
@@ -49,10 +47,16 @@ export default {
             isCookieAccept: localStorage.getItem('cookie_accept'),
         };
     },
+    mounted() {
+        if (!this.isCookieAccept) {
+            document.body.style.overflowY = 'hidden !important';
+        }
+    },
     methods: {
         cookieAccept() {
             this.isCookieAccept = true;
             localStorage.setItem('cookie_accept', this.isCookieAccept);
+            document.body.style.overflowY = 'auto';
         }
     },
 }
