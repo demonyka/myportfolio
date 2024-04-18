@@ -69,7 +69,7 @@
     padding: 10px 20px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
     border-radius: 20px;
-    transform: translateY(95px);
+    transform: translateY(calc(100% + 5px));
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -82,6 +82,10 @@
     cursor: pointer;
     text-align: center;
     color: black;
+}
+.more-lang {
+    color: black;
+    font-size: 12px;
 }
 </style>
 
