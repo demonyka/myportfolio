@@ -3,22 +3,32 @@
         <div class="nav-content">
             <Logo/>
             <div class="right-side">
-                <div class="language">
+                <div class="btn-secondary">
                     <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <g clip-path="url(#clip0_1_30)">
-                            <path d="M0.876648 8.7046H25.0946C23.332 3.71997 18.5823 0.147164 12.9952 0.142883H12.9758C7.38869 0.147164 2.63865 3.71997 0.876648 8.7046Z" fill="#F3F4F5"/>
-                            <path d="M25.0943 17.2663H0.876648C2.64008 22.2538 7.39411 25.828 12.9855 25.828C18.5769 25.828 23.3309 22.2538 25.0943 17.2663Z" fill="#D52B1E"/>
-                            <path d="M25.0943 17.2663C25.5678 15.927 25.828 14.4869 25.828 12.9854C25.828 11.484 25.568 10.0439 25.0943 8.70459H0.876623C0.402874 10.0439 0.142883 11.484 0.142883 12.9854C0.142883 14.4869 0.40316 15.9273 0.876623 17.2663H25.0943Z" fill="#0039A6"/>
-                        </g>
-                        <defs>
-                            <clipPath id="clip0_1_30">
-                                <rect width="26" height="26" fill="white"/>
-                            </clipPath>
-                        </defs>
+                        <circle cx="13" cy="13" r="13" fill="#D9D9D9"/>
+                        <path d="M7.75 19.75C7.75 16.8505 10.1005 14.5 13 14.5C15.8995 14.5 18.25 16.8505 18.25 19.75M16 9.25C16 10.9069 14.6568 12.25 13 12.25C11.3431 12.25 10 10.9069 10 9.25C10 7.59314 11.3431 6.25 13 6.25C14.6568 6.25 16 7.59314 16 9.25Z" stroke="#828282" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
-                    Рус
+                    {{ $t('sign_in') }}
+                </div>
+                <div @click="isLanguageSwitcherOpen = !isLanguageSwitcherOpen" class="btn-secondary">
+                    <img alt="lang" :src="`/icons/lang/${this.$i18n.locale}.svg`">
+                    {{ $t('lang') }}
                 </div>
             </div>
+            <transition name="fade">
+                <div v-if="isLanguageSwitcherOpen" class="language-switcher">
+                    <div @click="switchLanguage('ru')" class="lang">
+                        <img alt="ru" :src="`/icons/lang/ru.svg`">
+                        Русский
+                    </div>
+                    <div @click="switchLanguage('en')" class="lang">
+                        <img alt="en" :src="`/icons/lang/en.svg`">
+                        English
+                    </div>
+                </div>
+            </transition>
+            <img alt="ru" :src="`/icons/lang/ru.svg`" style="display: none;">
+            <img alt="en" :src="`/icons/lang/en.svg`" style="display: none;">
         </div>
     </div>
 </template>
@@ -38,7 +48,12 @@
     align-items: center;
     justify-content: space-between;
 }
-.language {
+.right-side {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.btn-secondary {
     border: 1px solid var(--gray4);
     border-radius: 40px;
     padding: 10px 15px;
@@ -46,6 +61,25 @@
     align-items: center;
     gap: 10px;
     cursor: pointer;
+}
+.language-switcher {
+    background-color: white;
+    position: absolute;
+    padding: 10px 20px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+    transform: translateY(95px);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    right: 0;
+}
+.language-switcher .lang {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    text-align: center;
 }
 </style>
 
@@ -58,8 +92,17 @@ export default {
         Logo,
         Link,
     },
+    data() {
+        return {
+            isLanguageSwitcherOpen: false,
+        };
+    },
     methods: {
-
+        switchLanguage(locale) {
+            localStorage.setItem('lang', locale);
+            this.$i18n.locale = locale;
+            this.isLanguageSwitcherOpen = false;
+        }
     }
 }
 </script>

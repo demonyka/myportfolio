@@ -1,5 +1,5 @@
 <template>
-    <Head title="Главная" />
+    <Head :title='$t("homepage")' />
     <Navbar/>
 </template>
 
