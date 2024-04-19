@@ -1,7 +1,7 @@
 <template>
     <div v-if="!isCookieAccept" class="cookie-bg">
         <div class="cookie-accept">
-            <img alt="logo" src="/icons/logo.svg">
+            <img class="img-logo" alt="logo" src="/icons/logo.svg">
             <h2 style="margin-bottom: 5px">{{ $t('we_use_cookies') }}</h2>
             <p>{{ $t('cookies_terms') }}</p>
             <button @click="cookieAccept" style="width: 50%; margin-top: 10px" class="primary">{{ $t('ok') }}</button>
@@ -33,7 +33,7 @@
         max-width: 40vw;
         text-align: center;
     }
-    @media screen and (max-width: 800px) {
+    @media screen and (max-width: 1000px) {
         .cookie-accept {
             padding: 20px;
             max-width: 80vw;

@@ -1,12 +1,8 @@
 <template>
     <div class="navbar">
         <div class="nav-content">
-            <div class="big-logo">
-                <img alt="logo" src="/icons/logo.svg">
-            </div>
-            <div class="small-logo">
-                <img alt="logo" src="/icons/small_logo.svg">
-            </div>
+            <div class="logo"/>
+            <div class="logo small"/>
             <div class="right-side">
                 <a class="btn-secondary">
                     <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -41,6 +37,8 @@
     </div>
     <img alt="ru" :src="`/icons/lang/ru.svg`" style="display: none;">
     <img alt="en" :src="`/icons/lang/en.svg`" style="display: none;">
+
+    <Footbar/>
 </template>
 
 <style scoped>
@@ -57,7 +55,7 @@
     align-items: center;
     justify-content: space-between;
 }
-.small-logo {
+.logo.small {
     display: none;
 }
 .right-side {
@@ -102,9 +100,12 @@
 .mobile-lang-switcher img.right {
     transform: translateX(28px);
 }
-@media screen and (max-width: 800px) {
-    .big-logo {
+@media screen and (max-width: 1000px) {
+    .logo {
         display: none;
+    }
+    .logo.small {
+        display: block;
     }
     .btn-secondary {
         font-size: 14px;
@@ -113,9 +114,6 @@
     .btn-secondary img, .btn-secondary svg {
         width: 18px;
         height: 18px;
-    }
-    .small-logo {
-        display: block;
     }
     .nav-content {
         padding: 15px 20px;
@@ -136,9 +134,11 @@
 
 <script>
 import { Link } from '@inertiajs/vue3';
+import Footbar from "@/Components/Footbar.vue";
 export default {
     name: "Navbar",
     components: {
+        Footbar,
         Link,
     },
     data() {

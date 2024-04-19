@@ -32,11 +32,11 @@ body {
     align-items: center;
     margin: 0;
     padding: 0;
-    min-height: calc(100vh - 20px);
+    min-height: calc(100vh + 75px);
     top: 20px;
     width: 80%;
 }
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 1000px) {
     #app {
         width: 90%;
         top: 0;
@@ -89,4 +89,16 @@ button:disabled {
 }
 button:hover:disabled {
     scale: 1;
+}
+.logo {
+    background-image: url("/icons/logo.svg");
+    min-width: 167px;
+    min-height: 50px;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.logo.small {
+    background-image: url("/icons/small_logo.svg");
+    min-width: 50px;
+    min-height: 50px;
 }
