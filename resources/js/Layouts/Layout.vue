@@ -5,7 +5,7 @@
         <slot />
     </div>
     <Footbar/>
-
+    <FlashMessage v-if="$page.props.flash.message" :message="$page.props.flash.message"/>
 </template>
 
 <style scoped>
@@ -16,9 +16,15 @@
 import CookieAccept from "@/Components/CookieAccept.vue";
 import Navbar from "@/Components/Navbar.vue";
 import Footbar from "@/Components/Footbar.vue";
+import FlashMessage from "@/Components/FlashMessage.vue";
 
 export default {
     name: "Layout",
-    components: {Footbar, Navbar, CookieAccept}
+    components: {
+        FlashMessage,
+        Footbar,
+        Navbar,
+        CookieAccept,
+    }
 }
 </script>

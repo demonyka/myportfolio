@@ -17,9 +17,15 @@ const messages = {
     ru: ruMessages,
 };
 
+let defaultLocale = 'en';
+const userLanguage = navigator.language || navigator.userLanguage;
+if (userLanguage.startsWith('ru')) {
+    defaultLocale = 'ru';
+}
+
 const i18n = createI18n({
-    locale: localStorage.getItem('lang') || 'ru',
-    fallbackLocale: localStorage.getItem('lang') || 'ru',
+    locale: localStorage.getItem('lang') || defaultLocale,
+    fallbackLocale: localStorage.getItem('lang') || defaultLocale,
     messages,
 });
 

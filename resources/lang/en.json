@@ -1,7 +1,8 @@
 {
     "lang": "Eng",
     "homepage": "Homepage",
-    "sign_in": "Sign in",
+    "sign_in": "Sign in to MyPortfolio",
+    "sign_in_short": "Sign in",
     "we_use_cookies": "We use cookies",
     "cookies_terms": "We use cookies and other data tracking technologies to enhance the user experience on our website, to show you personalized content and targeted advertising, to analyze our website traffic, and to understand where our visitors are coming from. By browsing our website, you consent to the use of cookies and other tracking technologies.",
     "ok": "OK",
@@ -11,5 +12,28 @@
     "privacy_policy": "Privacy Policy",
     "welcome-title": "Welcome to MyPortfolio!",
     "welcome-text": "MyPortfolio is a platform to easily post your cases. Download and share your projects absolutely free!",
-    "welcome-join": "Let's get started"
+    "welcome-join": "Let's get started",
+    "not_registered": "Not registered yet?",
+    "already_registered": "Already registered?",
+    "forgot_password": "Forgot your password?",
+    "sign_in_button": "Sign in",
+    "sign_up": "Sign up to MyPortfolio",
+    "sign_up_button": "Sign up",
+    "full_name": "Full name",
+    "email": "EMail",
+    "password": "Password",
+    "password_confirmation": "Password confirmation",
+    "profile": "Profile",
+    "email_confirm_title": "Confirm email address",
+    "email_confirm_text": "To use our website, you need to confirm your email address. We have sent an email to {email}. If you haven't received it, click on the 'Resend' button to send it again.",
+    "email_confirm_button": "Resend",
+
+    "validation_max_string": "Value is too long",
+    "validation_min_string": "Value is too short",
+    "validation_email": "Invalid email address",
+    "validation_required": "This field is required",
+    "auth_failed": "Invalid login or password",
+    "validation_confirmed": "Passwords do not match",
+    "validation_unique": "This email address is already registered"
+
 }
