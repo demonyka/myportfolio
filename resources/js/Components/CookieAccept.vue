@@ -55,18 +55,14 @@ export default {
     },
     mounted() {
         if (!this.isCookieAccept) {
-            document.querySelectorAll('*').forEach(function(element) {
-                element.style.overflowY = 'hidden';
-            });
+            document.body.style.overflowY = "hidden";
         }
     },
     methods: {
         cookieAccept() {
             this.isCookieAccept = true;
             localStorage.setItem('cookie_accept', this.isCookieAccept);
-            document.querySelectorAll('*').forEach(function(element) {
-                element.style.overflowY = 'auto';
-            });
+            document.body.style.overflowY = "auto";
         }
     },
 }
