@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\OAuth\GithubAuthController;
+use App\Http\Controllers\Auth\OAuth\GoogleAuthController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use Illuminate\Support\Facades\Route;
@@ -13,6 +15,15 @@ Route::prefix('/auth')->group(function () {
 
         Route::get('/register', [RegisterController::class, 'view'])->name('auth.register.view');
         Route::post('/register', [RegisterController::class, 'store'])->name('auth.register.store');
+
+        Route::prefix('/github')->group(function () {
+            Route::get('/redirect', [GithubAuthController::class, 'redirect'])->name('auth.github.redirect');
+            Route::get('/callback', [GithubAuthController::class, 'callback'])->name('auth.github.callback');
+        });
+        Route::prefix('/google')->group(function () {
+            Route::get('/redirect', [GoogleAuthController::class, 'redirect'])->name('auth.google.redirect');
+            Route::get('/callback', [GoogleAuthController::class, 'callback'])->name('auth.google.callback');
+        });
     });
 
     Route::middleware('auth')->group(function () {

@@ -60,6 +60,10 @@
                     </div>
                     <button class="primary" :disabled="form.processing" type="submit">{{ $t('sign_up_button') }}</button>
                 </form>
+                <div class="social-login">
+                    <Link :href="route('auth.google.redirect')" class="google"/>
+                    <Link :href="route('auth.github.redirect')" class="github"/>
+                </div>
             </div>
         </div>
         <div class="login-links">
@@ -117,6 +121,25 @@ p.error-message {
 }
 form.login-form input.error {
     border-color: var(--red);
+}
+.social-login {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 10px;
+}
+.social-login a {
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 36px;
+    height: 36px;
+}
+.social-login a.google {
+    background-image: url("/icons/social/google.svg");
+}
+.social-login a.github {
+    background-image: url("/icons/social/github.svg");
 }
 @media screen and (max-width: 1200px) {
     .login {

@@ -27,6 +27,10 @@
                         <p v-else-if="form.errors.password" class="error-message">{{ $t(form.errors.password) }}</p>
                     </transition>
                 </form>
+                <div class="social-login">
+                    <Link :href="route('auth.google.redirect')" class="google"/>
+                    <Link :href="route('auth.github.redirect')" class="github"/>
+                </div>
             </div>
         </div>
         <div class="login-links">
@@ -93,6 +97,25 @@ form.login-form input.error {
     button {
         font-size: 14px;
     }
+}
+.social-login {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 10px;
+}
+.social-login a {
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 36px;
+    height: 36px;
+}
+.social-login a.google {
+    background-image: url("/icons/social/google.svg");
+}
+.social-login a.github {
+    background-image: url("/icons/social/github.svg");
 }
 </style>
 
