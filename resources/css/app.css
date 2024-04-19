@@ -36,10 +36,18 @@ body {
     top: 20px;
     width: 80%;
 }
+.container {
+    position: relative;
+    top: 40px;
+    width: 100%;
+}
 @media screen and (max-width: 1000px) {
     #app {
         width: 90%;
         top: 0;
+    }
+    .container {
+        top: 100px;
     }
 }
 .fade-enter-active, .fade-leave-active {

@@ -1,7 +1,11 @@
 <template>
     <CookieAccept/>
     <Navbar/>
-    <slot />
+    <div class="container">
+        <slot />
+    </div>
+    <Footbar/>
+
 </template>
 
 <style scoped>
@@ -11,9 +15,10 @@
 <script>
 import CookieAccept from "@/Components/CookieAccept.vue";
 import Navbar from "@/Components/Navbar.vue";
+import Footbar from "@/Components/Footbar.vue";
 
 export default {
     name: "Layout",
-    components: {Navbar, CookieAccept}
+    components: {Footbar, Navbar, CookieAccept}
 }
 </script>

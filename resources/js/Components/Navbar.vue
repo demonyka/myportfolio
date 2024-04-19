@@ -37,8 +37,6 @@
     </div>
     <img alt="ru" :src="`/icons/lang/ru.svg`" style="display: none;">
     <img alt="en" :src="`/icons/lang/en.svg`" style="display: none;">
-
-    <Footbar/>
 </template>
 
 <style scoped>
@@ -48,6 +46,7 @@
     position: relative;
     background-color: var(--white);
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    z-index: 100;
 }
 .nav-content {
     padding: 15px 30px;
@@ -134,11 +133,9 @@
 
 <script>
 import { Link } from '@inertiajs/vue3';
-import Footbar from "@/Components/Footbar.vue";
 export default {
     name: "Navbar",
     components: {
-        Footbar,
         Link,
     },
     data() {
