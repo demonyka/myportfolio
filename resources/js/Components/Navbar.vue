@@ -2,10 +2,10 @@
     <div class="navbar">
         <div class="nav-content">
             <div class="big-logo">
-                <Logo/>
+                <img alt="logo" src="/icons/logo.svg">
             </div>
             <div class="small-logo">
-                <SmallLogo/>
+                <img alt="logo" src="/icons/small_logo.svg">
             </div>
             <div class="right-side">
                 <a class="btn-secondary">
@@ -15,9 +15,14 @@
                     </svg>
                     {{ $t('sign_in') }}
                 </a>
-                <a @click="isLanguageSwitcherOpen = !isLanguageSwitcherOpen" class="btn-secondary">
+
+                <a @click="isLanguageSwitcherOpen = !isLanguageSwitcherOpen" class="btn-secondary desktop-lang-switcher">
                     <img alt="lang" :src="`/icons/lang/${this.$i18n.locale}.svg`">
                     {{ $t('lang') }}
+                </a>
+
+                <a @click="this.$i18n.locale === 'ru' ? switchLanguage('en') : switchLanguage('ru')" class="btn-secondary mobile-lang-switcher">
+                    <img :class="{'right': $i18n.locale === 'en', 'left': $i18n.locale !== 'en'}" alt="lang" :src="`/icons/lang/${this.$i18n.locale}.svg`">
                 </a>
             </div>
             <transition name="fade">
@@ -32,10 +37,10 @@
                     </a>
                 </div>
             </transition>
-            <img alt="ru" :src="`/icons/lang/ru.svg`" style="display: none;">
-            <img alt="en" :src="`/icons/lang/en.svg`" style="display: none;">
         </div>
     </div>
+    <img alt="ru" :src="`/icons/lang/ru.svg`" style="display: none;">
+    <img alt="en" :src="`/icons/lang/en.svg`" style="display: none;">
 </template>
 
 <style scoped>
@@ -90,6 +95,13 @@
     text-align: center;
     color: black;
 }
+.mobile-lang-switcher {
+    display: none;
+    width: 45px;
+}
+.mobile-lang-switcher img.right {
+    transform: translateX(28px);
+}
 @media screen and (max-width: 800px) {
     .big-logo {
         display: none;
@@ -113,19 +125,21 @@
         position: fixed;
         width: 100%;
     }
+    .desktop-lang-switcher {
+        display: none;
+    }
+    .mobile-lang-switcher {
+        display: flex;
+    }
 }
 </style>
 
 <script>
 import { Link } from '@inertiajs/vue3';
-import Logo from "@/Elements/Logo.vue";
-import SmallLogo from "@/Elements/SmallLogo.vue";
 export default {
     name: "Navbar",
     components: {
-        Logo,
         Link,
-        SmallLogo
     },
     data() {
         return {

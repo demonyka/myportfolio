@@ -1,7 +1,7 @@
 <template>
     <div v-if="!isCookieAccept" class="cookie-bg">
         <div class="cookie-accept">
-            <Logo/>
+            <img alt="logo" src="/icons/logo.svg">
             <h2 style="margin-bottom: 5px">{{ $t('we_use_cookies') }}</h2>
             <p>{{ $t('cookies_terms') }}</p>
             <button @click="cookieAccept" style="width: 50%; margin-top: 10px" class="primary">{{ $t('ok') }}</button>
@@ -43,11 +43,10 @@
 </style>
 
 <script>
-import Logo from "@/Elements/Logo.vue";
 export default {
     name: "CookieAccept",
     components: {
-        Logo,
+
     },
     data() {
         return {
