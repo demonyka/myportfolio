@@ -34,20 +34,20 @@ body {
     padding: 0;
     min-height: calc(100vh + 75px);
     top: 20px;
-    width: 80%;
+    width: 100%;
 }
 .container {
     position: relative;
     top: 40px;
-    width: 100%;
+    width: 80%;
 }
 @media screen and (max-width: 1000px) {
     #app {
-        width: 90%;
         top: 0;
     }
     .container {
         top: 100px;
+        width: 90%;
     }
 }
 .fade-enter-active, .fade-leave-active {
