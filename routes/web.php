@@ -8,7 +8,7 @@ Route::get('/', [IndexController::class, 'view'])->name('index.view');
 
 
 Route::middleware('verified')->group(function () {
-    Route::get('/id{id}', [ProfileController::class, 'view'])->name('profile.view');
+    Route::get('/{identifier}', [ProfileController::class, 'view'])->name('profile.view');
 });
 
 require __DIR__.'/auth.php';

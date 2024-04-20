@@ -28,8 +28,8 @@
                     </transition>
                 </form>
                 <div class="social-login">
-                    <Link :href="route('auth.google.redirect')" class="google"/>
-                    <Link :href="route('auth.github.redirect')" class="github"/>
+                    <a target="_blank" :href="route('auth.google.redirect')" class="google"/>
+                    <a target="_blank" :href="route('auth.github.redirect')" class="github"/>
                 </div>
             </div>
         </div>
@@ -110,12 +110,6 @@ form.login-form input.error {
     background-repeat: no-repeat;
     width: 36px;
     height: 36px;
-}
-.social-login a.google {
-    background-image: url("/icons/social/google.svg");
-}
-.social-login a.github {
-    background-image: url("/icons/social/github.svg");
 }
 </style>
 

@@ -28,12 +28,31 @@
     "email_confirm_text": "To use our website, you need to confirm your email address. We have sent an email to {email}. If you haven't received it, click on the 'Resend' button to send it again.",
     "email_confirm_button": "Resend",
 
-    "validation_max_string": "Value is too long",
-    "validation_min_string": "Value is too short",
-    "validation_email": "Invalid email address",
-    "validation_required": "This field is required",
-    "auth_failed": "Invalid login or password",
-    "validation_confirmed": "Passwords do not match",
-    "validation_unique": "This email address is already registered"
-
+    "validation": {
+        "email": {
+            "required": "Email address is required",
+            "incorrect": "Invalid email address",
+            "string": "Email address must be a string",
+            "lowercase": "Email address must be in lowercase",
+            "max": "Email address is too long",
+            "min": "Email address is too short",
+            "unique": "This email address is already registered"
+        },
+        "password": {
+            "required": "Password is required",
+            "string": "Password must be a string",
+            "confirmed": "Password confirmation does not match",
+            "max": "Password is too long",
+            "min": "Password is too short"
+        },
+        "name": {
+            "required": "Name is required",
+            "max": "Name is too long",
+            "min": "Name is too short",
+            "string": "Name must be a string"
+        }
+    },
+    "auth": {
+        "failed": "Incorrect login or password"
+    }
 }

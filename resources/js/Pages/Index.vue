@@ -11,7 +11,9 @@
                         {{ $t('welcome-text') }}
                     </p>
 
-                    <button class="primary">{{ $t('welcome-join') }}</button>
+                    <button @click="this.$inertia.visit($page.props.auth.user ? route('profile.view', {id: $page.props.auth.user.id}) : route('auth.login.view'))"
+                            class="primary">{{ $t('welcome-join') }}
+                    </button>
                 </div>
             </div>
         </div>
@@ -19,7 +21,7 @@
 </template>
 
 <style scoped>
-    .index {
+.index {
         display: flex;
         flex-direction: column;
         align-items: flex-start;

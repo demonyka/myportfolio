@@ -1,14 +1,16 @@
 <?php
 
 return [
-    'email' => 'validation_email',
-    'required' => 'validation_required',
+    'required' => 'validation.:attribute.required',
+    'email' => 'validation.email',
+    'string' => 'validation.:attribute.string',
+    'lowercase' => 'validation.:attribute.lowercase',
     'max' => [
-        'string'  => 'validation_max_string',
+        'string' => 'validation.:attribute.max',
     ],
     'min' => [
-        'string'  => 'validation_min_string',
+        'string' => 'validation.:attribute.min',
     ],
-    'confirmed' => 'validation_confirmed',
-    'unique' => 'validation_unique'
+    'confirmed' => 'validation.:attribute.confirmed',
+    'unique' => 'validation.:attribute.unique',
 ];

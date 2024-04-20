@@ -19,31 +19,25 @@
                     {{ $t('profile') }}
                 </Link>
 
-                <a @click="isLanguageSwitcherOpen = !isLanguageSwitcherOpen" class="btn-secondary desktop-lang-switcher">
-                    <img alt="lang" :src="`/icons/lang/${this.$i18n.locale}.svg`">
+                <a @click="isLanguageSwitcherOpen = !isLanguageSwitcherOpen" class="btn-secondary btn-lang-switcher">
+                    <div class="img-lang" :class="$i18n.locale"/>
                     {{ $t('lang') }}
-                </a>
-
-                <a @click="this.$i18n.locale === 'ru' ? switchLanguage('en') : switchLanguage('ru')" class="btn-secondary mobile-lang-switcher">
-                    <img :class="{'right': $i18n.locale === 'en', 'left': $i18n.locale !== 'en'}" alt="lang" :src="`/icons/lang/${this.$i18n.locale}.svg`">
                 </a>
             </div>
             <transition name="fade">
                 <div v-if="isLanguageSwitcherOpen" class="language-switcher">
                     <a @click="switchLanguage('ru')" class="lang">
-                        <img alt="ru" :src="`/icons/lang/ru.svg`">
+                        <div class="img-lang ru"/>
                         Русский
                     </a>
                     <a @click="switchLanguage('en')" class="lang">
-                        <img alt="en" :src="`/icons/lang/en.svg`">
+                        <div class="img-lang en"/>
                         English
                     </a>
                 </div>
             </transition>
         </div>
     </div>
-    <img alt="ru" :src="`/icons/lang/ru.svg`" style="display: none;">
-    <img alt="en" :src="`/icons/lang/en.svg`" style="display: none;">
 </template>
 
 <style scoped>
@@ -84,7 +78,7 @@
     position: absolute;
     padding: 10px 20px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-    border-radius: 20px;
+    border-radius: 10px;
     transform: translateY(calc(100% + 5px));
     display: flex;
     flex-direction: column;
@@ -98,13 +92,6 @@
     cursor: pointer;
     text-align: center;
     color: black;
-}
-.mobile-lang-switcher {
-    display: none;
-    width: 45px;
-}
-.mobile-lang-switcher img.right {
-    transform: translateX(28px);
 }
 @media screen and (max-width: 1000px) {
     .logo {
@@ -129,17 +116,17 @@
         position: fixed;
         width: 100%;
     }
-    .desktop-lang-switcher {
+    .btn-secondary.btn-lang-switcher {
         display: none;
     }
-    .mobile-lang-switcher {
-        display: flex;
+    .language-switcher {
+        display: none;
     }
 }
 </style>
 
 <script>
-import {Link, router} from '@inertiajs/vue3';
+import {Link} from '@inertiajs/vue3';
 export default {
     name: "Navbar",
     components: {

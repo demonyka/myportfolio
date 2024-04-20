@@ -103,14 +103,32 @@ button:hover:disabled {
     scale: 1;
 }
 .logo {
-    background-image: url("/icons/logo.svg");
+    background-image: url("/public/icons/logo.svg");
     min-width: 167px;
     min-height: 50px;
     background-size: cover;
     background-repeat: no-repeat;
 }
 .logo.small {
-    background-image: url("/icons/small_logo.svg");
+    background-image: url("/public/icons/small_logo.svg");
     min-width: 50px;
     min-height: 50px;
+}
+.social-login a.google {
+    background-image: url("/public/icons/social/google.svg");
+}
+.social-login a.github {
+    background-image: url("/public/icons/social/github.svg");
+}
+.img-lang {
+    width: 26px;
+    height: 26px;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.img-lang.ru {
+    background-image: url("/public/icons/lang/ru.svg");
+}
+.img-lang.en {
+    background-image: url("/public/icons/lang/en.svg");
 }

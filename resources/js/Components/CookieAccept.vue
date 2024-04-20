@@ -1,7 +1,7 @@
 <template>
     <div v-if="!isCookieAccept" class="cookie-bg">
         <div class="cookie-accept">
-            <img class="img-logo" alt="logo" src="/icons/logo.svg">
+            <div class="logo"/>
             <h2 style="margin-bottom: 5px">{{ $t('we_use_cookies') }}</h2>
             <p>{{ $t('cookies_terms') }}</p>
             <button @click="cookieAccept" style="width: 50%; margin-top: 10px" class="primary">{{ $t('ok') }}</button>
@@ -43,9 +43,12 @@
 </style>
 
 <script>
+import {Link} from "@inertiajs/vue3";
+
 export default {
     name: "CookieAccept",
     components: {
+        Link
 
     },
     data() {
