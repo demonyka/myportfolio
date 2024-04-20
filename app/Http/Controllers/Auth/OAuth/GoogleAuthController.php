@@ -25,7 +25,7 @@ class GoogleAuthController extends Controller
         if (!$user) {
             $password = Str::random(32);
             $user = User::create([
-                'name' => $google_user->getName(),
+                'external_data' => json_encode(['fullname' => $google_user->getName(), 'avatar_path' => $google_user->getAvatar()]),
                 'email' => $google_user->getEmail(),
                 'password' => Hash::make($password),
             ]);

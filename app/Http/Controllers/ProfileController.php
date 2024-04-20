@@ -23,7 +23,6 @@ class ProfileController extends Controller
         } elseif ($routeName == 'profile.view.byUsername') {
             $user = $user->where('username', $identifier)->firstOrFail();
         }
-
         return inertia('Profile', ['user' => $user]);
     }
 }

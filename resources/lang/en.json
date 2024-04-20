@@ -27,6 +27,7 @@
     "email_confirm_title": "Confirm email address",
     "email_confirm_text": "To use our website, you need to confirm your email address. We have sent an email to {email}. If you haven't received it, click on the 'Resend' button to send it again.",
     "email_confirm_button": "Resend",
+    "years_old": "{n} y.o.",
 
     "validation": {
         "email": {

@@ -30,9 +30,9 @@ class RegisterController extends Controller
     public function store(RegisterRequest $request)
     {
         $user = User::create([
-            'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'external_data' => json_encode(['fullname' => $request->name])
         ]);
 
         event(new Registered($user));

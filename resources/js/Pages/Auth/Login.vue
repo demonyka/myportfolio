@@ -1,5 +1,5 @@
 <template>
-    <Head :title='$t("sign_in")' />
+    <Head :title='$t("sign_in_short")' />
     <Layout>
         <div class="login" @submit.prevent="formSubmit">
             <div class="login-content">
@@ -28,8 +28,8 @@
                     </transition>
                 </form>
                 <div class="social-login">
-                    <a target="_blank" :href="route('auth.google.redirect')" class="google"/>
-                    <a target="_blank" :href="route('auth.github.redirect')" class="github"/>
+                    <a :href="route('auth.google.redirect')" class="google"/>
+                    <a :href="route('auth.github.redirect')" class="github"/>
                 </div>
             </div>
         </div>

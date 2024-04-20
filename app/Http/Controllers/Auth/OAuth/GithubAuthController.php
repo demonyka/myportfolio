@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth\OAuth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -24,13 +25,14 @@ class GithubAuthController extends Controller
         if (!$user) {
             $password = Str::random(32);
             $user = User::create([
-                'name' => $github_user->getName(),
+                'external_data' => json_encode(['fullname' => $github_user->getName(), 'avatar_path' => $github_user->getAvatar()]),
                 'email' => $github_user->getEmail(),
                 'password' => Hash::make($password),
-                'email_verified_at' => now()
             ]);
+            $user->email_verified_at = Carbon::now();
+            $user->save();
         } else if (!$user->email_verified_at) {
-            $user->email_verified_at = now();
+            $user->email_verified_at = Carbon::now();
             $user->save();
         }
         Auth::login($user, true);
