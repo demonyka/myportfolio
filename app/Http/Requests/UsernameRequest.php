@@ -13,7 +13,7 @@ class UsernameRequest extends FormRequest
      */
     public function authorize()
     {
-        return true; // Можно изменить на нужную логику авторизации пользователя
+        return true;
     }
 
     /**
@@ -24,20 +24,7 @@ class UsernameRequest extends FormRequest
     public function rules()
     {
         return [
-            'username' => 'required|regex:/^[a-zA-Z0-9]{3,16}$/',
-        ];
-    }
-
-    /**
-     * Get the error messages for the defined validation rules.
-     *
-     * @return array
-     */
-    public function messages()
-    {
-        return [
-            'username.required' => 'username_required',
-            'username.regex' => 'username_regex',
+            'username' => 'required|string|min:5|max:24|regex:/^[a-zA-Z0-9]{3,16}$/',
         ];
     }
 }
