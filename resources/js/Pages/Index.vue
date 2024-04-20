@@ -11,7 +11,7 @@
                         {{ $t('welcome-text') }}
                     </p>
 
-                    <button @click="this.$inertia.visit($page.props.auth.user ? route('profile.view', {id: $page.props.auth.user.id}) : route('auth.login.view'))"
+                    <button @click="this.$inertia.visit($page.props.auth.user ? route('profile.view') : route('auth.login.view'))"
                             class="primary">{{ $t('welcome-join') }}
                     </button>
                 </div>

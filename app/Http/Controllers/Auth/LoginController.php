@@ -28,9 +28,7 @@ class LoginController extends Controller
 
         $request->session()->regenerate();
 
-        $user = Auth::user();
-
-        return redirect()->route('profile.view', ['id' => $user['id']]);
+        return redirect()->route('profile.view');
     }
 
     /**

@@ -36,6 +36,6 @@ class GoogleAuthController extends Controller
             $user->save();
         }
         Auth::login($user, true);
-        return redirect()->route('profile.view', $user->id);
+        return redirect()->route('profile.view');
     }
 }
