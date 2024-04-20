@@ -15,7 +15,7 @@ class ProfileController extends Controller
         $user = User::whereNotNull('email_verified_at');
         $routeName = Route::currentRouteName();
 
-        if($routeName == 'profile.view.byId' && is_numeric($identifier)) {
+        if($routeName == 'profile.view' && is_numeric($identifier)) {
             $user = $user->where('id', $identifier)->firstOrFail();
             if($user->username) {
                 return redirect()->route('profile.view.byUsername', ['username' => $user->username]);
