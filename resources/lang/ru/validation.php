@@ -14,4 +14,5 @@ return [
     'confirmed' => 'validation.:attribute.confirmed',
     'unique' => 'validation.:attribute.unique',
     'regex' => 'validation.:attribute.regex',
+    'not_in' => 'validation.:attribute.not_in'
 ];

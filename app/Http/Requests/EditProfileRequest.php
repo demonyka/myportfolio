@@ -25,6 +25,26 @@ class EditProfileRequest extends FormRequest
      */
     public function rules()
     {
+        $reservedWords = [
+            'profile',
+            'storage',
+            'admin',
+            'login',
+            'register',
+            'myportfolio',
+            'resume',
+            'event',
+            'portfolio',
+            'about',
+            'privacy',
+            'video',
+            'moderation',
+            'moder',
+            'phpmyadmin',
+            'welcome',
+            'index'
+        ];
+
         return [
             'fullname' => 'required|string|min:6|max:128',
             'username' => [
@@ -32,10 +52,11 @@ class EditProfileRequest extends FormRequest
                 'string',
                 'min:5',
                 'max:24',
-                'regex:/^[a-zA-Z]{3,16}$/',
+                'regex:/^(?!id\d+$)[a-zA-Z0-9]{3,16}$/',
                 Rule::unique('users')->ignore($this->user()->id)->where(function ($query) {
                     return $query->whereNotNull('username');
-                })
+                }),
+                Rule::notIn($reservedWords),
             ],
             'birthday' => 'nullable|date|date_format:Y-m-d',
             'geolocation' => 'nullable|string|min:6|max:128',
