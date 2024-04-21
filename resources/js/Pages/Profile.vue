@@ -16,7 +16,77 @@
                             @{{ user.username }}
                         </h3>
                     </div>
-                    <div class="more-info">
+
+                    <form v-if="isProfileEdit" class="more-info">
+                        <p class="param">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M8.5 21H4C4 17.134 7.13401 14 11 14C11.1681 14 11.3348 14.0059 11.5 14.0176M15 7C15 9.20914 13.2091 11 11 11C8.79086 11 7 9.20914 7 7C7 4.79086 8.79086 3 11 3C13.2091 3 15 4.79086 15 7ZM12.5898 21L14.6148 20.595C14.7914 20.5597 14.8797 20.542 14.962 20.5097C15.0351 20.4811 15.1045 20.4439 15.1689 20.399C15.2414 20.3484 15.3051 20.2848 15.4324 20.1574L19.5898 16C20.1421 15.4477 20.1421 14.5523 19.5898 14C19.0376 13.4477 18.1421 13.4477 17.5898 14L13.4324 18.1574C13.3051 18.2848 13.2414 18.3484 13.1908 18.421C13.1459 18.4853 13.1088 18.5548 13.0801 18.6279C13.0478 18.7102 13.0302 18.7985 12.9948 18.975L12.5898 21Z" stroke="#828282" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <input
+                                required
+                                placeholder="Полное имя"
+                                type="text"
+                                v-model="formProfileEdit.fullname"
+                            >
+                        </p>
+                        <p v-if="user.verified" class="param">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M17.4009 19.2C15.8965 20.3302 14.0265 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12V13.5C21 14.8807 19.8807 16 18.5 16C17.1193 16 16 14.8807 16 13.5V8M16 12C16 14.2091 14.2091 16 12 16C9.79086 16 8 14.2091 8 12C8 9.79086 9.79086 8 12 8C14.2091 8 16 9.79086 16 12Z" stroke="#828282" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <input
+                                placeholder="Юзернейм"
+                                type="text"
+                                v-model="formProfileEdit.username"
+                            >
+                        </p>
+                        <p class="param">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M3 9H21M7 3V5M17 3V5M6 13H8M6 17H8M11 13H13M11 17H13M16 13H18M16 17H18M6.2 21H17.8C18.9201 21 19.4802 21 19.908 20.782C20.2843 20.5903 20.5903 20.2843 20.782 19.908C21 19.4802 21 18.9201 21 17.8V8.2C21 7.07989 21 6.51984 20.782 6.09202C20.5903 5.71569 20.2843 5.40973 19.908 5.21799C19.4802 5 18.9201 5 17.8 5H6.2C5.0799 5 4.51984 5 4.09202 5.21799C3.71569 5.40973 3.40973 5.71569 3.21799 6.09202C3 6.51984 3 7.07989 3 8.2V17.8C3 18.9201 3 19.4802 3.21799 19.908C3.40973 20.2843 3.71569 20.5903 4.09202 20.782C4.51984 21 5.07989 21 6.2 21Z" stroke="#828282" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <input
+                                placeholder="Дата рождения"
+                                type="text"
+                                v-model="formProfileEdit.birthday"
+                            >
+                        </p>
+                        <p class="param">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 21C15.5 17.4 19 14.1764 19 10.2C19 6.22355 15.866 3 12 3C8.13401 3 5 6.22355 5 10.2C5 14.1764 8.5 17.4 12 21Z" stroke="#828282" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M12 13C13.6569 13 15 11.6569 15 10C15 8.34315 13.6569 7 12 7C10.3431 7 9 8.34315 9 10C9 11.6569 10.3431 13 12 13Z" stroke="#828282" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <input
+                                placeholder="Местоположение"
+                                type="text"
+                                v-model="formProfileEdit.geolocation"
+                            >
+                        </p>
+                        <p class="param">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M16 7V6.2C16 5.0799 16 4.51984 15.782 4.09202C15.5903 3.71569 15.2843 3.40973 14.908 3.21799C14.4802 3 13.9201 3 12.8 3H11.2C10.0799 3 9.51984 3 9.09202 3.21799C8.71569 3.40973 8.40973 3.71569 8.21799 4.09202C8 4.51984 8 5.0799 8 6.2V7M3.02721 10.0263C3.38776 10.3719 7.28572 14 12 14C16.7143 14 20.6122 10.3719 20.9728 10.0263M3.02721 10.0263C3 10.493 3 11.0665 3 11.8V16.2C3 17.8802 3 18.7202 3.32698 19.362C3.6146 19.9265 4.07354 20.3854 4.63803 20.673C5.27976 21 6.11984 21 7.8 21H16.2C17.8802 21 18.7202 21 19.362 20.673C19.9265 20.3854 20.3854 19.9265 20.673 19.362C21 18.7202 21 17.8802 21 16.2V11.8C21 11.0665 21 10.493 20.9728 10.0263M3.02721 10.0263C3.06233 9.4241 3.14276 8.99959 3.32698 8.63803C3.6146 8.07354 4.07354 7.6146 4.63803 7.32698C5.27976 7 6.11984 7 7.8 7H16.2C17.8802 7 18.7202 7 19.362 7.32698C19.9265 7.6146 20.3854 8.07354 20.673 8.63803C20.8572 8.99959 20.9377 9.4241 20.9728 10.0263" stroke="#828282" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <input
+                                placeholder="Место работы"
+                                type="text"
+                                v-model="formProfileEdit.job"
+                            >
+                        </p>
+                        <p class="param" v-for="i in 3">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9.1718 14.8288L14.8287 9.17192M7.05086 11.293L5.63664 12.7072C4.07455 14.2693 4.07409 16.8022 5.63619 18.3643C7.19829 19.9264 9.7317 19.9259 11.2938 18.3638L12.7065 16.9498M11.2929 7.05L12.7071 5.63579C14.2692 4.07369 16.8016 4.07397 18.3637 5.63607C19.9258 7.19816 19.9257 9.73085 18.3636 11.2929L16.9501 12.7071" stroke="#828282" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <input
+                                placeholder="Ссылка"
+                                type="text"
+                                v-model="formProfileEdit.links[i - 1]"
+                            >
+                        </p>
+                        <div class="edit-button">
+                            <button type="submit" v-if="isMyProfile" class="secondary">Сохранить</button>
+                        </div>
+                    </form>
+
+
+                    <div v-else class="more-info">
                         <p class="param" v-if="userData.birthday">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M3 9H21M7 3V5M17 3V5M6 13H8M6 17H8M11 13H13M11 17H13M16 13H18M16 17H18M6.2 21H17.8C18.9201 21 19.4802 21 19.908 20.782C20.2843 20.5903 20.5903 20.2843 20.782 19.908C21 19.4802 21 18.9201 21 17.8V8.2C21 7.07989 21 6.51984 20.782 6.09202C20.5903 5.71569 20.2843 5.40973 19.908 5.21799C19.4802 5 18.9201 5 17.8 5H6.2C5.0799 5 4.51984 5 4.09202 5.21799C3.71569 5.40973 3.40973 5.71569 3.21799 6.09202C3 6.51984 3 7.07989 3 8.2V17.8C3 18.9201 3 19.4802 3.21799 19.908C3.40973 20.2843 3.71569 20.5903 4.09202 20.782C4.51984 21 5.07989 21 6.2 21Z" stroke="#828282" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -56,6 +126,9 @@
                             </svg>
                             <a class="profile-link" target="_blank" :href="link">{{ link }}</a>
                         </p>
+                        <div class="edit-button">
+                            <button @click="isProfileEdit = true" v-if="isMyProfile" class="secondary">Редактировать</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -124,6 +197,20 @@
         margin: 0;
         font-size: 14px;
     }
+    .edit-button {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+    .edit-button button {
+        width: 100%;
+    }
+    form.more-info input[type="text"] {
+        border: solid 1px var(--gray4);
+        padding: 5px 10px;
+        width: 100%;
+        border-radius: 10px;
+    }
     @media screen and (max-width: 1000px) {
         .left-side {
             width: 100%;
@@ -153,7 +240,7 @@
 </style>
 
 <script>
-import { Head, Link } from "@inertiajs/vue3";
+import {Head, Link, useForm} from "@inertiajs/vue3";
 import Layout from "@/Layouts/Layout.vue";
 
 export default {
@@ -166,12 +253,25 @@ export default {
     data() {
         return {
             isMyProfile: this.$page.props.auth.user?.id === this.user.id,
-            userData: JSON.parse(this.user.external_data)
+            userData: JSON.parse(this.user.external_data),
+            isProfileEdit: false,
+            formProfileEdit: null
         };
     },
     props: [
         'user'
     ],
+    mounted() {
+        this.formProfileEdit = useForm({
+            _token: this.$page.props.csrf_token,
+            fullname: this.userData.fullname,
+            username: this.user.username,
+            birthday: this.userData.birthday ?? '',
+            geolocation: this.userData.geolocation ?? '',
+            job: this.userData.job ?? '',
+            links: this.userData.links ?? '',
+        });
+    },
     methods: {
         getYearsOld(date) {
             const birthday = new Date(date);
@@ -187,9 +287,7 @@ export default {
             return age;
         },
         formattedDate(date) {
-            // Предположим, что у вас есть переменная с датой
             const formattedDate = new Date(date);
-            // Используйте метод `$d` из i18n для форматирования даты
             return this.$d(formattedDate, 'long');
         }
     }

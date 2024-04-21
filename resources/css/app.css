@@ -131,3 +131,12 @@ button:hover:disabled {
 .img-lang.en {
     background-image: url("/public/icons/lang/en.svg");
 }
+button.secondary {
+    border: 1px solid var(--gray4);
+    border-radius: 40px;
+    padding: 10px 15px;
+    gap: 10px;
+    cursor: pointer;
+    color: black;
+    background: none;
+}
