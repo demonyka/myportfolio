@@ -25,6 +25,19 @@ export default {
         Footbar,
         Navbar,
         CookieAccept,
+    },
+    watch: {
+        '$page.props.flash.message': {
+            handler(newValue) {
+                if (newValue) {
+                    setTimeout(() => {
+                        this.$page.props.flash.message = null;
+                    }, 5000); // Очистить сообщение через 5 секунд
+                }
+            },
+            deep: true,
+            immediate: true // Запуск обработчика немедленно при создании компонента
+        }
     }
 }
 </script>

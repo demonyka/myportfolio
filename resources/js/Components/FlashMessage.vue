@@ -3,23 +3,15 @@ export default {
     name: "FlashMessage",
     data() {
         return {
-            isVisible: false
+
         };
-    },
-    mounted() {
-        setTimeout(() => {
-            this.isVisible = true;
-        }, 100);
-        setTimeout(() => {
-            this.isVisible = false;
-        }, 5000);
     }
 }
 </script>
 
 <template>
     <transition name="fade">
-        <div v-if="isVisible" class="flash" :class="`${$page.props.flash.message.type}`">
+        <div class="flash" :class="`${$page.props.flash.message.type}`">
             {{ $page.props.flash.message.text }}
         </div>
     </transition>
@@ -31,7 +23,7 @@ export default {
     padding: 30px;
     right: 50%;
     transform: translateX(50%);
-    bottom: 80px;
+    bottom: 40px;
     background-color: var(--gray3);
     border-radius: 20px;
     color: var(--white);

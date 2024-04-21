@@ -11,7 +11,7 @@
                             name="name"
                             type="text"
                             :class="{ 'error': form.errors.name }"
-                            @focus="form.errors = {}"
+                            @focus="form.errors.name = null"
                             v-model="form.name"
                             minlength=""
                         >
@@ -25,7 +25,7 @@
                             name="email"
                             type="email"
                             :class="{ 'error': form.errors.email }"
-                            @focus="form.errors = {}"
+                            @focus="form.errors.email = null"
                             v-model="form.email"
                         >
                         <transition name="fade">
@@ -38,7 +38,7 @@
                             name="password"
                             type="password"
                             :class="{ 'error': form.errors.password }"
-                            @focus="form.errors = {}"
+                            @focus="form.errors.password = null"
                             v-model="form.password"
                         >
                         <transition name="fade">
@@ -51,7 +51,7 @@
                             name="password"
                             type="password"
                             :class="{ 'error': form.errors.password_confirmation }"
-                            @focus="form.errors = {}"
+                            @focus="form.errors.password_confirmation = null"
                             v-model="form.password_confirmation"
                         >
                         <transition name="fade">
@@ -114,14 +114,6 @@ form.login-form input:focus {
     flex-direction: column;
     gap: 10px;
 }
-p.error-message {
-    color: var(--red);
-    margin: 0;
-    text-align: center;
-}
-form.login-form input.error {
-    border-color: var(--red);
-}
 .social-login {
     display: flex;
     align-items: center;
@@ -141,9 +133,6 @@ form.login-form input.error {
     }
     button {
         font-size: 14px;
-    }
-    p.error-message {
-        font-size: 12px;
     }
 }
 </style>

@@ -10,7 +10,7 @@
                         name="email"
                         type="email"
                         :class="{ 'error': form.errors.email }"
-                        @focus="form.errors = {}"
+                        @focus="form.errors.email = null"
                         v-model="form.email"
                     >
                     <input
@@ -18,7 +18,7 @@
                         name="password"
                         type="password"
                         :class="{ 'error': form.errors.password }"
-                        @focus="form.errors = {}"
+                        @focus="form.errors.password = null"
                         v-model="form.password"
                     >
                     <button class="primary" :disabled="form.processing" type="submit">{{ $t('sign_in_button') }}</button>
@@ -81,14 +81,6 @@ form.login-form input:focus {
     align-items: center;
     flex-direction: column;
     gap: 10px;
-}
-p.error-message {
-    color: var(--red);
-    margin: 0;
-    text-align: center;
-}
-form.login-form input.error {
-    border-color: var(--red);
 }
 @media screen and (max-width: 1200px) {
     .login {

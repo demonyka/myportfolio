@@ -7,6 +7,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
+/**
+ * @property string $username
+ */
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -18,6 +21,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'email',
+        'username',
         'password',
         'external_data'
     ];
@@ -41,4 +45,15 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function setExternalData(string $slug, $value): void
+    {
+        $externalData = json_decode($this->external_data, true);
+        if (!$externalData) {
+            $externalData = [];
+        }
+        $externalData[$slug] = $value;
+        $this->external_data = json_encode($externalData);
+        $this->save();
+    }
 }

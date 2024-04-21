@@ -139,4 +139,21 @@ button.secondary {
     cursor: pointer;
     color: black;
     background: none;
+    outline: none;
+}
+a.cancel-button {
+    font-size: 12.5px;
+}
+p.error-message {
+    color: var(--red);
+    margin: 0;
+    text-align: center;
+}
+@media screen and (max-width: 1200px) {
+    p.error-message {
+        font-size: 12px;
+    }
+}
+form input.error {
+    border-color: var(--red) !important;
 }
