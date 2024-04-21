@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
@@ -55,5 +56,14 @@ class User extends Authenticatable
         $externalData[$slug] = $value;
         $this->external_data = json_encode($externalData);
         $this->save();
+    }
+
+    public function profileRedirect(): RedirectResponse
+    {
+        if($this->username) {
+            return redirect()->route('profile.view.username', ['username' => $this->username]);
+        } else {
+            return redirect()->route('profile.view.id', ['id' => $this->id]);
+        }
     }
 }

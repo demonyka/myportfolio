@@ -36,6 +36,6 @@ class ProfileController extends Controller
             $user->save();
         }
 
-        return $user->username ? redirect()->route('profile.view.username', ['username' => $user->username]) : redirect()->route('profile.view.id', ['id' => $user->id]);
+        return $user->profileRedirect();
     }
 }

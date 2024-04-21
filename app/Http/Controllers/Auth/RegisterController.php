@@ -38,6 +38,6 @@ class RegisterController extends Controller
 
         Auth::login($user, true);
 
-        return $user->username ? redirect()->route('profile.view.username', ['username' => $user->username]) : redirect()->route('profile.view.id', ['id' => $user->id]);
+        return $user->profileRedirect();
     }
 }
