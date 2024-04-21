@@ -32,7 +32,7 @@ class RegisterController extends Controller
         $user = User::create([
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'external_data' => json_encode(['fullname' => $request->name])
+            'external_data' => json_encode(['fullname' => $request->fullname])
         ]);
 
         event(new Registered($user));

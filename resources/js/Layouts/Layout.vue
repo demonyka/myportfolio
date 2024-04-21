@@ -5,7 +5,9 @@
         <slot />
     </div>
     <Footbar/>
-    <FlashMessage v-if="$page.props.flash.message" :message="$page.props.flash.message"/>
+    <transition name="fade">
+        <FlashMessage v-if="$page.props.flash.message" :message="$page.props.flash.message"/>
+    </transition>
 </template>
 
 <style scoped>
@@ -32,11 +34,11 @@ export default {
                 if (newValue) {
                     setTimeout(() => {
                         this.$page.props.flash.message = null;
-                    }, 5000); // Очистить сообщение через 5 секунд
+                    }, 5000);
                 }
             },
             deep: true,
-            immediate: true // Запуск обработчика немедленно при создании компонента
+            immediate: true
         }
     }
 }

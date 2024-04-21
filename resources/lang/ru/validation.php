@@ -2,7 +2,7 @@
 
 return [
     'required' => 'validation.:attribute.required',
-    'email' => 'validation.email',
+    'email' => 'validation.email.incorrect',
     'string' => 'validation.:attribute.string',
     'lowercase' => 'validation.:attribute.lowercase',
     'max' => [
@@ -13,4 +13,5 @@ return [
     ],
     'confirmed' => 'validation.:attribute.confirmed',
     'unique' => 'validation.:attribute.unique',
+    'regex' => 'validation.:attribute.regex',
 ];

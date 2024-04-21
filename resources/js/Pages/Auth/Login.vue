@@ -5,27 +5,33 @@
             <div class="login-content">
                 <h3>{{ $t('sign_in') }}</h3>
                 <form class="login-form">
-                    <input
-                        :placeholder="$t('email')"
-                        name="email"
-                        type="email"
-                        :class="{ 'error': form.errors.email }"
-                        @focus="form.errors.email = null"
-                        v-model="form.email"
-                    >
-                    <input
-                        :placeholder="$t('password')"
-                        name="password"
-                        type="password"
-                        :class="{ 'error': form.errors.password }"
-                        @focus="form.errors.password = null"
-                        v-model="form.password"
-                    >
+                    <div style="width: 100%; display: flex; flex-direction: column; align-items: center; gap: 5px">
+                        <input
+                            :placeholder="$t('profile.email')"
+                            name="email"
+                            type="email"
+                            :class="{ 'error': form.errors.email }"
+                            @focus="form.errors.email = null"
+                            v-model="form.email"
+                        >
+                        <transition name="fade">
+                            <p v-if="form.errors.email" class="error-message">{{ $t(form.errors.email) }}</p>
+                        </transition>
+                    </div>
+                    <div style="width: 100%; display: flex; flex-direction: column; align-items: center; gap: 5px">
+                        <input
+                            :placeholder="$t('password')"
+                            name="password"
+                            type="password"
+                            :class="{ 'error': form.errors.password }"
+                            @focus="form.errors.password = null"
+                            v-model="form.password"
+                        >
+                        <transition name="fade">
+                            <p v-if="form.errors.password" class="error-message">{{ $t(form.errors.password) }}</p>
+                        </transition>
+                    </div>
                     <button class="primary" :disabled="form.processing" type="submit">{{ $t('sign_in_button') }}</button>
-                    <transition name="fade">
-                        <p v-if="form.errors.email" class="error-message">{{ $t(form.errors.email) }}</p>
-                        <p v-else-if="form.errors.password" class="error-message">{{ $t(form.errors.password) }}</p>
-                    </transition>
                 </form>
                 <div class="social-login">
                     <a :href="route('auth.google.redirect')" class="google"/>

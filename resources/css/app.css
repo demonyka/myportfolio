@@ -148,6 +148,7 @@ p.error-message {
     color: var(--red);
     margin: 0;
     text-align: center;
+    font-size: 12px;
 }
 @media screen and (max-width: 1200px) {
     p.error-message {
@@ -156,4 +157,8 @@ p.error-message {
 }
 form input.error {
     border-color: var(--red) !important;
+    color: var(--red) !important;
+}
+form input.error::placeholder {
+    color: var(--red) !important;
 }

@@ -16,7 +16,7 @@
                         <circle cx="13" cy="13" r="13" fill="#D9D9D9"/>
                         <path d="M7.75 19.75C7.75 16.8505 10.1005 14.5 13 14.5C15.8995 14.5 18.25 16.8505 18.25 19.75M16 9.25C16 10.9069 14.6568 12.25 13 12.25C11.3431 12.25 10 10.9069 10 9.25C10 7.59314 11.3431 6.25 13 6.25C14.6568 6.25 16 7.59314 16 9.25Z" stroke="#828282" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
-                    {{ $t('profile') }}
+                    {{ $t('profile.title') }}
                 </Link>
 
                 <a @click="isLanguageSwitcherOpen = !isLanguageSwitcherOpen" class="btn-secondary btn-lang-switcher">

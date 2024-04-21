@@ -8,7 +8,7 @@
     "ok": "OK",
     "change_lang": "Change language",
     "copyright": "Copyright © 2024 MyPortfolio. All rights reserved.",
-    "about_us": "About us",
+    "about_us": "About Us",
     "privacy_policy": "Privacy Policy",
     "welcome-title": "Welcome to MyPortfolio!",
     "welcome-text": "MyPortfolio is a platform to easily post your cases. Download and share your projects absolutely free!",
@@ -22,17 +22,33 @@
     "full_name": "Full name",
     "email": "EMail",
     "password": "Password",
-    "password_confirmation": "Password confirmation",
-    "profile": "Profile",
-    "email_confirm_title": "Confirm email address",
-    "email_confirm_text": "To use our website, you need to confirm your email address. We have sent an email to {email}. If you haven't received it, click on the 'Resend' button to send it again.",
+    "password_confirmation": "Confirm Password",
+    "email_confirm_title": "Confirm Email Address",
+    "email_confirm_text": "To use our website, you need to confirm your email address. We have sent an email to {email}, if it hasn't arrived, click the \"Resend\" button to send it again.",
     "email_confirm_button": "Resend",
     "years_old": "{n} y.o.",
+
+    "profile": {
+        "title": "Profile",
+        "fullname": "Full Name",
+        "email": "Email Address",
+        "username": "Username",
+        "birthday": "Birthday",
+        "geolocation": "Geolocation",
+        "job": "Job",
+        "link": "Link",
+        "edit": {
+            "edit": "Edit",
+            "submit": "Save",
+            "cancel": "Cancel",
+            "successful": "Profile successfully edited"
+        }
+    },
 
     "validation": {
         "email": {
             "required": "Email address is required",
-            "incorrect": "Invalid email address",
+            "incorrect": "Incorrect email address",
             "string": "Email address must be a string",
             "lowercase": "Email address must be in lowercase",
             "max": "Email address is too long",
@@ -46,14 +62,51 @@
             "max": "Password is too long",
             "min": "Password is too short"
         },
-        "name": {
-            "required": "Name is required",
-            "max": "Name is too long",
-            "min": "Name is too short",
-            "string": "Name must be a string"
+        "fullname": {
+            "required": "Full name is required",
+            "max": "Full name is too long",
+            "min": "Full name is too short",
+            "string": "Full name must be a string"
+        },
+        "username": {
+            "max": "Username is too long",
+            "min": "Username is too short",
+            "string": "Username must be a string",
+            "unique": "This username is already registered",
+            "regex": "Username can only consist of Latin characters"
+        },
+        "date": "Invalid date",
+        "geolocation": {
+            "max": "Geolocation is too long",
+            "min": "Geolocation is too short",
+            "string": "Geolocation must be a string"
+        },
+        "job": {
+            "max": "Job is too long",
+            "min": "Job is too short",
+            "string": "Job must be a string"
+        },
+        "url": "Invalid link",
+        "links": {
+            "array": "Invalid array",
+            "0": {
+                "max": "Link is too long",
+                "min": "Link is too short",
+                "string": "Link must be a string"
+            },
+            "1": {
+                "max": "Link is too long",
+                "min": "Link is too short",
+                "string": "Link must be a string"
+            },
+            "2": {
+                "max": "Link is too long",
+                "min": "Link is too short",
+                "string": "Link must be a string"
+            }
         }
     },
     "auth": {
-        "failed": "Incorrect login or password"
+        "failed": "Invalid login or password"
     }
 }

@@ -32,11 +32,17 @@ class ProfileController extends Controller
     {
         $user = auth()->user();
         $user->setExternalData('fullname', $request->fullname);
-        $user->setExternalData('username', $request->username);
+
         $user->setExternalData('birthday', $request->birthday);
         $user->setExternalData('geolocation', $request->geolocation);
         $user->setExternalData('job', $request->job);
         $user->setExternalData('links', $request->links);
-        return redirect()->back()->with('message', ['type' => 'success', 'text' => 'Успех']);
+
+        if($request->username) {
+            $user->username = $request->username;
+            $user->save();
+        }
+
+        return redirect()->route('profile.view');
     }
 }

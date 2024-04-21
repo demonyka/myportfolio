@@ -12,7 +12,7 @@ export default {
 <template>
     <transition name="fade">
         <div class="flash" :class="`${$page.props.flash.message.type}`">
-            {{ $page.props.flash.message.text }}
+            {{ $t($page.props.flash.message.text) }}
         </div>
     </transition>
 </template>
@@ -20,7 +20,7 @@ export default {
 <style scoped>
 .flash {
     position: fixed;
-    padding: 30px;
+    padding: 20px 30px;
     right: 50%;
     transform: translateX(50%);
     bottom: 40px;

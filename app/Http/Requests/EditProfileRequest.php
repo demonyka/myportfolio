@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class EditProfileRequest extends FormRequest
 {
@@ -25,13 +26,22 @@ class EditProfileRequest extends FormRequest
     public function rules()
     {
         return [
-            'fullname' => 'required|string|min:3|max:128',
-            'username' => 'nullable|string|min:5|max:24|regex:/^[a-zA-Z0-9]{3,16}$/',
+            'fullname' => 'required|string|min:6|max:128',
+            'username' => [
+                'nullable',
+                'string',
+                'min:5',
+                'max:24',
+                'regex:/^[a-zA-Z]{3,16}$/',
+                Rule::unique('users')->ignore($this->user()->id)->where(function ($query) {
+                    return $query->whereNotNull('username');
+                })
+            ],
             'birthday' => 'nullable|date|date_format:Y-m-d',
-            'geolocation' => 'nullable|string|max:128',
-            'job' => 'nullable|string|max:128',
+            'geolocation' => 'nullable|string|min:6|max:128',
+            'job' => 'nullable|string|max:128|min:6',
             'links' => 'nullable|array|max:3',
-            'links.*' => 'nullable|string|max:128|'
+            'links.*' => 'nullable|string|url:http,https|min:6|max:128'
         ];
     }
 }

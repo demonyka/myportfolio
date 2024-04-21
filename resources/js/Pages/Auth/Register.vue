@@ -7,21 +7,21 @@
                 <form class="login-form">
                     <div style="display: flex; flex-direction: column; align-items: center; width: 100%; gap: 5px">
                         <input
-                            :placeholder="$t('full_name')"
-                            name="name"
+                            :placeholder="$t('profile.fullname')"
+                            name="fullname"
                             type="text"
-                            :class="{ 'error': form.errors.name }"
-                            @focus="form.errors.name = null"
-                            v-model="form.name"
+                            :class="{ 'error': form.errors.fullname }"
+                            @focus="form.errors.fullname = null"
+                            v-model="form.fullname"
                             minlength=""
                         >
                         <transition name="fade">
-                            <p v-if="form.errors.name" class="error-message">{{ $t(form.errors.name) }}</p>
+                            <p v-if="form.errors.fullname" class="error-message">{{ $t(form.errors.fullname) }}</p>
                         </transition>
                     </div>
                     <div style="display: flex; flex-direction: column; align-items: center; width: 100%; gap: 5px">
                         <input
-                            :placeholder="$t('email')"
+                            :placeholder="$t('profile.email')"
                             name="email"
                             type="email"
                             :class="{ 'error': form.errors.email }"
@@ -61,8 +61,8 @@
                     <button class="primary" :disabled="form.processing" type="submit">{{ $t('sign_up_button') }}</button>
                 </form>
                 <div class="social-login">
-                    <a target="_blank"  :href="route('auth.google.redirect')" class="google"/>
-                    <a target="_blank"  :href="route('auth.github.redirect')" class="github"/>
+                    <a :href="route('auth.google.redirect')" class="google"/>
+                    <a :href="route('auth.github.redirect')" class="github"/>
                 </div>
             </div>
         </div>
@@ -152,7 +152,7 @@ export default {
         return {
             form: useForm({
                 _token: this.$page.props.csrf_token,
-                name: '',
+                fullname: '',
                 email: '',
                 password: '',
                 password_confirmation: ''
