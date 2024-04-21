@@ -25,7 +25,7 @@ class GithubAuthController extends Controller
         if (!$user) {
             $password = Str::random(32);
             $user = User::create([
-                'external_data' => json_encode(['fullname' => $github_user->getName(), 'avatar_path' => $github_user->getAvatar()]),
+                'external_data' => json_encode(['fullname' => $github_user->getName(), 'avatar_path' => $github_user->getAvatar(), 'github' => $github_user->getNickname()]),
                 'email' => $github_user->getEmail(),
                 'password' => Hash::make($password),
             ]);

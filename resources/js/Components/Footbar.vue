@@ -24,7 +24,7 @@
     position: absolute;
     background-color: var(--white);
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-    bottom: 0;
+    bottom: -120px;
 }
 .foot-content {
     padding: 20px 30px;
@@ -52,6 +52,7 @@
     .footbar {
         width: 100vw;
         border-radius: 0;
+        bottom: -200px;
     }
     .foot-content {
         padding: 15px 20px;

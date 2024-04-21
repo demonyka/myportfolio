@@ -21,7 +21,7 @@
 </template>
 
 <style scoped>
-.index {
+    .index {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
