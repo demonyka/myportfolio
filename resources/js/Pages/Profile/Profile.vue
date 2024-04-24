@@ -20,6 +20,11 @@
     .left-side {
         width: 25%;
     }
+    @media screen and (max-width: 1000px) {
+        .left-side {
+            width: 100%;
+        }
+    }
 </style>
 
 <script>
