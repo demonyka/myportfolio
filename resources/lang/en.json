@@ -105,6 +105,10 @@
                 "min": "Link is too short",
                 "string": "Link must be a string"
             }
+        },
+        "avatar": {
+            "mimes": "The file must be in PNG or JPEG format",
+            "max_file": "Maximum file size is 10MB"
         }
     },
     "auth": {

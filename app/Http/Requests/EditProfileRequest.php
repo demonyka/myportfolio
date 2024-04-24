@@ -5,6 +5,15 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
+/**
+ * @property mixed avatar
+ * @property mixed fullname
+ * @property mixed username
+ * @property mixed birthday
+ * @property mixed geolocation
+ * @property mixed job
+ * @property array links
+ */
 class EditProfileRequest extends FormRequest
 {
 
@@ -46,6 +55,7 @@ class EditProfileRequest extends FormRequest
         ];
 
         return [
+            'avatar' => 'file|max:10240|mimes:jpeg,png',
             'fullname' => 'required|string|min:6|max:128',
             'username' => [
                 'nullable',

@@ -6,10 +6,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
 
 /**
+ * @property int $id
  * @property string $username
+ * @property mixed $external_data
  */
 class User extends Authenticatable
 {
@@ -65,5 +68,13 @@ class User extends Authenticatable
         } else {
             return redirect()->route('profile.view.id', ['id' => $this->id]);
         }
+    }
+
+    public function setAvatar($avatar): void
+    {
+        $filename = md5(time() . $this->id) . '.' . $avatar->getClientOriginalExtension();
+        $path = $avatar->storeAs('public/avatars/'.$this->id, $filename);
+        $avatarUrl = Storage::url($path);
+        $this->setExternalData('avatar_path', $avatarUrl);
     }
 }

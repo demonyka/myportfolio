@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\EditProfileRequest;
 use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 
 class ProfileController extends Controller
 {
@@ -19,18 +20,21 @@ class ProfileController extends Controller
         } else {
             $user = $user->where('username', $identifier)->firstOrFail();
         }
-        return inertia('Profile', ['user' => $user]);
+        return inertia('Profile/Profile', ['user' => $user]);
     }
 
-    public function edit(EditProfileRequest $request)
+    public function edit(EditProfileRequest $request): RedirectResponse
     {
+        /** @var User $user */
         $user = auth()->user();
         $user->setExternalData('fullname', $request->fullname);
         $user->setExternalData('birthday', $request->birthday);
         $user->setExternalData('geolocation', $request->geolocation);
         $user->setExternalData('job', $request->job);
         $user->setExternalData('links', $request->links);
-
+        if ($request->hasFile('avatar')) {
+            $user->setAvatar($request->file('avatar'));
+        }
         if ($request->username) {
             $user->username = $request->username;
             $user->save();
