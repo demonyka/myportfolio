@@ -73,7 +73,7 @@
             "min": "Username is too short",
             "string": "Username must be a string",
             "unique": "This username is already registered",
-            "regex": "Username can only consist of Latin characters",
+            "regex": "Usernames can only consist of numbers and Latin characters.",
             "not_in": "Forbidden username"
         },
         "date": "Invalid date",

@@ -55,7 +55,7 @@ class EditProfileRequest extends FormRequest
         ];
 
         return [
-            'avatar' => 'file|max:10240|mimes:jpeg,png',
+            'avatar' => 'nullable|file|max:10240|mimes:jpeg,png',
             'fullname' => 'required|string|min:6|max:128',
             'username' => [
                 'nullable',
