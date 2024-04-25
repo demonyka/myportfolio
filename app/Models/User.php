@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Notifications\Notifiable;
@@ -76,5 +77,13 @@ class User extends Authenticatable
         $path = $avatar->storeAs('public/avatars/'.$this->id, $filename);
         $avatarUrl = Storage::url($path);
         $this->setExternalData('avatar_path', $avatarUrl);
+    }
+
+    /**
+     * Get the sections for the user.
+     */
+    public function sections(): HasMany
+    {
+        return $this->hasMany(UserSection::class);
     }
 }

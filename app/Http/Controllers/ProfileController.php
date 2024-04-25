@@ -20,7 +20,8 @@ class ProfileController extends Controller
         } else {
             $user = $user->where('username', $identifier)->firstOrFail();
         }
-        return inertia('Profile/Profile', ['user' => $user]);
+        $sections = $user->sections;
+        return inertia('Profile/Profile', ['user' => $user, 'sections' => $sections]);
     }
 
     public function edit(EditProfileRequest $request): RedirectResponse
