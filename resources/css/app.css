@@ -61,7 +61,6 @@ body {
 }
 a {
     text-decoration: none;
-    color: var(--black);
     cursor: pointer;
 }
 a:hover, button:hover {

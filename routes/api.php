@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('/v1')->group(function () {
     Route::prefix('/user')->group(function() {
         Route::prefix('/posts')->group(function() {
-           Route::get('/get/{section_id}', [\App\Http\Controllers\Profile\SectionController::class, 'posts'])->name('api.user.posts.get');
+           Route::get('/get/{section_id}', [\App\Http\Controllers\Profile\ProfileController::class, 'posts'])->name('api.user.posts.get');
         });
     });
 });

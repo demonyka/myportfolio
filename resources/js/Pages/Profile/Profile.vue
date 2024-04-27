@@ -16,16 +16,29 @@
                         Редактировать
                     </span>
                 </div>
-                <div v-if="currentSection && isMyProfile" class="section-content">
+                <form v-if="currentSection && isMyProfile" class="section-content" @submit.prevent="newPostPublish">
                     <h2>Новая публикация в раздел "{{ currentSection.name }}"</h2>
-                    <textarea placeholder="Новая публикация"></textarea>
+                    <div style="width: 100%">
+                        <QuillEditor
+                            theme="snow"
+                            :toolbar="'essential'"
+                            v-model:content="formNewPost.content"
+                            content-type="html"
+                        />
+                    </div>
                     <input multiple accept="image/*, video/*, application/pdf" type="file">
-                    <button class="primary">Опубликовать</button>
-                </div>
+                    <button class="primary" type="submit">Опубликовать</button>
+                    <p v-if="formNewPost.error" class="error-message">Произошла ошибка, попробуйте позже</p>
+                </form>
                 <div class="section-content" v-for="post in posts.data">
-                    <h2>{{ post.title }}</h2>
-                    <p v-html="post.content"/>
-                    <span>{{ post.created_at }}</span>
+                    <div class="post-header">
+                        <div class="user-info">
+                            <img alt="avatar" :src="JSON.parse(post.author.external_data).avatar_path" @error="$event.target.src = 'http://[::1]:5173/public/assets/images/default_avatar.png'">
+                            <h4>{{ JSON.parse(post.author.external_data).fullname }}</h4>
+                        </div>
+                        <span class="post-date">{{ formatDate(post.created_at) }} {{ formatTime(post.created_at) }}</span>
+                    </div>
+                    <div class="post-content" v-html="post.content"/>
                 </div>
             </div>
             <div class="right-side">
@@ -37,6 +50,9 @@
 </template>
 
 <style scoped>
+    .post-content * {
+        margin: 0;
+    }
     .index {
         display: flex;
         align-items: flex-start;
@@ -117,9 +133,47 @@
     .section-content textarea:focus {
         border-color: var(--blue1);
     }
+    .section-content .user-info {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+    .section-content .post-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+    }
+    .section-content .post-header span.post-date {
+        color: var(--gray3);
+    }
+    .section-content .user-info img {
+        width: 40px;
+        height: 40px;
+        object-fit: cover;
+        border-radius: 100%;
+    }
+    .section-content .user-info h4 {
+        font-size: 18px;
+        margin: 0;
+        font-weight: 600;
+    }
     @media screen and (max-width: 1400px) {
         .content .menu-desktop {
             font-size: .75rem;
+        }
+        .section-content .user-info {
+            gap: 10px;
+        }
+        .section-content .post-header span.post-date {
+            font-size: 10px;
+        }
+        .section-content .user-info img {
+            width: 30px;
+            height: 30px;
+        }
+        .section-content .user-info h4 {
+            font-size: 12px;
         }
     }
     @media screen and (max-width: 1200px) {
@@ -141,9 +195,11 @@
 </style>
 
 <script>
-import {Head, Link} from "@inertiajs/vue3";
+import {Head, Link, useForm} from "@inertiajs/vue3";
 import Layout from "@/Layouts/Layout.vue";
 import UserCard from "@/Pages/Profile/LeftSide/UserCard.vue";
+import { QuillEditor } from '@vueup/vue-quill'
+import '@/../css/vue-quill.css';
 
 export default {
     name: "Index",
@@ -151,7 +207,8 @@ export default {
         UserCard,
         Layout,
         Head,
-        Link
+        Link,
+        QuillEditor
     },
     data() {
         return {
@@ -161,7 +218,11 @@ export default {
             currentSection: (this.$page.props.sections && this.$page.props.sections.length > 0) ? this.$page.props.sections[0] : null,
             isMyProfile: this.$page.props.auth.user?.id === this.$page.props.user.id,
             userData: JSON.parse(this.$page.props.user.external_data),
-            postsCache: {}
+            postsCache: {},
+            formNewPost: {
+                content: '',
+                error: false
+            },
         };
     },
     props: [
@@ -194,6 +255,37 @@ export default {
             } catch (error) {
                 console.error('Ошибка при загрузке постов:', error);
             }
+        },
+        newPostPublish() {
+            axios
+                .post(route('profile.post.store'), {
+                    _token: this.$page.props.csrf_token,
+                    post: {
+                        content: this.formNewPost.content,
+                        section: this.currentSection,
+                    },
+                })
+                .then((response) => {
+                    this.postsCache[`${this.currentSection}_1`] = '';
+                    this.getPosts(this.currentSection, 1);
+                    this.formNewPost.error = false;
+                })
+                .catch((error) => {
+                    this.formNewPost.error = true;
+                });
+        },
+        formatDate(dateString) {
+            const date = new Date(dateString);
+            return this.$d(date, 'long');
+        },
+        formatTime(dateString) {
+            const date = new Date(dateString);
+            const day = date.getDate().toString().padStart(2, '0');
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const year = date.getFullYear();
+            const hours = date.getHours().toString().padStart(2, '0');
+            const minutes = date.getMinutes().toString().padStart(2, '0');
+            return `${hours}:${minutes}`;
         }
     },
 }

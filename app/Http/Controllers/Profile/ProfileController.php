@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Profile;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EditProfileRequest;
 use App\Models\User;
+use App\Models\UserPost;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 class ProfileController extends Controller
 {
@@ -41,7 +43,30 @@ class ProfileController extends Controller
             $user->username = $request->username;
             $user->save();
         }
-
         return $user->profileRedirect();
+    }
+
+    public function newPost(Request $request)
+    {
+        /** @var User $user */
+        $user = auth()->user();
+        $post = $request->post;
+        $post = UserPost::create([
+            'user_id' => $user->id,
+            'section_id' => $post['section']['id'],
+            'content' => $post['content']
+        ]);
+        return $post;
+    }
+
+    public function posts($section_id)
+    {
+        $posts = UserPost::where('section_id', $section_id)
+            ->orderBy('created_at', 'desc')
+            ->paginate(15);
+        foreach ($posts as $post) {
+            $post->author = $post->user;
+        }
+        return $posts;
     }
 }

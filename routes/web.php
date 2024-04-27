@@ -11,6 +11,7 @@ Route::middleware('verified')->group(function () {
     Route::middleware('auth')->group(function() {
         Route::prefix('/profile')->group(function () {
             Route::post('/edit', [ProfileController::class, 'edit'])->name('profile.edit.store');
+            Route::post('/new-post', [ProfileController::class, 'newPost'])->name('profile.post.store');
         });
 
     });
