@@ -35,6 +35,7 @@ class GithubAuthController extends Controller
             $user->email_verified_at = Carbon::now();
             $user->save();
         }
+        $user->setExternalData('github', $github_user->getNickname());
         Auth::login($user, true);
         return $user->profileRedirect();
     }

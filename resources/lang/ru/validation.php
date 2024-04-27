@@ -7,7 +7,8 @@ return [
     'lowercase' => 'validation.:attribute.lowercase',
     'max' => [
         'string' => 'validation.:attribute.max',
-        'file' => 'validation.:attribute.max_file'
+        'file' => 'validation.:attribute.max_file',
+        'array' => 'validation.:attribute.max_array'
     ],
     'min' => [
         'string' => 'validation.:attribute.min',

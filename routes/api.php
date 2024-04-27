@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Profile\ProfileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,8 +17,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('/v1')->group(function () {
     Route::prefix('/user')->group(function() {
-        Route::prefix('/posts')->group(function() {
-           Route::get('/get/{section_id}', [\App\Http\Controllers\Profile\ProfileController::class, 'posts'])->name('api.user.posts.get');
+        Route::prefix('/post')->group(function() {
+           Route::get('/get/{section_id}', [ProfileController::class, 'getPost'])->name('api.user.post.get');
+           Route::post('/new-post', [ProfileController::class, 'newPost'])->middleware('auth')->name('api.user.post.store');
         });
+
+        Route::post('/edit', [ProfileController::class, 'edit'])->middleware('auth')->name('api.user.edit.store');
     });
 });

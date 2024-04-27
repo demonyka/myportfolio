@@ -17,6 +17,7 @@ return new class extends Migration
             $table->bigInteger('section_id')->unsigned();
             $table->string('title')->nullable();
             $table->longText('content');
+            $table->jsonb('files')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

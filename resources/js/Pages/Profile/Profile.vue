@@ -25,10 +25,14 @@
                             v-model:content="formNewPost.content"
                             content-type="html"
                         />
+                        <p v-if="formNewPost.error && formNewPost.error.post" style="margin-top: 10px; text-align: left" v-for="error in formNewPost.error.post" class="error-message">{{ error }}</p>
                     </div>
-                    <input multiple accept="image/*, video/*, application/pdf" type="file">
+
+                    <div>
+                        <input @change="postFileChange" multiple accept="image/*, video/*, application/pdf" type="file">
+                        <p v-if="formNewPost.error && formNewPost.error.files" style="margin-top: 10px; text-align: left" v-for="error in formNewPost.error.files" class="error-message">{{ error }}</p>
+                    </div>
                     <button class="primary" type="submit">Опубликовать</button>
-                    <p v-if="formNewPost.error" class="error-message">Произошла ошибка, попробуйте позже</p>
                 </form>
                 <div class="section-content" v-for="post in posts.data">
                     <div class="post-header">
@@ -39,6 +43,22 @@
                         <span class="post-date">{{ formatDate(post.created_at) }} {{ formatTime(post.created_at) }}</span>
                     </div>
                     <div class="post-content" v-html="post.content"/>
+                    <div class="post-files">
+                        <div class="image-grid">
+                            <div v-for="(file, index) in JSON.parse(post.files)" :key="index">
+                                <template v-if="isImage(file)">
+                                    <img :src="file" :alt="getFileName(file)">
+                                </template>
+                            </div>
+                        </div>
+                        <div class="non-image-files">
+                            <div v-for="(file, index) in JSON.parse(post.files)" :key="index">
+                                <template v-if="!isImage(file)">
+                                    <a :href="file" target="_blank">{{ getFileName(file) }}</a>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="right-side">
@@ -50,6 +70,28 @@
 </template>
 
 <style scoped>
+    .post-files {
+        position: relative;
+        width: 100%;
+    }
+    .image-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        grid-gap: 10px;
+    }
+
+    .image-grid img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
+    .non-image-files {
+        margin-top: 10px;
+        display: flex;
+    }
+    .non-image-files a {
+        word-break: break-word;
+    }
     .post-content * {
         margin: 0;
     }
@@ -221,6 +263,7 @@ export default {
             postsCache: {},
             formNewPost: {
                 content: '',
+                files: [],
                 error: false
             },
         };
@@ -234,6 +277,12 @@ export default {
         }
     },
     methods: {
+        isImage(file) {
+            return file.match(/\.(jpeg|jpg|gif|png)$/) !== null;
+        },
+        getFileName(file) {
+            return file.split('/').pop();
+        },
         selectSection(section) {
             this.currentSection = section;
             if (!this.postsCache[section.id]) {
@@ -246,7 +295,7 @@ export default {
             try {
                 const cacheKey = `${sectionId}_${page}`;
                 if (!this.postsCache[cacheKey]) {
-                    const response = await axios.get(route('api.user.posts.get', { section_id: sectionId, page: page }));
+                    const response = await axios.get(route('api.user.post.get', { section_id: sectionId, page: page }));
                     this.posts = response.data;
                     this.postsCache[cacheKey] = this.posts;
                 } else {
@@ -257,21 +306,24 @@ export default {
             }
         },
         newPostPublish() {
+            let formData = new FormData();
+            formData.append('_token', this.$page.props.csrf_token);
+            formData.append('post', this.formNewPost.content);
+            formData.append('section_id', this.currentSection.id);
+
+            for(let i = 0; i < this.formNewPost.files.length; i++) {
+                formData.append('files[]', this.formNewPost.files[i]);
+            }
+
             axios
-                .post(route('profile.post.store'), {
-                    _token: this.$page.props.csrf_token,
-                    post: {
-                        content: this.formNewPost.content,
-                        section: this.currentSection,
-                    },
-                })
+                .post(route('api.user.post.store'), formData)
                 .then((response) => {
                     this.postsCache[`${this.currentSection}_1`] = '';
                     this.getPosts(this.currentSection, 1);
                     this.formNewPost.error = false;
                 })
                 .catch((error) => {
-                    this.formNewPost.error = true;
+                    this.formNewPost.error = error.response.data.errors;
                 });
         },
         formatDate(dateString) {
@@ -286,6 +338,9 @@ export default {
             const hours = date.getHours().toString().padStart(2, '0');
             const minutes = date.getMinutes().toString().padStart(2, '0');
             return `${hours}:${minutes}`;
+        },
+        postFileChange(event) {
+            this.formNewPost.files = event.target.files;
         }
     },
 }

@@ -349,7 +349,7 @@ export default {
             this.formProfileEdit.avatar = file;
         },
         editProfileSubmit() {
-            this.formProfileEdit.post(route('profile.edit.store'), {
+            this.formProfileEdit.post(route('api.user.edit.store'), {
                 onFinish: () => {
 
                 },
