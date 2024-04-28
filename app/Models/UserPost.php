@@ -44,7 +44,7 @@ class UserPost extends Model
     {
         $filesUrl = [];
         foreach ($files as $file) {
-            $filename = md5(time() . $this->id . Str::random()) . '.' . $file->getClientOriginalExtension();
+            $filename = $file->getClientOriginalName();
             $path = $file->storeAs('public/posts/'.$this->id, $filename);
             $filesUrl[] = Storage::url($path);
         }

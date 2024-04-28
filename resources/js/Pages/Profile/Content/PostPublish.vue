@@ -18,12 +18,12 @@
                 v-model:content="formNewPost.content"
                 content-type="html"
             />
-            <p v-if="formNewPost.error && formNewPost.error.post" style="margin-top: 10px; text-align: left" v-for="error in formNewPost.error.post" class="error-message">{{ error }}</p>
+            <p v-if="formNewPost.error && formNewPost.error.post" style="margin-top: 10px; text-align: left" v-for="error in formNewPost.error.post" class="error-message">{{ $t(error) }}</p>
         </div>
 
         <div>
-            <input @change="postFileChange" multiple type="file">
-            <p v-if="formNewPost.error && formNewPost.error.files" style="margin-top: 10px; text-align: left" v-for="error in formNewPost.error.files" class="error-message">{{ error }}</p>
+            <input ref="fileInput" @change="postFileChange" multiple type="file">
+            <p v-if="formNewPost.error && formNewPost.error.files" style="margin-top: 10px; text-align: left" v-for="error in formNewPost.error.files" class="error-message">{{ $t(error) }}</p>
         </div>
         <button class="primary" type="submit">{{ $t('profile.post.new_post.submit') }}</button>
     </form>
@@ -269,7 +269,16 @@ export default {
             return `${hours}:${minutes}`;
         },
         postFileChange(event) {
-            this.formNewPost.files = event.target.files;
+            let files = event.target.files;
+            let fileSizeLimit = 10 * 1024 * 1024;
+            
+            for (let i = 0; i < files.length; i++) {
+                if (files[i].size > fileSizeLimit) {
+                    this.$refs.fileInput.value = '';
+                    return alert(this.$t('profile.post.new_post.max_file'));
+                }
+            }
+            this.formNewPost.files = files;
         }
     },
 }

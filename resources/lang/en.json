@@ -54,7 +54,8 @@
         "post": {
             "new_post": {
                 "title": "New publication to the section",
-                "submit": "Publish"
+                "submit": "Publish",
+                "max_file": "Maximum file size is 10MB"
             }
         }
     },
@@ -123,6 +124,12 @@
         "avatar": {
             "mimes": "The file must be in PNG or JPEG format",
             "max_file": "Maximum file size is 10MB"
+        },
+        "post": {
+            "required": "Content required"
+        },
+        "files": {
+            "max_array": "Too many files"
         }
     },
     "auth": {
