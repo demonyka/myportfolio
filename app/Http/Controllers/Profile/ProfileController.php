@@ -9,22 +9,32 @@ use App\Models\User;
 use App\Models\UserPost;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class ProfileController extends Controller
 {
     /**
      * Display the profile view.
      */
+
     public function view($identifier)
     {
-        $user = User::whereNotNull('email_verified_at');
+        $cacheKey = 'profile.view.' . $identifier;
 
-        if (is_numeric($identifier)) {
-            $user = $user->where('id', $identifier)->firstOrFail();
-        } else {
-            $user = $user->where('username', $identifier)->firstOrFail();
-        }
+        $user = Cache::remember($cacheKey, 60, function () use ($identifier) {
+            $user = User::whereNotNull('email_verified_at');
+
+            if (is_numeric($identifier)) {
+                $user = $user->where('id', $identifier)->firstOrFail();
+            } else {
+                $user = $user->where('username', $identifier)->firstOrFail();
+            }
+
+            return $user;
+        });
+
         $sections = $user->sections;
+
         return inertia('Profile/Profile', ['user' => $user, 'sections' => $sections]);
     }
 
@@ -60,17 +70,25 @@ class ProfileController extends Controller
         if ($request->hasFile('files')) {
             $post->attachFiles($request->file('files'));
         }
+        Cache::forget('post.get.' . $request->section_id);
         return $post;
     }
 
     public function getPost($section_id)
     {
-        $posts = UserPost::where('section_id', $section_id)
-            ->orderBy('created_at', 'desc')
-            ->paginate(15);
+        $cacheKey = 'post.get.' . $section_id;
+
+        $posts = Cache::remember($cacheKey, 1440, function () use ($section_id) {
+            return UserPost::where('section_id', $section_id)
+                ->orderBy('created_at', 'desc')
+                ->with('user')
+                ->paginate(15);
+        });
+
         foreach ($posts as $post) {
             $post->author = $post->user;
         }
+
         return $posts;
     }
 }
