@@ -24,6 +24,7 @@ class EmailController extends Controller
         $token = Str::random(64);
         Cache::put("email_confirmation_{$token}", $email, now()->addMinutes(30));
         Mail::to($email)->send(new MailEmailConfirmation(route('api.user.email-confirmation.get', ['token' => $token]), json_decode($user->external_data, true)['fullname']));
+        return back()->with('message', ['type' => 'success', 'text' => 'profile.email_confirm_send']);
     }
 
     public function getConfirmation($token)
@@ -36,6 +37,6 @@ class EmailController extends Controller
         $user->email_verified_at = Carbon::now();
         $user->save();
         Cache::forget("email_confirmation_{$token}");
-        return $user->profileRedirect();
+        return $user->profileRedirect()->with('message', ['type' => 'success', 'text' => 'profile.email_confirm_success']);
     }
 }

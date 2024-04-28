@@ -32,16 +32,30 @@
         "title": "Profile",
         "fullname": "Full Name",
         "email": "Email Address",
+        "email_confirm_send": "The email was successfully sent",
+        "email_confirm_success": "Email address confirmed!",
         "username": "Username",
         "birthday": "Birthday",
         "geolocation": "Geolocation",
         "job": "Job",
         "link": "Link",
+        "security": {
+            "change_password": {
+                "title": "Change password"
+            },
+            "logout": "Log out"
+        },
         "edit": {
             "edit": "Edit",
             "submit": "Save",
             "cancel": "Cancel",
             "successful": "Profile successfully edited"
+        },
+        "post": {
+            "new_post": {
+                "title": "New publication to the section",
+                "submit": "Publish"
+            }
         }
     },
 

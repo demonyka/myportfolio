@@ -1,8 +1,8 @@
 <template>
     <div class="profile-info">
         <div class="edit-button">
-            <button disabled style="border-radius: 20px" class="primary">Изменить пароль</button>
-            <button @click="$inertia.visit(route('auth.logout'))" class="secondary">Выход</button>
+            <button disabled style="border-radius: 20px" class="primary">{{ $t('profile.security.change_password.title') }}</button>
+            <button @click="$inertia.visit(route('auth.logout'))" class="secondary">{{ $t('profile.security.logout') }}</button>
         </div>
     </div>
 </template>

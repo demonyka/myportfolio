@@ -25,7 +25,7 @@ Route::prefix('/v1')->group(function () {
 
         Route::prefix('/email')->group(function() {
             Route::get('/confirm/{token}', [\App\Http\Controllers\EmailController::class, 'getConfirmation'])->name('api.user.email-confirmation.get');
-            Route::get('/send-confirm/{email}', [\App\Http\Controllers\EmailController::class, 'sendConfirmation'])->name('api.user.email-confirmation.send');
+            Route::post('/send-confirm/{email}', [\App\Http\Controllers\EmailController::class, 'sendConfirmation'])->name('api.user.email-confirmation.send');
         });
     });
 });

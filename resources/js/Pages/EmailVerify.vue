@@ -7,7 +7,7 @@
                     {{ $t('email_confirm_title') }}
                 </h2>
                 <p>{{ $t('email_confirm_text', {email: $page.props.auth.user.email}) }}</p>
-                <button class="primary">{{ $t('email_confirm_button') }}</button>
+                <button @click="sendEmail()" class="primary">{{ $t('email_confirm_button') }}</button>
             </div>
         </div>
     </Layout>
@@ -39,7 +39,7 @@
 </style>
 
 <script>
-import { Head, Link } from "@inertiajs/vue3";
+import {Head, Link, useForm} from "@inertiajs/vue3";
 import Layout from "@/Layouts/Layout.vue";
 
 export default {
@@ -48,6 +48,21 @@ export default {
         Layout,
         Head,
         Link
+    },
+    data() {
+        return {
+            form: useForm({
+                _token: this.$page.props.csrf_token,
+                email: this.$page.props.auth.user.email,
+            })
+        };
+    },
+    methods: {
+        sendEmail() {
+            this.form.post(route('api.user.email-confirmation.send', {email: this.form.email}), {
+                // onFinish: () => this.form.reset('password'),
+            });
+        },
     }
 }
 </script>
