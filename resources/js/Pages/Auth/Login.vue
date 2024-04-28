@@ -88,6 +88,9 @@ form.login-form input:focus {
     flex-direction: column;
     gap: 10px;
 }
+.login-links a {
+    color: black;
+}
 @media screen and (max-width: 1200px) {
     .login {
         width: 100%;

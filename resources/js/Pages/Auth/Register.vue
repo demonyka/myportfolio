@@ -114,6 +114,9 @@ form.login-form input:focus {
     flex-direction: column;
     gap: 10px;
 }
+.login-links a {
+    color: black;
+}
 .social-login {
     display: flex;
     align-items: center;
