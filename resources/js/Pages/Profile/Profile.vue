@@ -21,7 +21,7 @@
                     <div style="width: 100%">
                         <QuillEditor
                             theme="snow"
-                            :toolbar="'essential'"
+                            toolbar="full"
                             v-model:content="formNewPost.content"
                             content-type="html"
                         />
@@ -62,7 +62,7 @@
                 </div>
             </div>
             <div class="right-side">
-
+                <SecurityCard v-if="isMyProfile"/>
             </div>
         </div>
 
@@ -94,6 +94,7 @@
     }
     .post-content * {
         margin: 0;
+        max-width: 100%;
     }
     .index {
         display: flex;
@@ -240,13 +241,14 @@
 import {Head, Link, useForm} from "@inertiajs/vue3";
 import Layout from "@/Layouts/Layout.vue";
 import UserCard from "@/Pages/Profile/LeftSide/UserCard.vue";
+import SecurityCard from "@/Pages/Profile/RightSide/SecurityCard.vue";
 import { QuillEditor } from '@vueup/vue-quill'
 import '@/../css/vue-quill.css';
 
 export default {
     name: "Index",
     components: {
-        UserCard,
+        UserCard, SecurityCard,
         Layout,
         Head,
         Link,
