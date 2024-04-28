@@ -12,7 +12,6 @@ Route::middleware('verified')->group(function () {
         Route::prefix('/profile')->group(function () {
 
         });
-
     });
     Route::get('/id{id}', [ProfileController::class, 'view'])->name('profile.view.id');
     Route::get('/{username}', [ProfileController::class, 'view'])->name('profile.view.username');

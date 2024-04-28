@@ -21,7 +21,11 @@ Route::prefix('/v1')->group(function () {
            Route::get('/get/{section_id}', [ProfileController::class, 'getPost'])->name('api.user.post.get');
            Route::post('/new-post', [ProfileController::class, 'newPost'])->middleware('auth')->name('api.user.post.store');
         });
-
         Route::post('/edit', [ProfileController::class, 'edit'])->middleware('auth')->name('api.user.edit.store');
+
+        Route::prefix('/email')->group(function() {
+            Route::get('/confirm/{token}', [\App\Http\Controllers\EmailController::class, 'getConfirmation'])->name('api.user.email-confirmation.get');
+            Route::get('/send-confirm/{email}', [\App\Http\Controllers\EmailController::class, 'sendConfirmation'])->name('api.user.email-confirmation.send');
+        });
     });
 });
