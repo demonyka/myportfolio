@@ -49,7 +49,11 @@
             "edit": "Edit",
             "submit": "Save",
             "cancel": "Cancel",
-            "successful": "Profile successfully edited"
+            "successful": "Profile successfully edited",
+            "sections": {
+                "save": "Save",
+                "placeholder": "Section"
+            }
         },
         "post": {
             "new_post": {

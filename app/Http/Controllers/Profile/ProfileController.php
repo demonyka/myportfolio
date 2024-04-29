@@ -7,9 +7,11 @@ use App\Http\Requests\Profile\EditProfileRequest;
 use App\Http\Requests\Profile\NewPostRequest;
 use App\Models\User;
 use App\Models\UserPost;
+use App\Models\UserSection;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller
 {
@@ -90,5 +92,32 @@ class ProfileController extends Controller
         }
 
         return $posts;
+    }
+
+    public function editSection(Request $request)
+    {
+        $requestData = $request->all();
+
+        /** @var User $user */
+        $user = auth()->user();
+
+        foreach ($requestData as $item) {
+            if ($item['id'] !== null) {
+                $section = UserSection::find($item['id']);
+                if ($section) {
+                    if ($item['name']) {
+                        $section->updateName($item['name']);
+                    } else {
+                        $section->delete();
+                    }
+                }
+            } else if ($item['name']) {
+                $section = UserSection::create([
+                    'user_id' => $user->id,
+                    'name' => $item['name']
+                ]);
+            }
+        }
+        return $user->profileRedirect();
     }
 }

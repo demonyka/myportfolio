@@ -1,12 +1,24 @@
 <template>
-    <div class="menu-desktop">
+    <div class="menu-desktop" v-if="!isSectionEdit">
         <div class="labels" v-if="sections.length !== 0">
             <label @click="selectSection(section)" :class="{ 'active': currentSection === section }" v-for="section in sections" :key="section.id">
                 {{ section['name'] }}
             </label>
         </div>
-        <span v-if="isMyProfile" class="menu-edit">
+        <span @click="isSectionEdit = true" v-if="isMyProfile" class="menu-edit">
             {{ $t('profile.edit.edit') }}
+        </span>
+    </div>
+    <div class="menu-desktop" v-else>
+        <div class="labels" style="margin-right: 60px">
+            <input v-for="i in 4"
+                class="input-section"
+                v-model="formSectionEdit[i - 1]['name']"
+                :placeholder="$t('profile.edit.sections.placeholder')"
+            >
+        </div>
+        <span @click="formSectionEditSubmit" v-if="isMyProfile" class="menu-edit">
+            {{ $t('profile.edit.sections.save') }}
         </span>
     </div>
     <form v-if="currentSection && isMyProfile" class="section-content" @submit.prevent="newPostPublish">
@@ -47,6 +59,18 @@
 </template>
 
 <style scoped>
+.input-section {
+    border: none;
+    border-bottom: 1px solid black;
+    padding: 25px 0 15px;
+    outline: none;
+    font-size: 18px;
+    text-align: center;
+    width: 100%;
+}
+.input-section:focus {
+    border-color: var(--blue1);
+}
 .post-files {
     position: relative;
     width: 100%;
@@ -61,6 +85,7 @@
 .post-content * {
     margin: 0;
     max-width: 100%;
+    word-break: break-word;
 }
 .menu-desktop {
     background-color: white;
@@ -176,7 +201,7 @@
 </style>
 
 <script>
-import {Head, Link} from "@inertiajs/vue3";
+import {Head, Link, useForm} from "@inertiajs/vue3";
 import { QuillEditor } from '@vueup/vue-quill'
 import '@/../css/vue-quill.css';
 
@@ -192,6 +217,7 @@ export default {
             posts: [],
             user: this.$page.props.user,
             sections: this.$page.props.sections || [],
+            isSectionEdit: false,
             currentSection: (this.$page.props.sections && this.$page.props.sections.length > 0) ? this.$page.props.sections[0] : null,
             isMyProfile: this.$page.props.auth.user?.id === this.$page.props.user.id,
             userData: JSON.parse(this.$page.props.user.external_data),
@@ -201,6 +227,12 @@ export default {
                 files: [],
                 error: false
             },
+            formSectionEdit: useForm({
+                0: this.$page.props.sections[0] || {id: null, name: ''},
+                1: this.$page.props.sections[1] || {id: null, name: ''},
+                2: this.$page.props.sections[2] || {id: null, name: ''},
+                3: this.$page.props.sections[3] || {id: null, name: ''},
+            })
         };
     },
     props: [
@@ -250,7 +282,7 @@ export default {
             axios
                 .post(route('api.user.post.store'), formData)
                 .then(() => {
-                    this.postsCache[`${this.currentSection}_1`] = '';
+                    this.postsCache = {};
                     this.getPosts(this.currentSection, 1);
                     this.formNewPost.error = false;
                 })
@@ -271,7 +303,7 @@ export default {
         postFileChange(event) {
             let files = event.target.files;
             let fileSizeLimit = 10 * 1024 * 1024;
-            
+
             for (let i = 0; i < files.length; i++) {
                 if (files[i].size > fileSizeLimit) {
                     this.$refs.fileInput.value = '';
@@ -279,6 +311,18 @@ export default {
                 }
             }
             this.formNewPost.files = files;
+        },
+        formSectionEditSubmit() {
+            this.formSectionEdit.post(route('api.user.edit.section.store'), {
+                onFinish: () => {
+                    this.formSectionEdit.reset();
+                    this.isSectionEdit = false;
+                    this.sections = this.$page.props.sections || [];
+                    if (this.sections) {
+                        this.selectSection(this.sections[0]);
+                    }
+                },
+            });
         }
     },
 }
