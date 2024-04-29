@@ -11,9 +11,11 @@
     </div>
     <div class="menu-desktop" v-else>
         <div class="labels" style="margin-right: 60px">
-            <input v-for="i in 4"
+            <input v-for="i in 4" :key="i"
                 class="input-section"
                 v-model="formSectionEdit[i - 1]['name']"
+                :class="{ disabled: !(i === 1 || formSectionEdit[i - 2]['name']) }"
+                :readonly="!(i === 1 || formSectionEdit[i - 2]['name'])"
                 :placeholder="$t('profile.edit.sections.placeholder')"
             >
         </div>
@@ -26,7 +28,7 @@
         <div style="width: 100%">
             <QuillEditor
                 theme="snow"
-                toolbar="full"
+                toolbar="essential"
                 v-model:content="formNewPost.content"
                 content-type="html"
             />
@@ -45,10 +47,11 @@
                 <img alt="avatar" :src="JSON.parse(post.author.external_data).avatar_path" @error="$event.target.src = 'http://[::1]:5173/public/assets/images/default_avatar.png'">
                 <h4>{{ JSON.parse(post.author.external_data).fullname }}</h4>
             </div>
-            <span class="post-date">{{ formatDate(post.created_at) }} {{ formatTime(post.created_at) }}</span>
+            <span class="post-date">{{ formatDate(post.created_at) }}</span>
         </div>
-        <div class="post-content" v-html="post.content"/>
-        <div class="post-files">
+        <div class="post-content" v-html="postFull[post.id] ? post.content : post.content.substr(0, 1024)"></div>
+        <div class="post-content full-content" v-if="post.content.length > 1024 && !postFull[post.id]" @click="postFull[post.id] = true">Читать полностью</div>
+        <div v-if="JSON.parse(post.files)" class="post-files">
             <div class="non-image-files">
                 <div v-for="(file, index) in JSON.parse(post.files)" :key="index">
                     <a :href="file" target="_blank">{{ getFileName(file) }}</a>
@@ -64,9 +67,14 @@
     border-bottom: 1px solid black;
     padding: 25px 0 15px;
     outline: none;
-    font-size: 18px;
+    font-size: 16px;
     text-align: center;
     width: 100%;
+}
+.input-section.disabled {
+    opacity: 0;
+    pointer-events: none;
+    cursor: default;
 }
 .input-section:focus {
     border-color: var(--blue1);
@@ -82,10 +90,19 @@
     word-break: break-word;
     color: black;
 }
+.post-content {
+    width: 100%;
+}
 .post-content * {
     margin: 0;
     max-width: 100%;
     word-break: break-word;
+}
+.post-content.full-content {
+    cursor: pointer;
+}
+.post-content.full-content:hover {
+    opacity: .8;
 }
 .menu-desktop {
     background-color: white;
@@ -227,12 +244,13 @@ export default {
                 files: [],
                 error: false
             },
+            postFull: {},
             formSectionEdit: useForm({
                 0: this.$page.props.sections[0] || {id: null, name: ''},
                 1: this.$page.props.sections[1] || {id: null, name: ''},
                 2: this.$page.props.sections[2] || {id: null, name: ''},
                 3: this.$page.props.sections[3] || {id: null, name: ''},
-            })
+            }),
         };
     },
     props: [
@@ -292,13 +310,26 @@ export default {
         },
         formatDate(dateString) {
             const date = new Date(dateString);
-            return this.$d(date, 'long');
-        },
-        formatTime(dateString) {
-            const date = new Date(dateString);
+            const now = new Date();
+            const diffInSeconds = Math.floor((now - date) / 1000);
+
+            if (diffInSeconds < 60) {
+                return this.$tc('seconds_ago', diffInSeconds);
+            }
+
+            const diffInMinutes = Math.floor(diffInSeconds / 60);
+            if (diffInMinutes < 60) {
+                return this.$tc('minutes_ago', diffInMinutes);
+            }
+
+            const diffInHours = Math.floor(diffInMinutes / 60);
+            if (diffInHours < 24) {
+                return `${this.$tc('hours_ago', diffInHours)}`;
+            }
+
             const hours = date.getHours().toString().padStart(2, '0');
             const minutes = date.getMinutes().toString().padStart(2, '0');
-            return `${hours}:${minutes}`;
+            return `${this.$d(date, 'long')} ${hours}:${minutes}`;
         },
         postFileChange(event) {
             let files = event.target.files;

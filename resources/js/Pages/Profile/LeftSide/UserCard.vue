@@ -8,7 +8,7 @@
                 </span>
 
             </h2>
-            <h3 class="username" v-if="user.username">
+            <h3 id="username" class="username" v-if="user.username" @click="copyUsername">
                 @{{ user.username }}
             </h3>
         </div>
@@ -253,6 +253,13 @@ a.profile-link:hover {
     font-weight: 400;
     margin: 0;
     font-size: 14px;
+    cursor: pointer;
+}
+.profile-info .avatar h3.username:hover {
+    opacity: .8;
+}
+.profile-info .avatar h3.username:active {
+    color: var(--blue1);
 }
 .edit-button {
     width: 100%;
@@ -314,6 +321,7 @@ form.more-info div.param-input p.error-message {
 
 <script>
 import {useForm} from "@inertiajs/vue3";
+import {getProfileURL} from "@/scripts.js";
 
 export default {
     name: "UserCard",
@@ -339,6 +347,20 @@ export default {
 
     ],
     methods: {
+        getProfileURL,
+        copyUsername() {
+            const text = this.getProfileURL(this.user);
+            navigator.clipboard.writeText(text)
+                .then(() => {
+                    const usernameElement = document.getElementById('username');
+                    if (usernameElement) {
+                        usernameElement.style.color = 'var(--blue1)';
+                        setTimeout(() => {
+                            usernameElement.style.color = 'var(--black)';
+                        }, 5000);
+                    }
+                });
+        },
         handleAvatarChange(event) {
             const file = event.target.files[0];
             if (file.size > 10 * 1024 * 1024) {

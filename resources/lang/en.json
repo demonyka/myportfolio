@@ -27,6 +27,9 @@
     "email_confirm_text": "To use our website, you need to confirm your email address. We have sent an email to {email}, if it hasn't arrived, click the \"Resend\" button to send it again.",
     "email_confirm_button": "Resend",
     "years_old": "{n} y.o.",
+    "seconds_ago": "Just now | {n} second ago | {n} seconds ago",
+    "minutes_ago": "Just now | {n} minute ago | {n} minutes ago",
+    "hours_ago": "Just now | {n} hour ago | {n} hours ago",
 
     "profile": {
         "title": "Profile",
