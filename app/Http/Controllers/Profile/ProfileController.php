@@ -59,41 +59,6 @@ class ProfileController extends Controller
         return $user->profileRedirect();
     }
 
-    public function newPost(NewPostRequest $request)
-    {
-        /** @var User $user */
-        $user = auth()->user();
-        /** @var UserPost $post */
-        $post = UserPost::create([
-            'user_id' => $user->id,
-            'section_id' => $request->section_id,
-            'content' => $request->post
-        ]);
-        if ($request->hasFile('files')) {
-            $post->attachFiles($request->file('files'));
-        }
-        Cache::forget('post.get.' . $request->section_id);
-        return $post;
-    }
-
-    public function getPost($section_id)
-    {
-        $cacheKey = 'post.get.' . $section_id;
-
-        $posts = Cache::remember($cacheKey, 1440, function () use ($section_id) {
-            return UserPost::where('section_id', $section_id)
-                ->orderBy('created_at', 'desc')
-                ->with('user')
-                ->paginate(15);
-        });
-
-        foreach ($posts as $post) {
-            $post->author = $post->user;
-        }
-
-        return $posts;
-    }
-
     public function editSection(Request $request)
     {
         $requestData = $request->all();

@@ -14,8 +14,6 @@
             <input v-for="i in 4" :key="i"
                 class="input-section"
                 v-model="formSectionEdit[i - 1]['name']"
-                :class="{ disabled: !(i === 1 || formSectionEdit[i - 2]['name']) }"
-                :readonly="!(i === 1 || formSectionEdit[i - 2]['name'])"
                 :placeholder="$t('profile.edit.sections.placeholder')"
             >
         </div>
@@ -58,6 +56,14 @@
                 </div>
             </div>
         </div>
+        <div class="post-likes">
+            <div class="like">
+                <svg :class="{ active: post.is_liked, disabled: !$page.props.auth.user || isMyProfile }" @click="$page.props.auth.user && !isMyProfile ? postLike(post.id) : false" class="like" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M12 6.00019C10.2006 3.90317 7.19377 3.2551 4.93923 5.17534C2.68468 7.09558 2.36727 10.3061 4.13778 12.5772C5.60984 14.4654 10.0648 18.4479 11.5249 19.7369C11.6882 19.8811 11.7699 19.9532 11.8652 19.9815C11.9483 20.0062 12.0393 20.0062 12.1225 19.9815C12.2178 19.9532 12.2994 19.8811 12.4628 19.7369C13.9229 18.4479 18.3778 14.4654 19.8499 12.5772C21.6204 10.3061 21.3417 7.07538 19.0484 5.17534C16.7551 3.2753 13.7994 3.90317 12 6.00019Z" stroke="#828282" fill="transparent" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <small>{{ post.like_count }}</small>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -65,16 +71,11 @@
 .input-section {
     border: none;
     border-bottom: 1px solid black;
-    padding: 25px 0 15px;
+    padding: 20px 0;
     outline: none;
     font-size: 16px;
     text-align: center;
     width: 100%;
-}
-.input-section.disabled {
-    opacity: 0;
-    pointer-events: none;
-    cursor: default;
 }
 .input-section:focus {
     border-color: var(--blue1);
@@ -192,9 +193,41 @@
     margin: 0;
     font-weight: 600;
 }
+.section-content .post-likes {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.section-content .post-likes div.like {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.section-content .post-likes div.like small {
+    color: var(--gray3);
+    cursor: default;
+}
+svg.like {
+    cursor: pointer;
+}
+svg.like.disabled {
+    cursor: default !important;
+    pointer-events: none;
+}
+svg.like:hover path {
+    stroke: var(--red);
+    fill: var(--red);
+}
+svg.like.active path {
+    stroke: var(--red);
+    fill: var(--red);
+}
 @media screen and (max-width: 1400px) {
     .menu-desktop {
         font-size: .75rem;
+    }
+    .section-content {
+        padding: 20px;
     }
     .section-content .user-info {
         gap: 10px;
@@ -207,6 +240,9 @@
         height: 30px;
     }
     .section-content .user-info h4 {
+        font-size: 12px;
+    }
+    .input-section {
         font-size: 12px;
     }
 }
@@ -306,6 +342,14 @@ export default {
                 })
                 .catch((error) => {
                     this.formNewPost.error = error.response.data.errors;
+                });
+        },
+        postLike(id) {
+            axios.post(route('api.user.post.like', {post_id: id}), {})
+                .then((response) => {
+                    const post = this.posts.data.find((post) => post.id === id);
+                    post.is_liked = response.data.is_liked;
+                    post.like_count = response.data.like_count;
                 });
         },
         formatDate(dateString) {

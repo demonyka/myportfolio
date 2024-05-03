@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\Profile\ProfileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -18,8 +19,9 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('/v1')->group(function () {
     Route::prefix('/user')->group(function() {
         Route::prefix('/post')->group(function() {
-           Route::get('/get/{section_id}', [ProfileController::class, 'getPost'])->name('api.user.post.get');
-           Route::post('/new-post', [ProfileController::class, 'newPost'])->middleware('auth')->name('api.user.post.store');
+           Route::get('/get/{section_id}', [PostController::class, 'getPost'])->name('api.user.post.get');
+           Route::post('/new-post', [PostController::class, 'newPost'])->middleware('auth')->name('api.user.post.store');
+            Route::post('/like/{post_id}', [PostController::class, 'like'])->middleware('auth')->name('api.user.post.like');
         });
         Route::post('/edit', [ProfileController::class, 'edit'])->middleware('auth')->name('api.user.edit.store');
         Route::post('/edit-section', [ProfileController::class, 'editSection'])->middleware('auth')->name('api.user.edit.section.store');
