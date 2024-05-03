@@ -10,18 +10,11 @@ use Illuminate\Support\Facades\Cache;
 
 class LikeService
 {
-    public function getUserLikes($user, $posts)
+    public function getUserLikes($user, $post)
     {
-        $postLikes = PostLike::where('user_id', $user->id)
-            ->whereIn('post_id', $posts->pluck('id'))
-            ->get()
-            ->keyBy('post_id');
-
-        foreach ($posts as $post) {
-            $post['is_liked'] = $postLikes->has($post->id);
-        }
-
-        return $posts;
+        return PostLike::where('user_id', $user->id)
+            ->where('post_id', $post->id)
+            ->exists();
     }
 
     public function getPostLikes($post, $date = null)

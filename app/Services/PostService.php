@@ -18,6 +18,7 @@ class PostService
 
     public function create(array $data)
     {
+        Cache::forget('post.get.' . $data['section_id']);
         return UserPost::create($data);
     }
 
@@ -30,11 +31,26 @@ class PostService
     {
         $cacheKey = 'post.get.' . $section_id;
 
-        return Cache::remember($cacheKey, 1440, function () use ($section_id) {
-            return UserPost::where('section_id', $section_id)
+        $posts = Cache::remember($cacheKey, 1440, function () use ($section_id) {
+            $posts = UserPost::where('section_id', $section_id)
                 ->orderBy('created_at', 'desc')
                 ->with('user')
                 ->paginate(15);
+
+            foreach ($posts as $post) {
+                $post->author = $post->user;
+            }
+            return $posts;
         });
+        /** @var User $user */
+        $user = auth()->user();
+        foreach ($posts as $post) {
+            if ($user) {
+                $post['is_liked'] = $this->likeService->getUserLikes($user, $post);
+            }
+            $post['like_count'] = $this->likeService->getPostLikes($post);
+        }
+
+        return $posts;
     }
 }

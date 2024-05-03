@@ -42,28 +42,12 @@ class PostController extends Controller
             $this->postService->attachFiles($post, $request->file('files'));
         }
 
-        Cache::forget('post.get.' . $request->section_id);
-
         return $post;
     }
 
     public function getPost($section_id)
     {
         $posts = $this->postService->getPosts($section_id);
-
-        foreach ($posts as $post) {
-            $post['like_count'] = $this->likeService->getPostLikes($post);
-        }
-
-        /** @var User $user */
-        $user = auth()->user();
-        foreach ($posts as $post) {
-            $post->author = $post->user;
-        }
-        if ($user) {
-            $posts = $this->likeService->getUserLikes($user, $posts);
-        }
-
         return $posts;
     }
 
