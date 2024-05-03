@@ -197,6 +197,8 @@
     display: flex;
     align-items: center;
     gap: 10px;
+    width: 100%;
+    justify-content: flex-end;
 }
 .section-content .post-likes div.like {
     display: flex;

@@ -8,6 +8,8 @@ use App\Mail\MailEmailConfirmation;
 use App\Models\PostLike;
 use App\Models\User;
 use App\Models\UserPost;
+use App\Services\LikeService;
+use App\Services\PostService;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -17,59 +19,58 @@ use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
+    protected PostService $postService;
+    protected LikeService $likeService;
+
+    public function __construct(PostService $postService, LikeService $likeService)
+    {
+        $this->postService = $postService;
+        $this->likeService = $likeService;
+    }
     public function newPost(NewPostRequest $request)
     {
         /** @var User $user */
         $user = auth()->user();
-        /** @var UserPost $post */
-        $post = UserPost::create([
+
+        $post = $this->postService->create([
             'user_id' => $user->id,
             'section_id' => $request->section_id,
             'content' => $request->post
         ]);
+
         if ($request->hasFile('files')) {
-            $post->attachFiles($request->file('files'));
+            $this->postService->attachFiles($post, $request->file('files'));
         }
+
         Cache::forget('post.get.' . $request->section_id);
+
         return $post;
     }
 
     public function getPost($section_id)
     {
-        $cacheKey = 'post.get.' . $section_id;
+        $posts = $this->postService->getPosts($section_id);
 
+        $posts = $this->likeService->getLikeCounts($posts);
+
+        /** @var User $user */
         $user = auth()->user();
-
-        $posts = Cache::remember($cacheKey, 1440, function () use ($section_id) {
-            return UserPost::where('section_id', $section_id)
-                ->orderBy('created_at', 'desc')
-                ->with('user')
-                ->paginate(15);
-        });
-
         foreach ($posts as $post) {
-            $post->author = $post->user;
-            $post['like_count'] = PostLike::where('post_id', $post->id)->count();
+            $post->author = $user;
         }
-
         if ($user) {
-            $postLikes = PostLike::where('user_id', $user->id)
-                ->whereIn('post_id', $posts->pluck('id'))
-                ->get()
-                ->keyBy('post_id');
-
-            foreach ($posts as $post) {
-                $post['is_liked'] = $postLikes->has($post->id);
-            }
+            $posts = $this->likeService->getPostLikes($user, $posts);
         }
-
 
         return $posts;
     }
 
     public function like($post_id)
     {
+        /** @var User $user */
         $user = auth()->user();
-        return UserPost::findOrFail($post_id)->like($user);
+        $post = UserPost::findOrFail($post_id);
+
+        return $this->likeService->like($post, $user);
     }
 }
