@@ -51,19 +51,4 @@ class UserPost extends Model
         $this->files = $filesUrl;
         $this->save();
     }
-
-    public function like(User $user)
-    {
-        $like = PostLike::where('user_id', $user->id)->where('post_id', $this->id)->first();
-        if ($like) {
-            $like->delete();
-            return ['is_liked' => false, 'like_count' => PostLike::where('post_id', $this->id)->count()];
-        } else {
-            PostLike::create([
-                'user_id' => $user->id,
-                'post_id' => $this->id,
-            ]);
-            return ['is_liked' => true, 'like_count' => PostLike::where('post_id', $this->id)->count()];
-        }
-    }
 }

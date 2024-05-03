@@ -8,6 +8,7 @@ use App\Http\Requests\Profile\NewPostRequest;
 use App\Models\User;
 use App\Models\UserPost;
 use App\Models\UserSection;
+use App\Services\LikeService;
 use App\Services\PostService;
 use App\Services\ProfileService;
 use Illuminate\Http\RedirectResponse;
@@ -18,12 +19,12 @@ use Illuminate\Support\Facades\Hash;
 class ProfileController extends Controller
 {
     protected ProfileService $profileService;
-    protected PostService $postService;
+    protected LikeService $likeService;
 
-    public function __construct(ProfileService $profileService, PostService $postService)
+    public function __construct(ProfileService $profileService, LikeService $likeService)
     {
         $this->profileService = $profileService;
-        $this->postService = $postService;
+        $this->likeService = $likeService;
     }
 
     public function view($identifier)
@@ -65,6 +66,6 @@ class ProfileController extends Controller
 
     private function getMostLikedAuthors()
     {
-        return $this->postService->getMostLikedAuthors();
+        return $this->likeService->getMostLikedAuthors();
     }
 }

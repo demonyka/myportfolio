@@ -51,7 +51,9 @@ class PostController extends Controller
     {
         $posts = $this->postService->getPosts($section_id);
 
-        $posts = $this->likeService->getLikeCounts($posts);
+        foreach ($posts as $post) {
+            $post['like_count'] = $this->likeService->getPostLikes($post);
+        }
 
         /** @var User $user */
         $user = auth()->user();
@@ -59,7 +61,7 @@ class PostController extends Controller
             $post->author = $post->user;
         }
         if ($user) {
-            $posts = $this->likeService->getPostLikes($user, $posts);
+            $posts = $this->likeService->getUserLikes($user, $posts);
         }
 
         return $posts;
