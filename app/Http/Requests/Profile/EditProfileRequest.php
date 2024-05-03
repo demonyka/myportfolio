@@ -62,7 +62,7 @@ class EditProfileRequest extends FormRequest
                 'string',
                 'min:5',
                 'max:24',
-                'regex:/^(?!id\d+$)[a-zA-Z0-9]{3,16}$/',
+                'regex:/^(?!id\d+$)(?=.*[a-zA-Z])[a-zA-Z0-9]{3,16}$/',
                 Rule::unique('users')->ignore($this->user()->id)->where(function ($query) {
                     return $query->whereNotNull('username');
                 }),

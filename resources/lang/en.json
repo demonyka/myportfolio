@@ -42,6 +42,7 @@
         "geolocation": "Geolocation",
         "job": "Job",
         "link": "Link",
+        "popular_authors": "Most popular authors",
         "security": {
             "change_password": {
                 "title": "Change password"

@@ -10,7 +10,7 @@
                 <PostPublish/>
             </div>
             <div class="right-side">
-
+                <MostPopularAuthors :authors="popularAuthors"/>
             </div>
         </div>
 
@@ -50,14 +50,16 @@
 import {Head, Link} from "@inertiajs/vue3";
 import Layout from "@/Layouts/Layout.vue";
 import UserCard from "@/Pages/Profile/LeftSide/UserCard.vue";
-import SecurityCard from "@/Pages/Profile/RightSide/SecurityCard.vue";
+import SecurityCard from "@/Pages/Profile/LeftSide/SecurityCard.vue";
 import PostPublish from "@/Pages/Profile/Content/PostPublish.vue";
+import MostPopularAuthors from "@/Pages/Profile/RightSide/MostPopularAuthors.vue";
 
 export default {
     name: "Index",
     components: {
         PostPublish,
         UserCard, SecurityCard,
+        MostPopularAuthors,
         Layout,
         Head,
         Link
@@ -70,7 +72,7 @@ export default {
         };
     },
     props: [
-
+        'popularAuthors'
     ],
     mounted() {
 

@@ -56,7 +56,7 @@ class PostController extends Controller
         /** @var User $user */
         $user = auth()->user();
         foreach ($posts as $post) {
-            $post->author = $user;
+            $post->author = $post->user;
         }
         if ($user) {
             $posts = $this->likeService->getPostLikes($user, $posts);

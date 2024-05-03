@@ -6,7 +6,6 @@
                 <span>
                     {{ userData.fullname }}
                 </span>
-
             </h2>
             <h3 id="username" class="username" v-if="user.username" @click="copyUsername">
                 @{{ user.username }}

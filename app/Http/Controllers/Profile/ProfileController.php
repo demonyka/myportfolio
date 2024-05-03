@@ -8,6 +8,8 @@ use App\Http\Requests\Profile\NewPostRequest;
 use App\Models\User;
 use App\Models\UserPost;
 use App\Models\UserSection;
+use App\Services\PostService;
+use App\Services\ProfileService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -15,47 +17,37 @@ use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller
 {
-    /**
-     * Display the profile view.
-     */
+    protected ProfileService $profileService;
+    protected PostService $postService;
+
+    public function __construct(ProfileService $profileService, PostService $postService)
+    {
+        $this->profileService = $profileService;
+        $this->postService = $postService;
+    }
 
     public function view($identifier)
     {
-        $cacheKey = 'profile.view.' . $identifier;
-
-        $user = Cache::remember($cacheKey, 60, function () use ($identifier) {
-            $user = User::whereNotNull('email_verified_at');
-
-            if (is_numeric($identifier)) {
-                $user = $user->where('id', $identifier)->firstOrFail();
-            } else {
-                $user = $user->where('username', $identifier)->firstOrFail();
-            }
-
-            return $user;
-        });
+        $user = $this->profileService->getUser($identifier);
 
         $sections = $user->sections;
 
-        return inertia('Profile/Profile', ['user' => $user, 'sections' => $sections]);
+        return inertia('Profile/Profile', ['user' => $user, 'sections' => $sections, 'popularAuthors' => $this->getMostLikedAuthors()]);
     }
 
     public function edit(EditProfileRequest $request): RedirectResponse
     {
         /** @var User $user */
         $user = auth()->user();
-        $user->setExternalData('fullname', $request->fullname);
-        $user->setExternalData('birthday', $request->birthday);
-        $user->setExternalData('geolocation', $request->geolocation);
-        $user->setExternalData('job', $request->job);
-        $user->setExternalData('links', $request->links);
+
+        $data = $request->all();
+
         if ($request->hasFile('avatar')) {
-            $user->setAvatar($request->file('avatar'));
+            $data['avatar'] = $request->file('avatar');
         }
-        if ($request->username) {
-            $user->username = $request->username;
-            $user->save();
-        }
+
+        $this->profileService->updateProfile($user, $data);
+
         return $user->profileRedirect();
     }
 
@@ -66,23 +58,13 @@ class ProfileController extends Controller
         /** @var User $user */
         $user = auth()->user();
 
-        foreach ($requestData as $item) {
-            if ($item['id'] !== null) {
-                $section = UserSection::find($item['id']);
-                if ($section) {
-                    if ($item['name']) {
-                        $section->updateName($item['name']);
-                    } else {
-                        $section->delete();
-                    }
-                }
-            } else if ($item['name']) {
-                $section = UserSection::create([
-                    'user_id' => $user->id,
-                    'name' => $item['name']
-                ]);
-            }
-        }
+        $this->profileService->updateSections($user, $requestData);
+
         return $user->profileRedirect();
+    }
+
+    private function getMostLikedAuthors()
+    {
+        return $this->postService->getMostLikedAuthors();
     }
 }

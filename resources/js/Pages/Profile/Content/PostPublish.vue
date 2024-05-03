@@ -42,7 +42,7 @@
     <div class="section-content" v-for="post in posts.data">
         <div class="post-header">
             <div class="user-info">
-                <img alt="avatar" :src="JSON.parse(post.author.external_data).avatar_path" @error="$event.target.src = 'http://[::1]:5173/public/assets/images/default_avatar.png'">
+                <img alt="avatar" :src="JSON.parse(post.author.external_data).avatar_path || 'http://[::1]:5173/public/assets/images/default_avatar.png'" @onerror="$event.target.src = 'http://[::1]:5173/public/assets/images/default_avatar.png'">
                 <h4>{{ JSON.parse(post.author.external_data).fullname }}</h4>
             </div>
             <span class="post-date">{{ formatDate(post.created_at) }}</span>

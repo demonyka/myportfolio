@@ -19,8 +19,8 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('/v1')->group(function () {
     Route::prefix('/user')->group(function() {
         Route::prefix('/post')->group(function() {
-           Route::get('/get/{section_id}', [PostController::class, 'getPost'])->name('api.user.post.get');
-           Route::post('/new-post', [PostController::class, 'newPost'])->middleware('auth')->name('api.user.post.store');
+            Route::get('/get/{section_id}', [PostController::class, 'getPost'])->name('api.user.post.get');
+            Route::post('/new-post', [PostController::class, 'newPost'])->middleware('auth')->name('api.user.post.store');
             Route::post('/like/{post_id}', [PostController::class, 'like'])->middleware('auth')->name('api.user.post.like');
         });
         Route::post('/edit', [ProfileController::class, 'edit'])->middleware('auth')->name('api.user.edit.store');
