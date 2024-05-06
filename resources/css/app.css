@@ -111,7 +111,6 @@ button:hover:disabled {
     background-image: url("/public/assets/icons/logo.svg");
     min-width: 167px;
     min-height: 50px;
-    background-size: cover;
     background-repeat: no-repeat;
 }
 .logo.small {
