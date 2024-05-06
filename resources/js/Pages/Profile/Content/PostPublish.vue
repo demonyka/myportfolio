@@ -1,26 +1,30 @@
 <template>
-    <div class="menu-desktop" v-if="!isSectionEdit">
-        <div class="labels" v-if="sections.length !== 0">
-            <label @click="selectSection(section)" :class="{ 'active': currentSection === section }" v-for="section in sections" :key="section.id">
-                {{ section['name'] }}
-            </label>
-        </div>
-        <span @click="isSectionEdit = true" v-if="isMyProfile" class="menu-edit">
+    <div>
+        <div class="menu-desktop" v-if="!isSectionEdit">
+            <div class="labels" v-if="sections.length !== 0">
+                <label @click="selectSection(section)" :class="{ 'active': currentSection === section }" v-for="section in sections" :key="section.id">
+                    {{ section['name'] }}
+                </label>
+            </div>
+            <span @click="isSectionEdit = true" v-if="isMyProfile" class="menu-edit">
             {{ $t('profile.edit.edit') }}
         </span>
-    </div>
-    <div class="menu-desktop" v-else>
-        <div class="labels" style="margin-right: 60px">
-            <input v-for="i in 4" :key="i"
-                class="input-section"
-                v-model="formSectionEdit[i - 1]['name']"
-                :placeholder="$t('profile.edit.sections.placeholder')"
-            >
         </div>
-        <span @click="formSectionEditSubmit" v-if="isMyProfile" class="menu-edit">
+        <div class="menu-desktop" v-else>
+            <div class="labels" style="margin-right: 60px">
+                <input v-for="i in 4" :key="i"
+                       class="input-section"
+                       v-model="formSectionEdit[i - 1]['name']"
+                       :placeholder="$t('profile.edit.sections.placeholder')"
+                >
+            </div>
+            <span @click="formSectionEditSubmit" v-if="isMyProfile" class="menu-edit">
             {{ $t('profile.edit.sections.save') }}
         </span>
+        </div>
+        <div v-if="postLoading" class="loader"></div>
     </div>
+
     <form v-if="currentSection && isMyProfile" class="section-content" @submit.prevent="newPostPublish">
         <h2>{{ $t('profile.post.new_post.title') }} "{{ currentSection.name }}"</h2>
         <div style="width: 100%">
@@ -68,6 +72,23 @@
 </template>
 
 <style scoped>
+.loader {
+    height: 1px;
+    //width: 130px;
+    --c:no-repeat linear-gradient(var(--blue1) 0 0);
+    background: var(--c),var(--c),transparent;
+    background-size: 60% 100%;
+    animation: l16 5s infinite;
+    width: calc(100% - 40px);
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, -1px);
+}
+@keyframes l16 {
+    0%   {background-position:-150% 0,-150% 0}
+    66%  {background-position: 250% 0,-150% 0}
+    100% {background-position: 250% 0, 250% 0}
+}
 .input-section {
     border: none;
     border-bottom: 1px solid black;
@@ -289,6 +310,7 @@ export default {
                 2: this.$page.props.sections[2] || {id: null, name: ''},
                 3: this.$page.props.sections[3] || {id: null, name: ''},
             }),
+            postLoading: false
         };
     },
     props: [
@@ -312,6 +334,9 @@ export default {
             }
         },
         async getPosts(sectionId, page) {
+            const timeoutId = setTimeout(() => {
+                this.postLoading = true;
+            }, 1000);
             try {
                 const cacheKey = `${sectionId}_${page}`;
                 if (!this.postsCache[cacheKey]) {
@@ -321,9 +346,11 @@ export default {
                 } else {
                     this.posts = this.postsCache[cacheKey];
                 }
+                clearTimeout(timeoutId);
             } catch (error) {
                 console.error('Ошибка при загрузке постов:', error);
             }
+            this.postLoading = false;
         },
         newPostPublish() {
             let formData = new FormData();
