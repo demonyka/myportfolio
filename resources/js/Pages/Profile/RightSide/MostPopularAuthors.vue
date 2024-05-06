@@ -4,7 +4,7 @@
             {{ $t('profile.popular_authors') }}
         </h3>
         <Link :href="getProfileURL(author)" class="user-info" v-for="author in authors">
-            <img alt="avatar" :src="JSON.parse(author.external_data).avatar_path || 'http://[::1]:5173/public/assets/images/default_avatar.png'" @onerror="$event.target.src = 'http://[::1]:5173/public/assets/images/default_avatar.png'">
+            <img alt="avatar" :src="JSON.parse(author.external_data).avatar_path || '/assets/images/default_avatar.png'" @onerror="$event.target.src = '/assets/images/default_avatar.png'">
             <h4>{{ JSON.parse(author.external_data).fullname }}</h4>
         </Link>
     </div>

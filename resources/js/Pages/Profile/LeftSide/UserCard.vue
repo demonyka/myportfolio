@@ -1,7 +1,7 @@
 <template>
     <div class="profile-info">
         <div class="avatar">
-            <img alt="avatar" :src="userData.avatar_path || 'http://[::1]:5173/public/assets/images/default_avatar.png'" @onerror="$event.target.src = 'http://[::1]:5173/public/assets/images/default_avatar.png'">
+            <img alt="avatar" :src="userData.avatar_path || '/assets/images/default_avatar.png'" @onerror="$event.target.src = '/assets/images/default_avatar.png'">
             <h2 class="fullname">
                 <span>
                     {{ userData.fullname }}

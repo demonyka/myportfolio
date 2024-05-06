@@ -117,6 +117,7 @@ button:hover:disabled {
     background-image: url("/public/assets/icons/small_logo.svg");
     min-width: 50px;
     min-height: 50px;
+    background-size: cover;
 }
 .social-login a.google {
     background-image: url("/public/assets/icons/social/google.svg");
