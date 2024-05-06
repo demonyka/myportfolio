@@ -7,11 +7,11 @@
                 </label>
             </div>
             <span @click="isSectionEdit = true" v-if="isMyProfile" class="menu-edit">
-            {{ $t('profile.edit.edit') }}
-        </span>
+                {{ $t('profile.edit.edit') }}
+            </span>
         </div>
         <div class="menu-desktop" v-else>
-            <div class="labels" style="margin-right: 60px">
+            <div class="labels edit">
                 <input v-for="i in 4" :key="i"
                        class="input-section"
                        v-model="formSectionEdit[i - 1]['name']"
@@ -24,6 +24,44 @@
         </div>
         <div v-if="postLoading" class="loader"></div>
     </div>
+
+
+    <div>
+        <div class="menu-mobile">
+            <div :class="{ 'active': isSectionMobileOpened }" @click="isSectionEdit ? false : isSectionMobileOpened = !isSectionMobileOpened" class="menu-mobile-title">
+                <span>{{ currentSection.name }}</span>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M5.70711 9.71069C5.31658 10.1012 5.31658 10.7344 5.70711 11.1249L10.5993 16.0123C11.3805 16.7927 12.6463 16.7924 13.4271 16.0117L18.3174 11.1213C18.708 10.7308 18.708 10.0976 18.3174 9.70708C17.9269 9.31655 17.2937 9.31655 16.9032 9.70708L12.7176 13.8927C12.3271 14.2833 11.6939 14.2832 11.3034 13.8927L7.12132 9.71069C6.7308 9.32016 6.09763 9.32016 5.70711 9.71069Z" fill="#0F0F0F"/>
+                </svg>
+            </div>
+            <transition name="height">
+                <div v-if="isSectionMobileOpened">
+                    <div v-if="!isSectionEdit" class="menu-mobile-content">
+                        <label @click="selectSection(section)" v-for="section in sections" :key="section.id" :style="{ display: currentSection !== section ? 'block' : 'none' }">
+                            {{ section.name }}
+                        </label>
+                        <span @click="isSectionEdit = true" v-if="isMyProfile" class="menu-edit">
+                            {{ $t('profile.edit.edit') }}
+                        </span>
+                    </div>
+                    <div v-else class="menu-mobile-content">
+                        <input v-for="i in 4" :key="i"
+                            class="input-section mobile"
+                            v-model="formSectionEdit[i - 1]['name']"
+                            :placeholder="$t('profile.edit.sections.placeholder')"
+                        >
+                        <span @click="formSectionEditSubmit" v-if="isMyProfile" class="menu-edit" style="text-align: center; margin-top: 10px; font-size: 14px">
+                            {{ $t('profile.edit.sections.save') }}
+                        </span>
+                    </div>
+                </div>
+            </transition>
+        </div>
+    </div>
+
+
+
+
 
     <form v-if="currentSection && isMyProfile" class="section-content" @submit.prevent="newPostPublish">
         <h2>{{ $t('profile.post.new_post.title') }} "{{ currentSection.name }}"</h2>
@@ -101,6 +139,13 @@
 .input-section:focus {
     border-color: var(--blue1);
 }
+.input-section.mobile {
+    padding-bottom: 10px;
+    padding-top: 10px;
+    font-size: 14px;
+    text-align: left;
+    border-color: var(--gray4)
+}
 .post-files {
     position: relative;
     width: 100%;
@@ -126,7 +171,7 @@
 .post-content.full-content:hover {
     opacity: .8;
 }
-.menu-desktop {
+.menu-desktop, .menu-mobile {
     background-color: white;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
     border-radius: 20px;
@@ -134,8 +179,33 @@
     padding: 0 40px;
     overflow: hidden;
     display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.menu-mobile {
+    display: none;
+    padding: 20px 20px 20px 40px;
+}
+.menu-mobile .menu-mobile-title {
+    display: flex;
     align-items: center;
     justify-content: space-between;
+    width: 100%;
+}
+.menu-mobile .menu-mobile-title.active {
+    color: var(--blue1);
+}
+.menu-mobile .menu-mobile-title.active svg path {
+    fill: var(--blue1);
+}
+.menu-mobile .menu-mobile-title.active svg {
+    transform: rotate(180deg);
+}
+.menu-mobile .menu-mobile-content {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 .menu-desktop .labels {
     display: flex;
@@ -143,6 +213,9 @@
     gap: 5%;
     width: 100%;
     position: relative;
+}
+.labels.edit {
+    margin-right: 60px;
 }
 .menu-desktop label {
     padding: 20px 0;
@@ -273,6 +346,12 @@ svg.like.active path {
     .menu-desktop {
         display: none;
     }
+    .menu-mobile {
+        display: flex;
+    }
+    .labels.edit {
+        margin-right: 20px;
+    }
 }
 </style>
 
@@ -310,7 +389,8 @@ export default {
                 2: this.$page.props.sections[2] || {id: null, name: ''},
                 3: this.$page.props.sections[3] || {id: null, name: ''},
             }),
-            postLoading: false
+            postLoading: false,
+            isSectionMobileOpened: false
         };
     },
     props: [
@@ -332,6 +412,7 @@ export default {
             } else {
                 this.posts = this.postsCache[section.id];
             }
+            this.isSectionMobileOpened = false;
         },
         async getPosts(sectionId, page) {
             const timeoutId = setTimeout(() => {
