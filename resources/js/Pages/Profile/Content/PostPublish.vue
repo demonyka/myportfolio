@@ -394,7 +394,11 @@ export default {
     ],
     mounted() {
         if(this.currentSection) {
-            this.selectSection(this.sections[0])
+            if(this.$page.props.section) {
+                this.selectSection(this.$page.props.sections.find(section => section.name === this.$page.props.section));
+            } else {
+                this.selectSection(this.sections[0])
+            }
         }
     },
     methods: {

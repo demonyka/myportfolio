@@ -27,13 +27,13 @@ class ProfileController extends Controller
         $this->likeService = $likeService;
     }
 
-    public function view($identifier)
+    public function view($identifier, Request $request)
     {
         $user = $this->profileService->getUser($identifier);
 
         $sections = $user->sections;
 
-        return inertia('Profile/Profile', ['user' => $user, 'sections' => $sections, 'popularAuthors' => $this->getMostLikedAuthors()]);
+        return inertia('Profile/Profile', ['user' => $user, 'sections' => $sections, 'popularAuthors' => $this->getMostLikedAuthors(), 'section' => $request->section]);
     }
 
     public function edit(EditProfileRequest $request): RedirectResponse
