@@ -27,7 +27,6 @@ Route::prefix('/v1')->group(function () {
         Route::post('/edit-section', [ProfileController::class, 'editSection'])->middleware('auth')->name('api.user.edit.section.store');
 
         Route::prefix('/email')->group(function() {
-            Route::get('/confirm/{token}', [\App\Http\Controllers\EmailController::class, 'getConfirmation'])->name('api.user.email-confirmation.get');
             Route::post('/send-confirm/{email}', [\App\Http\Controllers\EmailController::class, 'sendConfirmation'])->name('api.user.email-confirmation.send');
         });
     });

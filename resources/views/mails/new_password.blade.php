@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MyPortfolio | Reset your password</title>
+</head>
+<body>
+<h2>Hello, {{ $fullname }}</h2>
+<p>Your new password: <b>{{ $password }}</b></p>
+</body>
+</html>

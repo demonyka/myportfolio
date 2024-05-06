@@ -3,6 +3,9 @@
     "homepage": "Homepage",
     "sign_in": "Sign in to MyPortfolio",
     "sign_in_short": "Sign in",
+    "reset_password": "Reset password",
+    "send_button": "Send",
+    "remembered_password": "Remember your password?",
     "we_use_cookies": "We use cookies",
     "cookies_terms": "We use cookies and other data tracking technologies to enhance the user experience on our website, to show you personalized content and targeted advertising, to analyze our website traffic, and to understand where our visitors are coming from. By browsing our website, you consent to the use of cookies and other tracking technologies.",
     "ok": "OK",
@@ -20,7 +23,6 @@
     "sign_up": "Sign up to MyPortfolio",
     "sign_up_button": "Sign up",
     "full_name": "Full name",
-    "email": "EMail",
     "password": "Password",
     "password_confirmation": "Confirm Password",
     "email_confirm_title": "Confirm Email Address",
@@ -67,8 +69,17 @@
             }
         }
     },
+    "email": {
+        "password": {
+            "recover_send": "Password recovery email sent",
+            "new_password": "A new password has been sent to your e-mail"
+        }
+    },
 
     "validation": {
+        "user": {
+            "not_found": "User not found"
+        },
         "email": {
             "required": "Email address is required",
             "incorrect": "Incorrect email address",

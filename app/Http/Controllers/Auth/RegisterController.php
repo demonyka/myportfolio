@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\EmailController;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\User;
+use App\Services\EmailService;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -14,6 +15,13 @@ use Inertia\Response;
 
 class RegisterController extends Controller
 {
+    protected EmailService $emailService;
+
+    public function __construct(EmailService $emailService)
+    {
+        $this->emailService = $emailService;
+    }
+
     /**
      * Display the registration view.
      */
@@ -37,8 +45,7 @@ class RegisterController extends Controller
 
         event(new Registered($user));
 
-        $email = new EmailController();
-        $email->sendConfirmation($user->email);
+        $this->emailService->sendConfirmation($user->email);
 
         Auth::login($user, true);
 

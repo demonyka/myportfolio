@@ -3,7 +3,7 @@
     <Layout>
         <div class="login" @submit.prevent="formSubmit">
             <div class="login-content">
-                <h3>{{ $t('sign_in') }}</h3>
+                <h3>{{ $t('reset_password') }}</h3>
                 <form class="login-form">
                     <div style="width: 100%; display: flex; flex-direction: column; align-items: center; gap: 5px">
                         <input
@@ -18,30 +18,12 @@
                             <p v-if="form.errors.email" class="error-message">{{ $t(form.errors.email) }}</p>
                         </transition>
                     </div>
-                    <div style="width: 100%; display: flex; flex-direction: column; align-items: center; gap: 5px">
-                        <input
-                            :placeholder="$t('password')"
-                            name="password"
-                            type="password"
-                            :class="{ 'error': form.errors.password }"
-                            @focus="form.errors.password = null"
-                            v-model="form.password"
-                        >
-                        <transition name="fade">
-                            <p v-if="form.errors.password" class="error-message">{{ $t(form.errors.password) }}</p>
-                        </transition>
-                    </div>
-                    <button class="primary" :disabled="form.processing" type="submit">{{ $t('sign_in_button') }}</button>
+                    <button class="primary" :disabled="form.processing" type="submit">{{ $t('send_button') }}</button>
                 </form>
-                <div class="social-login">
-                    <a :href="route('auth.google.redirect')" class="google"/>
-                    <a :href="route('auth.github.redirect')" class="github"/>
-                </div>
             </div>
         </div>
         <div class="login-links">
-            <Link :href="route('auth.register.view')">{{ $t('not_registered') }}</Link>
-            <Link :href="route('auth.forgot-password.view')">{{ $t('forgot_password') }}</Link>
+            <Link :href="route('auth.login.view')">{{ $t('remembered_password') }}</Link>
         </div>
     </Layout>
 </template>
@@ -99,19 +81,6 @@ form.login-form input:focus {
         font-size: 14px;
     }
 }
-.social-login {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-    margin-top: 10px;
-}
-.social-login a {
-    background-size: cover;
-    background-repeat: no-repeat;
-    width: 36px;
-    height: 36px;
-}
 </style>
 
 <script>
@@ -130,14 +99,13 @@ export default {
             form: useForm({
                 _token: this.$page.props.csrf_token,
                 email: '',
-                password: ''
             }),
         }
     },
     methods: {
         formSubmit() {
-            this.form.post(route('auth.login.store'), {
-                onFinish: () => this.form.reset('password'),
+            this.form.post(route('auth.forgot-password.send'), {
+                onFinish: (response) => console.log(response),
             });
         },
     }
