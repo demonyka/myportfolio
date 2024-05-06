@@ -179,12 +179,12 @@
     padding: 0 40px;
     overflow: hidden;
     display: flex;
-    flex-direction: column;
     gap: 20px;
 }
 .menu-mobile {
     display: none;
-    padding: 20px 20px 20px 40px;
+    flex-direction: column;
+    padding: 20px 20px 20px 30px;
 }
 .menu-mobile .menu-mobile-title {
     display: flex;
