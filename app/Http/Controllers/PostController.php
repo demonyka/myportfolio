@@ -32,16 +32,18 @@ class PostController extends Controller
     {
         /** @var User $user */
         $user = auth()->user();
-
-        $post = $this->postService->create([
+        /** @var UserPost $post */
+        $post = UserPost::create([
             'user_id' => $user->id,
             'section_id' => $request->section_id,
             'content' => $request->post
         ]);
 
         if ($request->hasFile('files')) {
-            $this->postService->attachFiles($post, $request->file('files'));
+            $post->attachFiles($request->file('files'));
         }
+
+        Cache::forget('post.get.' . $request->section_id);
 
         return $post;
     }
@@ -49,16 +51,16 @@ class PostController extends Controller
     public function getPost($section_id)
     {
         $section = UserSection::findOrFail($section_id);
-        return $section->getPosts();
+        return $section->posts();
     }
 
     public function like($post_id)
     {
         /** @var User $user */
         $user = auth()->user();
+        /** @var UserPost $post */
         $post = UserPost::findOrFail($post_id);
-
-        return $this->likeService->like($post, $user);
+        $post->like($user);
     }
 
     public function delete($post_id)

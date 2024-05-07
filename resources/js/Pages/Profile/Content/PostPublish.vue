@@ -2,9 +2,9 @@
     <div>
         <div class="menu-desktop" v-if="!isSectionEdit">
             <div class="labels" v-if="sections.length !== 0">
-                <label @click="selectSection(section)" :class="{ 'active': currentSection === section }" v-for="section in sections" :key="section.id">
+                <Link :href="getProfileURL(user, section['name'])" :class="{ 'active': currentSection['id'] === section['id'] }" v-for="section in sections" :key="section.id">
                     {{ section['name'] }}
-                </label>
+                </Link>
             </div>
             <span @click="isSectionEdit = true" v-if="isMyProfile" class="menu-edit">
                 {{ $t('profile.edit.edit') }}
@@ -37,9 +37,9 @@
             <transition name="height">
                 <div v-if="isSectionMobileOpened">
                     <div v-if="!isSectionEdit" class="menu-mobile-content">
-                        <label @click="selectSection(section)" v-for="section in sections" :key="section.id" :style="{ display: currentSection !== section ? 'block' : 'none' }">
+                        <Link :href="getProfileURL(user, section['name'])" v-for="section in sections" :key="section.id" :style="{ display: currentSection['id'] !== section['id'] ? 'block' : 'none' }">
                             {{ section.name }}
-                        </label>
+                        </Link>
                         <span @click="isSectionEdit = true" v-if="isMyProfile" class="menu-edit">
                             {{ $t('profile.edit.edit') }}
                         </span>
@@ -63,6 +63,7 @@
         <h2>{{ $t('profile.post.new_post.title') }} "{{ currentSection ? currentSection.name : 'Добавьте раздел' }}"</h2>
         <div style="width: 100%">
             <QuillEditor
+                ref="myQuillEditor"
                 theme="snow"
                 toolbar="full"
                 v-model:content="formNewPost.content"
@@ -77,7 +78,7 @@
         </div>
         <button :disabled="postLoading" class="primary" type="submit">{{ $t('profile.post.new_post.submit') }}</button>
     </form>
-    <div class="section-content" v-for="post in posts.data">
+    <div v-if="posts" class="section-content" v-for="post in posts.data">
         <div class="post-header">
             <div class="user-info">
                 <img alt="avatar" :src="JSON.parse(post.author.external_data).avatar_path || '/assets/images/default_avatar.png'" @onerror="$event.target.src = '/assets/images/default_avatar.png'">
@@ -116,12 +117,36 @@
             </div>
         </div>
     </div>
+    <div v-if="posts && posts.total > posts.per_page" class="pagination">
+        <div>
+            <Link v-if="posts.current_page > 2" :href="getProfileURL(user, currentSection['name'])">
+                ❮
+            </Link>
+            <a class="disactive" v-else>
+                ❮
+            </a>
+        </div>
+
+        <div v-for="page in generatePageArray(posts.current_page, posts.last_page)" :key="page">
+            <Link :href="getProfileURL(user, currentSection['name'], page)" :style="{ 'background-color': posts.current_page === page ? 'var(--blue1)' : 'white', 'color': posts.current_page === page ? 'white' : 'black'}">
+                {{ page }}
+            </Link>
+        </div>
+
+        <div>
+            <Link v-if="posts.last_page-posts.current_page >= 2" :href="getProfileURL(user, currentSection['name'], posts.last_page)">
+                ❯
+            </Link>
+            <a class="disactive" v-else>
+                ❯
+            </a>
+        </div>
+    </div>
 </template>
 
 <style scoped>
 .loader {
     height: 1px;
-    //width: 130px;
     --c:no-repeat linear-gradient(var(--blue1) 0 0);
     background: var(--c),var(--c),transparent;
     background-size: 60% 100%;
@@ -234,14 +259,16 @@
 .labels.edit {
     margin-right: 60px;
 }
-.menu-desktop label {
+.menu-desktop a {
     padding: 20px 0;
     cursor: pointer;
     border-bottom: 1px solid transparent;
+    color: black;
 }
-.menu-desktop label:hover, .menu-desktop label.active, .menu-desktop span.menu-edit:hover {
+.menu-desktop a:hover, .menu-desktop a.active, .menu-desktop span.menu-edit:hover {
     color: var(--blue1);
     border-color: var(--blue1);
+    scale: 1;
 }
 .menu-desktop span.menu-edit {
     justify-content: flex-end;
@@ -382,6 +409,7 @@ svg.like.active path {
 import {Head, Link, useForm} from "@inertiajs/vue3";
 import { QuillEditor } from '@vueup/vue-quill'
 import '@/../css/vue-quill.css';
+import {generatePageArray, getProfileURL} from "@/scripts.js";
 
 export default {
     name: "PostsPublish",
@@ -392,11 +420,11 @@ export default {
     },
     data() {
         return {
-            posts: [],
+            posts: this.$page.props.posts,
             user: this.$page.props.user,
             sections: this.$page.props.sections || [],
             isSectionEdit: false,
-            currentSection: (this.$page.props.sections && this.$page.props.sections.length > 0) ? this.$page.props.sections[0] : null,
+            currentSection: this.$page.props.section,
             isMyProfile: this.$page.props.auth.user?.id === this.$page.props.user.id,
             userData: JSON.parse(this.$page.props.user.external_data),
             formNewPost: {
@@ -412,47 +440,27 @@ export default {
                 3: this.$page.props.sections[3] || {id: null, name: ''},
             }),
             postLoading: false,
-            isSectionMobileOpened: false
+            isSectionMobileOpened: false,
+            quill: null,
         };
     },
     props: [
 
     ],
     mounted() {
-        if(this.currentSection) {
-            if(this.$page.props.section) {
-                this.selectSection(this.$page.props.sections.find(section => section.name === this.$page.props.section));
-            } else {
-                this.selectSection(this.sections[0])
-            }
-        }
+        this.$nextTick(() => {
+            this.quill = this.$refs.myQuillEditor.quill;
+        });
+        console.log(this.currentSection)
     },
     methods: {
+        generatePageArray,
+        getProfileURL,
         isImage(file) {
             return file.endsWith('.jpg') || file.endsWith('.jpeg') || file.endsWith('.png') || file.endsWith('.gif');
         },
         getFileName(file) {
             return file.split('/').pop();
-        },
-        selectSection(section) {
-            this.currentSection = section;
-            this.getPosts(section.id, 1);
-            this.isSectionMobileOpened = false;
-        },
-        async getPosts(sectionId, page) {
-            this.posts = {};
-            const timeoutId = setTimeout(() => {
-                this.postLoading = true;
-            }, 1000);
-            try {
-
-                const response = await axios.get(route('api.user.post.get', { section_id: sectionId, page: page }));
-                this.posts = response.data;
-                clearTimeout(timeoutId);
-            } catch (error) {
-                console.error('Ошибка при загрузке постов:', error);
-            }
-            this.postLoading = false;
         },
         newPostPublish() {
             this.postLoading = true;
@@ -468,28 +476,27 @@ export default {
             axios
                 .post(route('api.user.post.store'), formData)
                 .then(() => {
-                    this.getPosts(this.currentSection, 1);
                     this.formNewPost.error = false;
                     this.postLoading = false;
+                    const quill = document.getElementsByClassName("ql-editor");
+                    quill[0].innerHTML = "";
+                    this.$inertia.visit(getProfileURL(this.user, this.currentSection['name']));
                 })
                 .catch((error) => {
                     this.formNewPost.error = error.response.data.errors;
                     this.postLoading = false;
                 });
+
         },
         postLike(id) {
             axios.post(route('api.user.post.like', {post_id: id}), {})
-                .then((response) => {
-                    const post = this.posts.data.find((post) => post.id === id);
-                    post.is_liked = response.data.is_liked;
-                    post.like_count = response.data.like_count;
-                });
+            const post = this.posts.data.find((post) => post.id === id);
+            post.is_liked = !post.is_liked;
+            post.is_liked ? post.like_count += 1 : post.like_count -= 1;
         },
         deletePost(id) {
             axios.post(route('api.user.post.delete', {post_id: id}), {})
-                .then((response) => {
-                    this.getPosts(this.currentSection.id, 1);
-                });
+            this.posts.data = this.posts.data.filter((post) => post.id !== id);
         },
         formatDate(dateString) {
             const date = new Date(dateString);
@@ -533,7 +540,7 @@ export default {
                     this.isSectionEdit = false;
                     this.sections = this.$page.props.sections || [];
                     if (this.sections) {
-                        this.selectSection(this.sections[0]);
+                        this.$inertia.visit(this.getProfileURL(this.user))
                     }
                 },
             });

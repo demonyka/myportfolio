@@ -43,9 +43,9 @@ class UserSection extends Model
         }
     }
 
-    public function getPosts()
+    public function posts($page = 1)
     {
         $postService = new PostService();
-        return $postService->getPosts($this->id);
+        return $postService->getPosts($this->id, $page);
     }
 }

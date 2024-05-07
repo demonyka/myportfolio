@@ -175,3 +175,25 @@ span.line {
     border-radius: 100%;
     opacity: .2;
 }
+div.pagination {
+    display: flex;
+    margin-top: 20px;
+    justify-content: center;
+    gap: 10px;
+    transform: translateY(-5px);
+}
+div.pagination div a {
+    width: 35px;
+    height: 35px;
+    border-radius: 15px;
+    box-shadow: 0 0 15px 0 #00000026;
+    text-decoration: none;
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+div.pagination div a.disactive {
+    opacity: .5;
+    background-color: lightgray;
+}

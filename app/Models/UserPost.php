@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Services\LikeService;
+use App\Services\PostService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Storage;
@@ -42,12 +44,8 @@ class UserPost extends Model
 
     public function attachFiles($files): void
     {
-        $filesUrl = [];
-        foreach ($files as $file) {
-            $filename = $file->getClientOriginalName();
-            $path = $file->storeAs('public/posts/'.$this->id, $filename);
-            $filesUrl[] = Storage::url($path);
-        }
+        $postService = new PostService();
+        $filesUrl = $postService->attachFiles($files, $this);
         $this->files = $filesUrl;
         $this->save();
     }
@@ -71,5 +69,11 @@ class UserPost extends Model
             Storage::deleteDirectory($directory);
         }
         $this->delete();
+    }
+
+    public function like(User $user): void
+    {
+        $likeService = new LikeService();
+        $likeService->like($this, $user);
     }
 }

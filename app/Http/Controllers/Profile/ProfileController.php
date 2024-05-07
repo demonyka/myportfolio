@@ -33,7 +33,21 @@ class ProfileController extends Controller
 
         $sections = $user->sections;
 
-        return inertia('Profile/Profile', ['user' => $user, 'sections' => $sections, 'popularAuthors' => $this->getMostLikedAuthors(), 'section' => $request->section]);
+        /** @var UserSection $section */
+        if($request->section) {
+            $section = UserSection::where('name', $request->section)->first();
+
+        } else {
+            $section = UserSection::where('user_id', $user->id)->first();
+        }
+        $posts = null;
+        if ($section) {
+            $page = $request->page;
+            $posts = $section->posts($page);
+        }
+
+
+        return inertia('Profile/Profile', ['user' => $user, 'sections' => $sections, 'popularAuthors' => $this->getMostLikedAuthors(), 'section' => $section, 'posts' => $posts]);
     }
 
     public function edit(EditProfileRequest $request): RedirectResponse
