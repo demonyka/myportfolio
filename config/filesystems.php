@@ -40,8 +40,6 @@ return [
                 ],
                 'dir' => [
                     'public' => 0775,
-                    'public/avatars' => 0775,
-                    'public/posts' => 0775,
                     'private' => 0700,
                 ],
             ],
@@ -61,8 +59,6 @@ return [
                 'dir' => [
                     'public' => 0775,
                     'private' => 0700,
-                    'public/avatars' => 0775,
-                    'public/posts' => 0775,
                 ],
             ],
             'throw' => false,
