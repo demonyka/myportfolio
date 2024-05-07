@@ -75,7 +75,7 @@
             <input ref="fileInput" @change="postFileChange" multiple type="file">
             <p v-if="formNewPost.error && formNewPost.error.files" style="margin-top: 10px; text-align: left" v-for="error in formNewPost.error.files" class="error-message">{{ $t(error) }}</p>
         </div>
-        <button class="primary" type="submit">{{ $t('profile.post.new_post.submit') }}</button>
+        <button :disabled="postLoading" class="primary" type="submit">{{ $t('profile.post.new_post.submit') }}</button>
     </form>
     <div class="section-content" v-for="post in posts.data">
         <div class="post-header">
@@ -428,6 +428,7 @@ export default {
             this.postLoading = false;
         },
         newPostPublish() {
+            this.postLoading = true;
             let formData = new FormData();
             formData.append('_token', this.$page.props.csrf_token);
             formData.append('post', this.formNewPost.content);
@@ -446,6 +447,7 @@ export default {
                 .catch((error) => {
                     this.formNewPost.error = error.response.data.errors;
                 });
+            this.postLoading = false;
         },
         postLike(id) {
             axios.post(route('api.user.post.like', {post_id: id}), {})
