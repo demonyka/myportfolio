@@ -28,7 +28,7 @@ class PostController extends Controller
         $this->postService = $postService;
         $this->likeService = $likeService;
     }
-    public function newPost(NewPostRequest $request)
+    public function newPost(NewPostRequest $request): RedirectResponse
     {
         /** @var User $user */
         $user = auth()->user();
@@ -36,7 +36,7 @@ class PostController extends Controller
         $post = UserPost::create([
             'user_id' => $user->id,
             'section_id' => $request->section_id,
-            'content' => $request->post
+            'content' => $request->text
         ]);
 
         if ($request->hasFile('files')) {
@@ -44,8 +44,8 @@ class PostController extends Controller
         }
 
         Cache::forget('post.get.' . $request->section_id);
-
-        return $post;
+        $section = UserSection::find($request->section_id);
+        return $user->profileRedirect($section->name);
     }
 
     public function getPost($section_id)

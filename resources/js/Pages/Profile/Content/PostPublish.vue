@@ -22,7 +22,7 @@
             {{ $t('profile.edit.sections.save') }}
         </span>
         </div>
-        <div v-if="postLoading" class="loader"></div>
+        <div v-if="postLoading || formNewPost.processing" class="loader"></div>
     </div>
 
 
@@ -66,17 +66,18 @@
                 ref="myQuillEditor"
                 theme="snow"
                 toolbar="full"
-                v-model:content="formNewPost.content"
+                v-model:content="formNewPost.text"
                 content-type="html"
+                @focus="clearQuillErrors"
             />
-            <p v-if="formNewPost.error && formNewPost.error.post" style="margin-top: 10px; text-align: left" v-for="error in formNewPost.error.post" class="error-message">{{ $t(error) }}</p>
+            <p v-if="formNewPost.errors && formNewPost.errors.text" style="margin-top: 10px; text-align: left" class="error-message">{{ $t(formNewPost.errors.text) }}</p>
         </div>
 
         <div>
             <input ref="fileInput" @change="postFileChange" multiple type="file">
-            <p v-if="formNewPost.error && formNewPost.error.files" style="margin-top: 10px; text-align: left" v-for="error in formNewPost.error.files" class="error-message">{{ $t(error) }}</p>
+            <p v-if="formNewPost.errors && formNewPost.errors.files" style="margin-top: 10px; text-align: left" class="error-message">{{ $t(formNewPost.errors.files) }}</p>
         </div>
-        <button :disabled="postLoading" class="primary" type="submit">{{ $t('profile.post.new_post.submit') }}</button>
+        <button :disabled="formNewPost.processing" class="primary" type="submit">{{ $t('profile.post.new_post.submit') }}</button>
     </form>
     <div v-if="posts" class="section-content" v-for="post in posts.data">
         <div class="post-header">
@@ -433,11 +434,12 @@ export default {
             currentSection: this.$page.props.section,
             isMyProfile: this.$page.props.auth.user?.id === this.$page.props.user.id,
             userData: JSON.parse(this.$page.props.user.external_data),
-            formNewPost: {
-                content: '',
+            formNewPost: useForm({
+                _token: this.$page.props.csrf_token,
+                text: '',
+                section_id: this.$page.props.section ? this.$page.props.section.id : null,
                 files: [],
-                error: false
-            },
+            }),
             postFull: {},
             formSectionEdit: useForm({
                 0: this.$page.props.sections[0] || {id: null, name: ''},
@@ -469,30 +471,36 @@ export default {
             return file.split('/').pop();
         },
         newPostPublish() {
-            this.postLoading = true;
-            let formData = new FormData();
-            formData.append('_token', this.$page.props.csrf_token);
-            formData.append('post', this.formNewPost.content);
-            formData.append('section_id', this.currentSection.id);
+            this.formNewPost.post(route('api.user.post.store'), {
+                onFinish: () => {
 
-            for(let i = 0; i < this.formNewPost.files.length; i++) {
-                formData.append('files[]', this.formNewPost.files[i]);
-            }
-
-            axios
-                .post(route('api.user.post.store'), formData)
-                .then(() => {
-                    this.formNewPost.error = false;
-                    this.postLoading = false;
+                },
+                onSuccess: () => {
                     const quill = document.getElementsByClassName("ql-editor");
                     quill[0].innerHTML = "";
-                    this.$inertia.visit(getProfileURL(this.user, this.currentSection['name']));
-                })
-                .catch((error) => {
-                    this.formNewPost.error = error.response.data.errors;
-                    this.postLoading = false;
-                });
-
+                    this.posts = this.$page.props.posts;
+                },
+                onError: () => {
+                    const qlContainers = document.querySelectorAll('.ql-container');
+                    qlContainers.forEach((qlContainer) => {
+                        qlContainer.style.borderColor = 'var(--red)';
+                    });
+                    const qlToolbars = document.querySelectorAll('.ql-toolbar');
+                    qlToolbars.forEach((qlToolbar) => {
+                        qlToolbar.style.borderColor = 'var(--red)';
+                    });
+                }
+            });
+        },
+        clearQuillErrors() {
+            const qlContainers = document.querySelectorAll('.ql-container');
+            qlContainers.forEach((qlContainer) => {
+                qlContainer.style.borderColor = '';
+            });
+            const qlToolbars = document.querySelectorAll('.ql-toolbar');
+            qlToolbars.forEach((qlToolbar) => {
+                qlToolbar.style.borderColor = '';
+            });
         },
         postLike(id) {
             axios.post(route('api.user.post.like', {post_id: id}), {})

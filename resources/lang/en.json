@@ -146,8 +146,9 @@
             "mimes": "The file must be in PNG or JPEG format",
             "max_file": "Maximum file size is 10MB"
         },
-        "post": {
-            "required": "Content required"
+        "text": {
+            "required": "Content required",
+            "min": "Content is too short"
         },
         "files": {
             "max_array": "Too many files"
