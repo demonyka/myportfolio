@@ -440,6 +440,7 @@ export default {
             this.isSectionMobileOpened = false;
         },
         async getPosts(sectionId, page) {
+            this.posts = {};
             const timeoutId = setTimeout(() => {
                 this.postLoading = true;
             }, 1000);
