@@ -376,7 +376,6 @@ export default {
             currentSection: (this.$page.props.sections && this.$page.props.sections.length > 0) ? this.$page.props.sections[0] : null,
             isMyProfile: this.$page.props.auth.user?.id === this.$page.props.user.id,
             userData: JSON.parse(this.$page.props.user.external_data),
-            postsCache: {},
             formNewPost: {
                 content: '',
                 files: [],
@@ -411,11 +410,7 @@ export default {
         },
         selectSection(section) {
             this.currentSection = section;
-            if (!this.postsCache[section.id]) {
-                this.getPosts(section.id, 1);
-            } else {
-                this.posts = this.postsCache[section.id];
-            }
+            this.getPosts(section.id, 1);
             this.isSectionMobileOpened = false;
         },
         async getPosts(sectionId, page) {
@@ -423,13 +418,9 @@ export default {
                 this.postLoading = true;
             }, 1000);
             try {
-                if (!this.postsCache[sectionId]) {
-                    const response = await axios.get(route('api.user.post.get', { section_id: sectionId, page: page }));
-                    this.posts = response.data;
-                    this.postsCache[sectionId] = this.posts;
-                } else {
-                    this.posts = this.postsCache[sectionId];
-                }
+
+                const response = await axios.get(route('api.user.post.get', { section_id: sectionId, page: page }));
+                this.posts = response.data;
                 clearTimeout(timeoutId);
             } catch (error) {
                 console.error('Ошибка при загрузке постов:', error);
@@ -449,7 +440,6 @@ export default {
             axios
                 .post(route('api.user.post.store'), formData)
                 .then(() => {
-                    this.postsCache = {};
                     this.getPosts(this.currentSection, 1);
                     this.formNewPost.error = false;
                 })
