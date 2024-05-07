@@ -22,7 +22,7 @@ class PostService
         return UserPost::create($data);
     }
 
-    public function attachFiles(UserPost $post, $files)
+    public function attachFiles(UserPost $post, $files): void
     {
         $post->attachFiles($files);
     }

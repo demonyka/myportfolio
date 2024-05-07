@@ -10,32 +10,27 @@ use Illuminate\Support\Facades\Cache;
 
 class LikeService
 {
-    public function getUserLikes($user, $post)
+    public function getUserLikes(User $user, UserPost $post)
     {
         return PostLike::where('user_id', $user->id)
             ->where('post_id', $post->id)
             ->exists();
     }
 
-    public function getPostLikes($post, $date = null)
+    public function getPostLikes(UserPost $post, $date = null)
     {
-        $cacheKey = 'post_likes_' . $post->id;
+        if ($date == null) {
+            $date = Carbon::now();
+        }
 
-        return Cache::remember($cacheKey, 5, function () use ($post, $date) {
-            if ($date == null) {
-                $date = Carbon::now();
-            }
+        $likes = 0;
+        $likes += PostLike::where('post_id', $post->id)->where('created_at', '>=', $date)->count();
 
-            $likes = 0;
-            $likes += PostLike::where('post_id', $post->id)->where('created_at', '>=', $date)->count();
-
-            return $likes;
-        });
+        return $likes;
     }
 
-    public function like(UserPost $post, User $user)
+    public function like(UserPost $post, User $user): array
     {
-        Cache::forget('post_likes_' . $post->id);
         $like = PostLike::where('user_id', $user->id)->where('post_id', $post->id)->first();
         if ($like) {
             $like->delete();
