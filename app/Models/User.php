@@ -63,12 +63,12 @@ class User extends Authenticatable
         $this->save();
     }
 
-    public function profileRedirect(): RedirectResponse
+    public function profileRedirect($section = null): RedirectResponse
     {
         if($this->username) {
-            return redirect()->route('profile.view.username', ['username' => $this->username]);
+            return redirect()->route('profile.view.username', ['username' => $this->username, 'section' => $section]);
         } else {
-            return redirect()->route('profile.view.id', ['id' => $this->id]);
+            return redirect()->route('profile.view.id', ['id' => $this->id, 'section' => $section]);
         }
     }
 

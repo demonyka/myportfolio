@@ -249,6 +249,12 @@
     flex-direction: column;
     gap: 20px;
 }
+.menu-mobile-content a {
+    color: black;
+}
+.menu-mobile-content a:hover {
+    scale: 1;
+}
 .menu-desktop .labels {
     display: flex;
     align-items: center;
@@ -539,9 +545,8 @@ export default {
                     this.formSectionEdit.reset();
                     this.isSectionEdit = false;
                     this.sections = this.$page.props.sections || [];
-                    if (this.sections) {
-                        this.$inertia.visit(this.getProfileURL(this.user))
-                    }
+                    this.currentSection = this.$page.props.section || null;
+
                 },
             });
         }
