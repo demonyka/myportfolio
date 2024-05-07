@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Services\LikeService;
+use App\Services\PostService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -41,4 +43,9 @@ class UserSection extends Model
         }
     }
 
+    public function getPosts()
+    {
+        $postService = new PostService();
+        return $postService->getPosts($this->id);
+    }
 }

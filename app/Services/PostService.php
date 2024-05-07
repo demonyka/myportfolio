@@ -8,12 +8,6 @@ use Illuminate\Support\Facades\Cache;
 
 class PostService
 {
-    protected LikeService $likeService;
-    public function __construct(LikeService $likeService)
-    {
-        $this->likeService = $likeService;
-    }
-
     public function create(array $data)
     {
         Cache::forget('post.get.' . $data['section_id']);

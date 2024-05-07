@@ -63,4 +63,13 @@ class UserPost extends Model
             ->where('post_id', $this->id)
             ->exists();
     }
+
+    public function deleteWithFiles(): void
+    {
+        $directory = 'public/posts/' . $this->id;
+        if (Storage::exists($directory)) {
+            Storage::deleteDirectory($directory);
+        }
+        $this->delete();
+    }
 }

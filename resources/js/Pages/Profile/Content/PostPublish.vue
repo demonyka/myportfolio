@@ -64,7 +64,7 @@
         <div style="width: 100%">
             <QuillEditor
                 theme="snow"
-                toolbar="essential"
+                toolbar="full"
                 v-model:content="formNewPost.content"
                 content-type="html"
             />
@@ -99,6 +99,9 @@
             </div>
         </div>
         <div class="post-likes">
+            <svg v-if="isMyProfile" @click="deletePost(post.id)" class="delete" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M4 6H20M16 6L15.7294 5.18807C15.4671 4.40125 15.3359 4.00784 15.0927 3.71698C14.8779 3.46013 14.6021 3.26132 14.2905 3.13878C13.9376 3 13.523 3 12.6936 3H11.3064C10.477 3 10.0624 3 9.70951 3.13878C9.39792 3.26132 9.12208 3.46013 8.90729 3.71698C8.66405 4.00784 8.53292 4.40125 8.27064 5.18807L8 6M18 6V16.2C18 17.8802 18 18.7202 17.673 19.362C17.3854 19.9265 16.9265 20.3854 16.362 20.673C15.7202 21 14.8802 21 13.2 21H10.8C9.11984 21 8.27976 21 7.63803 20.673C7.07354 20.3854 6.6146 19.9265 6.32698 19.362C6 18.7202 6 17.8802 6 16.2V6M14 10V17M10 10V17" stroke="#828282" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
             <div class="like">
                 <svg :class="{ active: post.is_liked, disabled: !$page.props.auth.user }" @click="$page.props.auth.user ? postLike(post.id) : false" class="like" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd" clip-rule="evenodd" d="M12 6.00019C10.2006 3.90317 7.19377 3.2551 4.93923 5.17534C2.68468 7.09558 2.36727 10.3061 4.13778 12.5772C5.60984 14.4654 10.0648 18.4479 11.5249 19.7369C11.6882 19.8811 11.7699 19.9532 11.8652 19.9815C11.9483 20.0062 12.0393 20.0062 12.1225 19.9815C12.2178 19.9532 12.2994 19.8811 12.4628 19.7369C13.9229 18.4479 18.3778 14.4654 19.8499 12.5772C21.6204 10.3061 21.3417 7.07538 19.0484 5.17534C16.7551 3.2753 13.7994 3.90317 12 6.00019Z" stroke="#828282" fill="transparent" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -299,6 +302,12 @@
     align-items: center;
     gap: 5px;
 }
+.section-content .post-likes svg.delete {
+    cursor: pointer;
+}
+.section-content .post-likes svg.delete:hover path {
+    stroke: var(--blue1);
+}
 .section-content .post-likes div.like small {
     color: var(--gray3);
     cursor: default;
@@ -456,6 +465,12 @@ export default {
                     const post = this.posts.data.find((post) => post.id === id);
                     post.is_liked = response.data.is_liked;
                     post.like_count = response.data.like_count;
+                });
+        },
+        deletePost(id) {
+            axios.post(route('api.user.post.delete', {post_id: id}), {})
+                .then((response) => {
+                    this.getPosts(this.currentSection.id, 1);
                 });
         },
         formatDate(dateString) {

@@ -8,6 +8,7 @@ use App\Mail\MailEmailConfirmation;
 use App\Models\PostLike;
 use App\Models\User;
 use App\Models\UserPost;
+use App\Models\UserSection;
 use App\Services\LikeService;
 use App\Services\PostService;
 use Carbon\Carbon;
@@ -47,8 +48,8 @@ class PostController extends Controller
 
     public function getPost($section_id)
     {
-        $posts = $this->postService->getPosts($section_id);
-        return $posts;
+        $section = UserSection::findOrFail($section_id);
+        return $section->getPosts();
     }
 
     public function like($post_id)
@@ -58,5 +59,17 @@ class PostController extends Controller
         $post = UserPost::findOrFail($post_id);
 
         return $this->likeService->like($post, $user);
+    }
+
+    public function delete($post_id)
+    {
+        /** @var User $user */
+        $user = auth()->user();
+        /** @var UserPost $post */
+        $post = UserPost::where('user_id', $user->id)->where('id', $post_id)->firstOrFail();
+        $cacheKey = 'post.get.' . $post->section_id;
+        Cache::forget($cacheKey);
+        $post->deleteWithFiles();
+        return back()->with('message', ['type' => 'success', 'text' => 'post.delete_success']);
     }
 }

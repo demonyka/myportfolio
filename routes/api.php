@@ -22,6 +22,7 @@ Route::prefix('/v1')->group(function () {
             Route::get('/get/{section_id}', [PostController::class, 'getPost'])->name('api.user.post.get');
             Route::post('/new-post', [PostController::class, 'newPost'])->middleware('auth')->name('api.user.post.store');
             Route::post('/like/{post_id}', [PostController::class, 'like'])->middleware('auth')->name('api.user.post.like');
+            Route::post('/delete/{post_id}', [PostController::class, 'delete'])->middleware('auth')->name('api.user.post.delete');
         });
         Route::post('/edit', [ProfileController::class, 'edit'])->middleware('auth')->name('api.user.edit.store');
         Route::post('/edit-section', [ProfileController::class, 'editSection'])->middleware('auth')->name('api.user.edit.section.store');
