@@ -423,13 +423,12 @@ export default {
                 this.postLoading = true;
             }, 1000);
             try {
-                const cacheKey = `${sectionId}_${page}`;
-                if (!this.postsCache[cacheKey]) {
+                if (!this.postsCache[sectionId]) {
                     const response = await axios.get(route('api.user.post.get', { section_id: sectionId, page: page }));
                     this.posts = response.data;
-                    this.postsCache[cacheKey] = this.posts;
+                    this.postsCache[sectionId] = this.posts;
                 } else {
-                    this.posts = this.postsCache[cacheKey];
+                    this.posts = this.postsCache[sectionId];
                 }
                 clearTimeout(timeoutId);
             } catch (error) {
