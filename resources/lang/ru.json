@@ -53,6 +53,8 @@
         "edit": {
             "edit": "Редактировать",
             "submit": "Сохранить",
+            "add_section": "Добавьте раздел",
+            "empty_section": "Пусто",
             "cancel": "Отмена",
             "successful": "Профиль успешно отредактирован",
             "sections": {

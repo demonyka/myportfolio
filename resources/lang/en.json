@@ -55,6 +55,8 @@
             "edit": "Edit",
             "submit": "Save",
             "cancel": "Cancel",
+            "add_section": "Add a section",
+            "empty_section": "Empty",
             "successful": "Profile successfully edited",
             "sections": {
                 "save": "Save",
