@@ -8,11 +8,9 @@ use Illuminate\Support\Facades\Cache;
 
 class PostService
 {
-    public UserPost $post;
     protected LikeService $likeService;
-    public function __construct(UserPost $post, LikeService $likeService)
+    public function __construct(LikeService $likeService)
     {
-        $this->post = $post;
         $this->likeService = $likeService;
     }
 
