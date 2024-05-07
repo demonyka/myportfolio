@@ -36,7 +36,7 @@ class NewPostRequest extends FormRequest
     {
 
         return [
-            'files' => 'nullable|array|max:4',
+            'files' => 'nullable|array|max:10',
             'files.*' => 'nullable|file|max:10240',
             'post' => 'required|string|min:10|max:16777215',
             'section_id' => 'required|integer'
