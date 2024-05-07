@@ -92,9 +92,15 @@
         <div class="post-content" v-html="postFull[post.id] ? post.content : post.content.substr(0, 1024)"></div>
         <div class="post-content full-content" v-if="post.content.length > 1024 && !postFull[post.id]" @click="postFull[post.id] = true">Читать полностью</div>
         <div v-if="JSON.parse(post.files)" class="post-files">
+            <div class="image-files">
+                <div v-for="(file, index) in JSON.parse(post.files)" :key="index">
+                    <img alt="post-image" v-if="isImage(file)" :src="file">
+                </div>
+            </div>
+
             <div class="non-image-files">
                 <div v-for="(file, index) in JSON.parse(post.files)" :key="index">
-                    <a :href="file" target="_blank">{{ getFileName(file) }}</a>
+                    <a v-if="!isImage(file)" :href="file" target="_blank">{{ getFileName(file) }}</a>
                 </div>
             </div>
         </div>
@@ -152,6 +158,14 @@
 .post-files {
     position: relative;
     width: 100%;
+}
+.image-files {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(25%, 1fr));
+    grid-gap: 10px;
+}
+.image-files img {
+    max-width: 100%;
 }
 .non-image-files {
     margin-top: 10px;
@@ -414,6 +428,9 @@ export default {
         }
     },
     methods: {
+        isImage(file) {
+            return file.endsWith('.jpg') || file.endsWith('.jpeg') || file.endsWith('.png') || file.endsWith('.gif');
+        },
         getFileName(file) {
             return file.split('/').pop();
         },
