@@ -36,8 +36,6 @@ return [
             'permissions' => [
                 'file' => [
                     'public' => 0775,
-                    'public/avatars' => 0775,
-                    'public/posts' => 0775,
                     'private' => 0600,
                 ],
                 'dir' => [
@@ -58,8 +56,6 @@ return [
             'permissions' => [
                 'file' => [
                     'public' => 0775,
-                    'public/avatars' => 0775,
-                    'public/posts' => 0775,
                     'private' => 0600,
                 ],
                 'dir' => [
