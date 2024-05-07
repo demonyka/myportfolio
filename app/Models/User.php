@@ -76,6 +76,8 @@ class User extends Authenticatable
     {
         $filename = md5(time() . $this->id) . '.' . $avatar->getClientOriginalExtension();
         $path = $avatar->storeAs('public/avatars/'.$this->id, $filename);
+        chmod(storage_path('app/public/avatars/'.$this->id), 0775);
+        chmod(storage_path('app/' . $path), 0775);
         $avatarUrl = Storage::url($path);
         $this->setExternalData('avatar_path', $avatarUrl);
     }
