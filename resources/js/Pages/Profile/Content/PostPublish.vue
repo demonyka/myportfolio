@@ -479,6 +479,7 @@ export default {
                     const quill = document.getElementsByClassName("ql-editor");
                     quill[0].innerHTML = "";
                     this.posts = this.$page.props.posts;
+                    this.clearQuillErrors();
                 },
                 onError: () => {
                     const qlContainers = document.querySelectorAll('.ql-container');
