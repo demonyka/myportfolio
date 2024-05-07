@@ -44,11 +44,12 @@ class PostService
         });
         /** @var User $user */
         $user = auth()->user();
+        /** @var UserPost $post */
         foreach ($posts as $post) {
             if ($user) {
-                $post['is_liked'] = $this->likeService->getUserLikes($user, $post);
+                $post['is_liked'] = $post->isLiked($user);
             }
-            $post['like_count'] = $this->likeService->getPostLikes($post);
+            $post['like_count'] = $post->likeCount();
         }
 
         return $posts;
