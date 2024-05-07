@@ -15,6 +15,7 @@ class PostService
         foreach ($files as $file) {
             $filename = $file->getClientOriginalName();
             $path = $file->storeAs('public/posts/'.$post->id, $filename);
+            chmod(storage_path('app/' . $path), 0775);
             $filesUrl[] = Storage::url($path);
         }
         return $filesUrl;
