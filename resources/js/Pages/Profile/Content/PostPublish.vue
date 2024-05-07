@@ -443,11 +443,12 @@ export default {
                 .then(() => {
                     this.getPosts(this.currentSection, 1);
                     this.formNewPost.error = false;
+                    this.postLoading = false;
                 })
                 .catch((error) => {
                     this.formNewPost.error = error.response.data.errors;
+                    this.postLoading = false;
                 });
-            this.postLoading = false;
         },
         postLike(id) {
             axios.post(route('api.user.post.like', {post_id: id}), {})
