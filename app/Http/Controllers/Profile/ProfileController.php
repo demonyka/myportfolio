@@ -37,7 +37,7 @@ class ProfileController extends Controller
         $posts = null;
         if ($section) {
             $page = $request->page;
-            $posts = $section->posts()->paginate($page);
+            $posts = $section->posts()->orderBy('created_at', 'desc')->paginate($page);
             foreach ($posts as $post) {
                 $post->author = $post->user;
                 $this->postService->formatPost($post, auth()->user());
