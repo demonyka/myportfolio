@@ -6,8 +6,8 @@
                 <small>{{ $t('copyright') }}</small>
             </div>
             <div class="links">
-                <a>{{ $t('about_us') }}</a>
-                <a>{{ $t('privacy_policy') }}</a>
+                <Link :href="route('misc.view', {page: 'terms'})">{{ $t('terms') }}</Link>
+                <Link :href="route('misc.view', {page: 'privacy'})">{{ $t('privacy_policy') }}</Link>
             </div>
         </div>
     </div>
@@ -80,7 +80,11 @@ a:hover {
 </style>
 
 <script>
+import {Link} from "@inertiajs/vue3";
 export default {
-    name: "Footbar"
+    name: "Footbar",
+    components: {
+        Link
+    }
 }
 </script>
