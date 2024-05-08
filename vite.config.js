@@ -58,6 +58,21 @@ export default defineConfig({
                         "src": "/assets/icons/small_logo_512.svg",
                         "sizes": "512x512",
                         "type": "image/svg"
+                    },
+                    {
+                        "src": "/assets/icons/small_logo_128.png",
+                        "sizes": "128x128",
+                        "type": "image/png"
+                    },
+                    {
+                        "src": "/assets/icons/small_logo_144.png",
+                        "sizes": "144x144",
+                        "type": "image/png"
+                    },
+                    {
+                        "src": "/assets/icons/small_logo_512.png",
+                        "sizes": "1600x1600",
+                        "type": "image/png"
                     }
                 ]
 
