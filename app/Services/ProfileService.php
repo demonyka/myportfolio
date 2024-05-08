@@ -68,18 +68,14 @@ class ProfileService
     }
     public function find($value = '', int $limit = 5)
     {
-        $cacheKey = 'user.find.' . $value . $limit;
-        return Cache::remember($cacheKey, 60, function () use ($value, $limit) {
-            return User::where('external_data->fullname', 'like', "%{$value}%")
-                ->whereNotNull('email_verified_at')
-                ->withCount(['posts as likes' => function ($query) {
-                    $query->select(DB::raw('count(*)'))
-                        ->join('post_likes', 'user_posts.id', '=', 'post_likes.post_id');
-                }])
-                ->orderByDesc('likes')
-                ->limit($limit)
-                ->get();
-        });
-
+        return User::where('external_data->fullname', 'like', "%{$value}%")
+            ->whereNotNull('email_verified_at')
+            ->withCount(['posts as likes' => function ($query) {
+                $query->select(DB::raw('count(*)'))
+                    ->join('post_likes', 'user_posts.id', '=', 'post_likes.post_id');
+            }])
+            ->orderByDesc('likes')
+            ->limit($limit)
+            ->get();
     }
 }
