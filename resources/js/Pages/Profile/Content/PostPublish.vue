@@ -2,9 +2,12 @@
     <div>
         <div class="menu-desktop" v-if="!isSectionEdit">
             <div class="labels" v-if="sections.length !== 0">
-                <Link :href="getProfileURL(user, section['name'])" :class="{ 'active': currentSection['id'] === section['id'] }" v-for="section in sections" :key="section.id">
+                <Link :href="getProfileURL(user, section['name'])" :class="{ 'active': currentSection && currentSection['id'] === section['id'] }" v-for="section in sections" :key="section.id">
                     {{ section['name'] }}
                 </Link>
+            </div>
+            <div class="labels" v-else>
+                <span style="padding: 20px 0">{{ sectionName() }}</span>
             </div>
             <span @click="isSectionEdit = true" v-if="isMyProfile" class="menu-edit">
                 {{ $t('profile.edit.edit') }}
@@ -28,16 +31,16 @@
 
     <div>
         <div class="menu-mobile">
-            <div :class="{ 'active': isSectionMobileOpened }" @click="isSectionEdit ? false : isSectionMobileOpened = !isSectionMobileOpened" class="menu-mobile-title">
-                <span>{{ currentSection ? currentSection.name : isMyProfile ? $t('profile.edit.add_section') : $t('profile.edit.empty_section') }}</span>
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <div :class="{ 'active': isSectionMobileOpened }" @click="canSectionMobileOpen() ? isSectionMobileOpened = !isSectionMobileOpened : false" class="menu-mobile-title">
+                <span>{{ sectionName() }}</span>
+                <svg v-if="canSectionMobileOpen()" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M5.70711 9.71069C5.31658 10.1012 5.31658 10.7344 5.70711 11.1249L10.5993 16.0123C11.3805 16.7927 12.6463 16.7924 13.4271 16.0117L18.3174 11.1213C18.708 10.7308 18.708 10.0976 18.3174 9.70708C17.9269 9.31655 17.2937 9.31655 16.9032 9.70708L12.7176 13.8927C12.3271 14.2833 11.6939 14.2832 11.3034 13.8927L7.12132 9.71069C6.7308 9.32016 6.09763 9.32016 5.70711 9.71069Z" fill="#0F0F0F"/>
                 </svg>
             </div>
             <transition name="height">
                 <div v-if="isSectionMobileOpened">
                     <div v-if="!isSectionEdit" class="menu-mobile-content">
-                        <Link :href="getProfileURL(user, section['name'])" v-for="section in sections" :key="section.id" :style="{ display: currentSection['id'] !== section['id'] ? 'block' : 'none' }">
+                        <Link :href="getProfileURL(user, section['name'])" v-for="section in sections" :key="section.id" :style="{ display: (currentSection && currentSection['id'] !== section['id']) || !currentSection ? 'block' : 'none' }">
                             {{ section.name }}
                         </Link>
                         <span @click="isSectionEdit = true" v-if="isMyProfile" class="menu-edit">
@@ -441,13 +444,39 @@ export default {
     ],
     mounted() {
         this.$nextTick(() => {
-            this.quill = this.$refs.myQuillEditor.quill;
+            if (this.$refs.myQuillEditor) {
+                this.quill = this.$refs.myQuillEditor.quill;
+            }
         });
-        console.log(this.currentSection)
     },
     methods: {
         generatePageArray,
         getProfileURL,
+        canSectionMobileOpen() {
+            if (this.isMyProfile) {
+                return true;
+            }
+            if (this.sections) {
+                return !(this.sections.length === 0 || this.sections.length === 1);
+            } else {
+                return false;
+            }
+        },
+        sectionName() {
+            if (this.sections.length !== 0) {
+                if (this.currentSection) {
+                    return this.currentSection.name;
+                } else {
+                    return this.$t('profile.edit.section_not_selected');
+                }
+            } else {
+                if (this.isMyProfile) {
+                    return this.$t('profile.edit.add_section')
+                } else {
+                    return this.$t('profile.edit.empty_section');
+                }
+            }
+        },
         isImage(file) {
             return file.endsWith('.jpg') || file.endsWith('.jpeg') || file.endsWith('.png') || file.endsWith('.gif');
         },
