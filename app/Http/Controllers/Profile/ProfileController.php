@@ -66,14 +66,14 @@ class ProfileController extends Controller
         return $user->profileRedirect();
     }
 
-    public function editSection(Request $request)
+    public function editSection(Request $request): RedirectResponse
     {
-        $requestData = $request->all();
+        $sections = $request->all();
 
         /** @var User $user */
         $user = auth()->user();
 
-        $this->profileService->updateSections($user, $requestData);
+        $this->profileService->updateSections($user, $sections);
 
         return $user->profileRedirect();
     }

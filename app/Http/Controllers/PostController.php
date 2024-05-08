@@ -63,7 +63,7 @@ class PostController extends Controller
         $post->like($user);
     }
 
-    public function delete($post_id)
+    public function delete($post_id): void
     {
         /** @var User $user */
         $user = auth()->user();
@@ -72,6 +72,5 @@ class PostController extends Controller
         $cacheKey = 'post.get.' . $post->section_id;
         Cache::forget($cacheKey);
         $post->deleteWithFiles();
-        return back()->with('message', ['type' => 'success', 'text' => 'post.delete_success']);
     }
 }
