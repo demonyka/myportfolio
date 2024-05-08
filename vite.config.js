@@ -8,11 +8,8 @@ export default defineConfig({
         VitePWA({
             registerType: 'autoUpdate',
             injectRegister: 'script',
-            manifestFilename: '../manifest.webmanifest',
-            outDir: 'public',
-            base: 'public',
-            scope: '/',
-            buildBase: '/',
+            manifestFilename: '../build/manifest.webmanifest',
+            outDir: 'public/build',
             manifest: {
                 name: 'MyPortfolio',
                 short_name: 'MyPortfolio',
@@ -49,19 +46,12 @@ export default defineConfig({
                     {
                         src: '/assets/icons/small_logo_192.svg',
                         sizes: '192x192',
-                        type: 'image/svg',
+                        type: 'image/svg'
                     },
                     {
                         src: '/assets/icons/small_logo_512.svg',
                         sizes: '512x512',
-                        type: 'image/svg',
-                        purpose: "maskable"
-                    },
-                    {
-                        src: '/assets/icons/small_logo_512.svg',
-                        sizes: '512x512',
-                        type: 'image/svg',
-                        purpose: "any"
+                        type: 'image/svg'
                     },
                 ]
             },
