@@ -17,12 +17,11 @@ export default defineConfig({
                 navigateFallback: '/',
             },
             manifest: {
-                name: 'App',
-                short_name: 'App',
-                description: 'App',
-                theme_color: '#39336c',
+                name: 'MyPortfolio',
+                short_name: 'MyPortfolio',
+                description: 'MyPortfolio',
+                theme_color: '#2F80ED',
                 background_color: '#ffffff',
-                orientation: 'portrait-primary',
                 id: '/',
                 scope: '/',
                 start_url: '/',
@@ -46,17 +45,18 @@ export default defineConfig({
                         src: '/assets/icons/small_logo_144.svg',
                         sizes: '144x144',
                         type: 'image/svg',
-                        purpose: "any"
                     },
                     {
                         src: '/assets/icons/small_logo_192.svg',
                         sizes: '192x192',
                         type: 'image/svg',
+                        purpose: "maskable"
                     },
                     {
                         src: '/assets/icons/small_logo_512.svg',
                         sizes: '512x512',
                         type: 'image/svg',
+                        purpose: "any"
                     },
                 ]
             },
