@@ -8,14 +8,11 @@ export default defineConfig({
         VitePWA({
             registerType: 'autoUpdate',
             injectRegister: 'script',
-            manifestFilename: '../manifest.webmanifest', // this ugly workaround to get in public root
+            manifestFilename: '../manifest.webmanifest',
             outDir: 'public',
             base: 'public',
             scope: '/',
             buildBase: '/',
-            workbox: {
-                navigateFallback: '/',
-            },
             manifest: {
                 name: 'MyPortfolio',
                 short_name: 'MyPortfolio',
@@ -25,6 +22,14 @@ export default defineConfig({
                 id: '/',
                 scope: '/',
                 start_url: '/',
+                workbox: {
+                    navigateFallback: '/',
+                    navigateFallbackDenylist: [/\/[api,admin]+\/.*/],
+                    maximumFileSizeToCacheInBytes: 41943040,
+                    globPatterns: ['**/*.{css,js,html,svg,png,ico,txt,woff2}'],
+                    cleanupOutdatedCaches: true,
+                    directoryIndex: null,
+                },
                 screenshots: [
                     {
                         "src": "/assets/screenshots/screenshot.png",
@@ -42,13 +47,13 @@ export default defineConfig({
                 ],
                 icons: [
                     {
-                        src: '/assets/icons/small_logo_144.svg',
-                        sizes: '144x144',
+                        src: '/assets/icons/small_logo_192.svg',
+                        sizes: '192x192',
                         type: 'image/svg',
                     },
                     {
-                        src: '/assets/icons/small_logo_192.svg',
-                        sizes: '192x192',
+                        src: '/assets/icons/small_logo_512.svg',
+                        sizes: '512x512',
                         type: 'image/svg',
                         purpose: "maskable"
                     },
