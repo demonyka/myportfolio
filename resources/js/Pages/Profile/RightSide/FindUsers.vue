@@ -19,6 +19,7 @@
                 </h4>
             </Link>
         </div>
+        <div v-if="this.loading" class="loader" style="transform: translate(-50%, 20px); width: calc(100% + 20px);"></div>
 
     </div>
 </template>
@@ -80,7 +81,8 @@ export default {
     data() {
         return {
             users: {},
-            userInput: ''
+            userInput: '',
+            loading: false
         };
     },
     props: [
@@ -92,6 +94,7 @@ export default {
     methods: {
         getProfileURL,
         search: _.debounce(async function (value) {
+            this.loading = true;
             try {
                 const { data } = await axios.get(
                     this.route('api.user.find.get', {value: value})
@@ -100,6 +103,7 @@ export default {
             } catch (error) {
                 console.error('Ошибка при выполнении запроса:', error);
             }
+            this.loading = false;
         }, 350),
     }
 }
