@@ -6,7 +6,7 @@
 
         <title inertia>{{ config('app.name', 'Laravel') }}</title>
         <link rel="manifest" href="/build/manifest.webmanifest">
-        <script id="vite-plugin-pwa:register-sw" src="/build/registerSW.js"></script>
+        <script id="vite-plugin-pwa:register-sw" src="/registerSW.js"></script>
 
         <!-- Scripts -->
         @routes
