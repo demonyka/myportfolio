@@ -21,32 +21,11 @@ class PostService
         }
         return $filesUrl;
     }
-
-    public function getPosts($section_id, $page = 1)
+    public function formatPost($post, $user)
     {
-        $cacheKey = 'post.get.' . $section_id;
-        Cache::forget($cacheKey);
-        $posts = Cache::remember($cacheKey, 1440, function () use ($section_id, $page) {
-            $posts = UserPost::where('section_id', $section_id)
-                ->orderBy('created_at', 'desc')
-                ->with('user')
-                ->paginate(10);
-
-            foreach ($posts as $post) {
-                $post->author = $post->user;
-            }
-            return $posts;
-        });
-        /** @var User $user */
-        $user = auth()->user();
-        /** @var UserPost $post */
-        foreach ($posts as $post) {
-            if ($user) {
-                $post['is_liked'] = $post->isLiked($user);
-            }
-            $post['like_count'] = $post->likeCount();
+        if ($user) {
+            $post['is_liked'] = $post->isLiked($user);
         }
-
-        return $posts;
+        $post['like_count'] = $post->likeCount();
     }
 }

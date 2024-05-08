@@ -23,31 +23,4 @@ class LikeService
             ]);
         }
     }
-
-    public function getMostLikedAuthors()
-    {
-        $cacheKey = 'post.get.mostLikedAuthors';
-        Cache::forget($cacheKey);
-        return Cache::remember($cacheKey, 1440, function () {
-            $posts = UserPost::all();
-            foreach ($posts as $post) {
-                $post['like_count'] = $post->likeCount();
-            }
-
-            return $posts->groupBy('user_id')
-                ->map(function ($posts) {
-                    return [
-                        'user_id' => $posts->first()->user_id,
-                        'like_count' => $posts->sum('like_count'),
-                    ];
-                })
-                ->sortByDesc('like_count')
-                ->take(5)
-                ->map(function ($item) {
-                    $user = User::find($item['user_id']);
-                    $user['like_count'] = $item['like_count'];
-                    return $user;
-                });
-        });
-    }
 }

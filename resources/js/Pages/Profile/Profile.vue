@@ -10,7 +10,7 @@
                 <PostPublish/>
             </div>
             <div class="right-side">
-                <MostPopularAuthors :authors="popularAuthors"/>
+                <FindUsers/>
             </div>
         </div>
 
@@ -52,14 +52,14 @@ import Layout from "@/Layouts/Layout.vue";
 import UserCard from "@/Pages/Profile/LeftSide/UserCard.vue";
 import SecurityCard from "@/Pages/Profile/LeftSide/SecurityCard.vue";
 import PostPublish from "@/Pages/Profile/Content/PostPublish.vue";
-import MostPopularAuthors from "@/Pages/Profile/RightSide/MostPopularAuthors.vue";
+import FindUsers from "@/Pages/Profile/RightSide/FindUsers.vue";
 
 export default {
     name: "Index",
     components: {
         PostPublish,
         UserCard, SecurityCard,
-        MostPopularAuthors,
+        FindUsers,
         Layout,
         Head,
         Link

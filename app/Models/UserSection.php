@@ -7,6 +7,7 @@ use App\Services\PostService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property string $name
@@ -43,9 +44,8 @@ class UserSection extends Model
         }
     }
 
-    public function posts($page = 1)
+    public function posts(): HasMany
     {
-        $postService = new PostService();
-        return $postService->getPosts($this->id, $page);
+        return $this->hasMany(UserPost::class, 'section_id', 'id');
     }
 }

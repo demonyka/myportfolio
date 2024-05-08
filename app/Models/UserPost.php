@@ -6,6 +6,7 @@ use App\Services\LikeService;
 use App\Services\PostService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -75,5 +76,10 @@ class UserPost extends Model
     {
         $likeService = new LikeService();
         $likeService->like($this, $user);
+    }
+
+    public function likes(): HasMany
+    {
+        return $this->hasMany(PostLike::class, 'post_id', 'id');
     }
 }

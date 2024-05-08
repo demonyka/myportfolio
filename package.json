@@ -16,6 +16,7 @@
     },
     "dependencies": {
         "@vueup/vue-quill": "^1.2.0",
+        "lodash": "^4.17.21",
         "vite-plugin-pwa": "^0.20.0",
         "vue-i18n": "^9.13.0"
     }

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
 
@@ -52,6 +53,25 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    public function profileRedirect($section = null): RedirectResponse
+    {
+        if ($this->username) {
+            return redirect()->route('profile.view.username', ['username' => $this->username, 'section' => $section]);
+        } else {
+            return redirect()->route('profile.view.id', ['id' => $this->id, 'section' => $section]);
+        }
+    }
+
+    public function setAvatar($avatar): void
+    {
+        $filename = md5(time() . $this->id) . '.' . $avatar->getClientOriginalExtension();
+        $path = $avatar->storeAs('public/avatars/' . $this->id, $filename);
+        chmod(storage_path('app/public/avatars/' . $this->id), 0775);
+        chmod(storage_path('app/' . $path), 0775);
+        $avatarUrl = Storage::url($path);
+        $this->setExternalData('avatar_path', $avatarUrl);
+    }
+
     public function setExternalData(string $slug, $value): void
     {
         $externalData = json_decode($this->external_data, true);
@@ -63,30 +83,16 @@ class User extends Authenticatable
         $this->save();
     }
 
-    public function profileRedirect($section = null): RedirectResponse
-    {
-        if($this->username) {
-            return redirect()->route('profile.view.username', ['username' => $this->username, 'section' => $section]);
-        } else {
-            return redirect()->route('profile.view.id', ['id' => $this->id, 'section' => $section]);
-        }
-    }
-
-    public function setAvatar($avatar): void
-    {
-        $filename = md5(time() . $this->id) . '.' . $avatar->getClientOriginalExtension();
-        $path = $avatar->storeAs('public/avatars/'.$this->id, $filename);
-        chmod(storage_path('app/public/avatars/'.$this->id), 0775);
-        chmod(storage_path('app/' . $path), 0775);
-        $avatarUrl = Storage::url($path);
-        $this->setExternalData('avatar_path', $avatarUrl);
-    }
-
     /**
      * Get the sections for the user.
      */
     public function sections(): HasMany
     {
         return $this->hasMany(UserSection::class);
+    }
+
+    public function posts(): HasMany
+    {
+        return $this->hasMany(UserPost::class, 'user_id', 'id');
     }
 }

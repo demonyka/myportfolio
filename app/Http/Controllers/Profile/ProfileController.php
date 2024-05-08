@@ -11,43 +11,48 @@ use App\Models\UserSection;
 use App\Services\LikeService;
 use App\Services\PostService;
 use App\Services\ProfileService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class ProfileController extends Controller
 {
     protected ProfileService $profileService;
     protected LikeService $likeService;
+    protected PostService $postService;
 
-    public function __construct(ProfileService $profileService, LikeService $likeService)
+    public function __construct(ProfileService $profileService, LikeService $likeService, PostService $postService)
     {
         $this->profileService = $profileService;
         $this->likeService = $likeService;
+        $this->postService = $postService;
     }
 
     public function view($identifier, Request $request)
     {
         $user = $this->profileService->getUser($identifier);
-
         $sections = $user->sections;
 
         /** @var UserSection $section */
         if($request->section) {
             $section = UserSection::where('name', $request->section)->first();
-
         } else {
             $section = UserSection::where('user_id', $user->id)->first();
         }
         $posts = null;
         if ($section) {
             $page = $request->page;
-            $posts = $section->posts($page);
+            $posts = $section->posts()->paginate($page);
+            foreach ($posts as $post) {
+                $post->author = $post->user;
+                $this->postService->formatPost($post, auth()->user());
+            }
         }
 
-
-        return inertia('Profile/Profile', ['user' => $user, 'sections' => $sections, 'popularAuthors' => $this->getMostLikedAuthors(), 'section' => $section, 'posts' => $posts]);
+        return inertia('Profile/Profile', ['user' => $user, 'sections' => $sections, 'section' => $section, 'posts' => $posts]);
     }
 
     public function edit(EditProfileRequest $request): RedirectResponse
@@ -78,8 +83,10 @@ class ProfileController extends Controller
         return $user->profileRedirect();
     }
 
-    private function getMostLikedAuthors()
+    public function find(Request $request): JsonResponse
     {
-        return $this->likeService->getMostLikedAuthors();
+        $value = $request->query('value');
+        $users = $this->profileService->find($value);
+        return response()->json($users);
     }
 }

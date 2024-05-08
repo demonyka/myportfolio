@@ -45,6 +45,8 @@
         "job": "Job",
         "link": "Link",
         "popular_authors": "Most popular authors",
+        "find_users": "Search",
+        "search_placeholder": "Fullname",
         "security": {
             "change_password": {
                 "title": "Change password"

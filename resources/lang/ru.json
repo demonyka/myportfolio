@@ -44,6 +44,8 @@
         "job": "Место работы",
         "link": "Ссылка",
         "popular_authors": "Наиболее популярные авторы",
+        "find_users": "Поиск",
+        "search_placeholder": "Полное имя",
         "security": {
             "change_password": {
                 "title": "Смена пароля"
