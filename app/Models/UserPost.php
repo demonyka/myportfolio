@@ -51,18 +51,6 @@ class UserPost extends Model
         $this->save();
     }
 
-    public function likeCount()
-    {
-        return PostLike::where('post_id', $this->id)->count();
-    }
-
-    public function isLiked(User $user)
-    {
-        return PostLike::where('user_id', $user->id)
-            ->where('post_id', $this->id)
-            ->exists();
-    }
-
     public function deleteWithFiles(): void
     {
         $directory = 'public/posts/' . $this->id;

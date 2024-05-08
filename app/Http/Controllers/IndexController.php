@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\User;
+use App\Models\UserPost;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class IndexController extends Controller
 {

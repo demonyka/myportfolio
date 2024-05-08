@@ -10,9 +10,8 @@ use Illuminate\Support\Facades\Cache;
 
 class LikeService
 {
-    public function like(UserPost $post, User $user)
+    public function like(UserPost $post, User $user): void
     {
-        Cache::forget('post_likes_' . $post->id);
         $like = PostLike::where('user_id', $user->id)->where('post_id', $post->id)->first();
         if ($like) {
             $like->delete();

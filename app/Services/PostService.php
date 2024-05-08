@@ -21,11 +21,11 @@ class PostService
         }
         return $filesUrl;
     }
-    public function formatPost($post, $user)
+    public function formatPost($post, $user): void
     {
         if ($user) {
-            $post['is_liked'] = $post->isLiked($user);
+            $post['is_liked'] = $post->likes()->where('user_id', $user->id)->exists();
         }
-        $post['like_count'] = $post->likeCount();
+        $post['like_count'] = $post->likes()->count();
     }
 }
