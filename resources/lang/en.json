@@ -48,6 +48,7 @@
         "popular_authors": "Most popular authors",
         "find_users": "Search",
         "search_placeholder": "Fullname",
+        "cv": "CV",
         "security": {
             "change_password": {
                 "title": "Change password"

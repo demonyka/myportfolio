@@ -38,6 +38,7 @@ class EditProfileRequest extends FormRequest
             'profile',
             'storage',
             'admin',
+            'public',
             'login',
             'register',
             'myportfolio',
@@ -45,6 +46,8 @@ class EditProfileRequest extends FormRequest
             'event',
             'portfolio',
             'about',
+            'about-us',
+            'terms',
             'privacy',
             'video',
             'moderation',
@@ -68,11 +71,26 @@ class EditProfileRequest extends FormRequest
                 }),
                 Rule::notIn($reservedWords),
             ],
-            'birthday' => 'nullable|date|date_format:Y-m-d',
-            'geolocation' => 'nullable|string|min:6|max:128',
-            'job' => 'nullable|string|max:128|min:6',
             'links' => 'nullable|array|max:3',
-            'links.*' => 'nullable|string|url:http,https|min:6|max:128'
+            'links.*' => 'nullable|string|url:http,https|min:6|max:128',
+            'birthday' => 'nullable|date|date_format:Y-m-d',
+
+            'phone' => 'nullable|string|min:6|max:24',
+
+            'citizen' => 'nullable|string|min:6|max:128',
+            'city' => 'nullable|string|min:6|max:128',
+
+            'jobs' => 'nullable|array|max:10',
+            'jobs.name' => 'nullable|string|max:128|min:6',
+            'jobs.jobtitle' => 'nullable|string|max:128|min:6',
+            'jobs.start_at' => 'nullable|date|date_format:Y-m-d',
+            'jobs.end_at' => 'nullable|date|date_format:Y-m-d',
+
+            'education' => 'nullable|array|max:10',
+            'education.name' => 'nullable|string|max:128|min:6',
+            'education.degree' => 'nullable|string|max:128|min:6',
+            'education.start_at' => 'nullable|date|date_format:Y-m-d',
+            'education.end_at' => 'nullable|date|date_format:Y-m-d',
         ];
     }
 }

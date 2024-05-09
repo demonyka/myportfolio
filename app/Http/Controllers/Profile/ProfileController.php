@@ -46,35 +46,6 @@ class ProfileController extends Controller
 
         return inertia('Profile/Profile', ['user' => $user, 'sections' => $sections, 'section' => $section, 'posts' => $posts]);
     }
-
-    public function edit(EditProfileRequest $request): RedirectResponse
-    {
-        /** @var User $user */
-        $user = auth()->user();
-
-        $data = $request->all();
-
-        if ($request->hasFile('avatar')) {
-            $data['avatar'] = $request->file('avatar');
-        }
-
-        $this->profileService->updateProfile($user, $data);
-
-        return $user->profileRedirect();
-    }
-
-    public function editSection(Request $request): RedirectResponse
-    {
-        $sections = $request->all();
-
-        /** @var User $user */
-        $user = auth()->user();
-
-        $this->profileService->updateSections($user, $sections);
-
-        return $user->profileRedirect();
-    }
-
     public function find(Request $request): JsonResponse
     {
         $value = $request->query('value');

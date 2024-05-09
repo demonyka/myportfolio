@@ -101,7 +101,7 @@ button.primary {
     user-select: none;
 }
 button:disabled {
-    cursor: default;
+    cursor: default !important;
     opacity: .5;
 }
 button:hover:disabled {
