@@ -3,11 +3,12 @@
     <Layout>
         <div class="index">
             <div class="left-side">
-                <UserCard/>
+                <UserCard :user="user" :user-data="userData" @edit-clicked="isEdit = true" :is-edit="isEdit"/>
                 <SecurityCard style="margin-top: 20px" v-if="isMyProfile"/>
             </div>
             <div class="content">
-                <PostPublish/>
+                <PostPublish v-if="!isEdit"/>
+                <ProfileEdit @update-user="updateUser" @cancel-clicked="isEdit = false" v-else-if="isMyProfile"/>
             </div>
             <div class="right-side">
                 <FindUsers/>
@@ -53,11 +54,12 @@ import UserCard from "@/Pages/Profile/LeftSide/UserCard.vue";
 import SecurityCard from "@/Pages/Profile/LeftSide/SecurityCard.vue";
 import PostPublish from "@/Pages/Profile/Content/PostPublish.vue";
 import FindUsers from "@/Pages/Profile/RightSide/FindUsers.vue";
+import ProfileEdit from "@/Pages/Profile/Content/ProfileEdit.vue";
 
 export default {
     name: "Index",
     components: {
-        PostPublish,
+        PostPublish, ProfileEdit,
         UserCard, SecurityCard,
         FindUsers,
         Layout,
@@ -69,6 +71,7 @@ export default {
             user: this.$page.props.user,
             isMyProfile: this.$page.props.auth.user?.id === this.$page.props.user.id,
             userData: JSON.parse(this.$page.props.user.external_data),
+            isEdit: false,
         };
     },
     props: [
@@ -78,7 +81,10 @@ export default {
 
     },
     methods: {
-
+        updateUser() {
+            this.user = this.$page.props.user;
+            this.userData = JSON.parse(this.$page.props.user.external_data)
+        }
     },
 }
 </script>

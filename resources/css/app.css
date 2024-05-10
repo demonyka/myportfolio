@@ -100,8 +100,8 @@ button.primary {
     cursor: pointer;
     user-select: none;
 }
-button:disabled {
-    cursor: default;
+button:disabled, input:disabled {
+    cursor: default !important;
     opacity: .5;
 }
 button:hover:disabled {
@@ -161,11 +161,11 @@ p.error-message {
         font-size: 12px;
     }
 }
-form input.error {
+form input.error, form textarea.error {
     border-color: var(--red) !important;
     color: var(--red) !important;
 }
-form input.error::placeholder {
+form input.error::placeholder, form textarea.error::placeholder {
     color: var(--red) !important;
 }
 span.line {
