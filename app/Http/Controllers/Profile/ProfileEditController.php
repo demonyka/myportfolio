@@ -14,6 +14,10 @@ class ProfileEditController extends Controller
         /* @var User $user */
         $user = auth()->user();
         $data = $request->all();
+        if ($request->hasFile('avatar')) {
+            $data['avatar'] = $request->file('avatar');
+            $user->setAvatar($data['avatar']);
+        }
         $user->setExternalData('fullname', $data['fullname']);
         $user->setExternalData('birthday', $data['birthday']);
         $user->setExternalData('phone', $data['phone']);

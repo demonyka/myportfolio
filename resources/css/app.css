@@ -100,7 +100,7 @@ button.primary {
     cursor: pointer;
     user-select: none;
 }
-button:disabled {
+button:disabled, input:disabled {
     cursor: default !important;
     opacity: .5;
 }

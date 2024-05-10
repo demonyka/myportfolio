@@ -8,82 +8,112 @@
                 </svg>
             </h3>
             <form @submit.prevent="formSubmit">
-                <div class="param-input">
-                    <label>{{ $t('profile.fullname') }}</label>
-                    <input
-                        required
-                        class="left"
-                        :class="{'error': form.errors && form.errors.fullname }"
-                        v-model="form.fullname"
-                        :placeholder="$t('profile.edit.placeholders.fullname')"
-                        @focus="form.errors.fullname = null"
+                <div style="display: flex; width: 100%; gap: 10px">
+                    <div style="width: 50%">
+                        <div class="param-input">
+                            <label>{{ $t('profile.fullname') }}</label>
+                            <input
+                                required
+                                class="left"
+                                :class="{'error': form.errors && form.errors.fullname }"
+                                v-model="form.fullname"
+                                :placeholder="$t('profile.edit.placeholders.fullname')"
+                                @focus="form.errors.fullname = null"
+                            >
+                            <transition name="fade">
+                                <p class="error-message" style="text-align: left" v-if="form.errors && form.errors.fullname">
+                                    {{ $t(form.errors.fullname) }}
+                                </p>
+                            </transition>
+                        </div>
+                        <div class="param-input">
+                            <label>{{ $t('profile.birthday') }}</label>
+                            <input
+                                v-model="form.birthday"
+                                class="left"
+                                :placeholder="$t('profile.edit.placeholders.date')"
+                                @focus="form.errors.birthday = null"
+                                :class="{'error': form.errors && form.errors.birthday }"
+                            >
+                            <transition name="fade">
+                                <p class="error-message" style="text-align: left" v-if="form.errors && form.errors.birthday">
+                                    {{ $t(form.errors.birthday) }}
+                                </p>
+                            </transition>
+                        </div>
+                        <div class="param-input">
+                            <label>{{ $t('profile.phone') }}</label>
+                            <input
+                                v-model="form.phone"
+                                class="left"
+                                :placeholder="$t('profile.edit.placeholders.phone')"
+                                @input="formatPhone"
+                                @focus="form.errors.phone = null"
+                                :class="{'error': form.errors && form.errors.phone }"
+                            >
+                            <transition name="fade">
+                                <p class="error-message" style="text-align: left" v-if="form.errors && form.errors.phone">
+                                    {{ $t(form.errors.phone) }}
+                                </p>
+                            </transition>
+                        </div>
+                        <div class="param-input">
+                            <label>{{ $t('profile.citizen') }}</label>
+                            <input
+                                v-model="form.citizen"
+                                class="left"
+                                :placeholder="$t('profile.edit.placeholders.citizen')"
+                                @focus="form.errors.citizen = null"
+                                :class="{'error': form.errors && form.errors.citizen }"
+                            >
+                            <transition name="fade">
+                                <p class="error-message" style="text-align: left" v-if="form.errors && form.errors.citizen">
+                                    {{ $t(form.errors.citizen) }}
+                                </p>
+                            </transition>
+                        </div>
+                        <div class="param-input">
+                            <label>{{ $t('profile.city') }}</label>
+                            <input
+                                v-model="form.city"
+                                class="left"
+                                :placeholder="$t('profile.edit.placeholders.city')"
+                                @focus="form.errors.city = null"
+                                :class="{'error': form.errors && form.errors.city }"
+                            >
+                            <transition name="fade">
+                                <p class="error-message" style="text-align: left" v-if="form.errors && form.errors.city">
+                                    {{ $t(form.errors.city) }}
+                                </p>
+                            </transition>
+                        </div>
+                    </div>
+                    <div class="avatar-upload">
+                        <label style="font-size: 14px;">{{ $t('profile.avatar') }}</label>
+                        <div
+                            class="avatar-border"
+                            :class="{ 'error': form.errors.avatar }"
+                            @dragover.prevent
+                            @drop="handleDrop"
+                            @click="this.$refs.fileInput.click(); form.errors.avatar = null"
                         >
-                    <transition name="fade">
-                        <p class="error-message" style="text-align: left" v-if="form.errors && form.errors.fullname">
-                            {{ $t(form.errors.fullname) }}
-                        </p>
-                    </transition>
-                </div>
-                <div class="param-input">
-                    <label>{{ $t('profile.birthday') }}</label>
-                    <input
-                        v-model="form.birthday"
-                        class="left"
-                        :placeholder="$t('profile.edit.placeholders.date')"
-                        @focus="form.errors.birthday = null"
-                        :class="{'error': form.errors && form.errors.birthday }"
-                    >
-                    <transition name="fade">
-                        <p class="error-message" style="text-align: left" v-if="form.errors && form.errors.birthday">
-                            {{ $t(form.errors.birthday) }}
-                        </p>
-                    </transition>
-                </div>
-                <div class="param-input">
-                    <label>{{ $t('profile.phone') }}</label>
-                    <input
-                        v-model="form.phone"
-                        class="left"
-                        :placeholder="$t('profile.edit.placeholders.phone')"
-                        @input="formatPhone"
-                        @focus="form.errors.phone = null"
-                        :class="{'error': form.errors && form.errors.phone }"
-                    >
-                    <transition name="fade">
-                        <p class="error-message" style="text-align: left" v-if="form.errors && form.errors.phone">
-                            {{ $t(form.errors.phone) }}
-                        </p>
-                    </transition>
-                </div>
-                <div class="param-input">
-                    <label>{{ $t('profile.citizen') }}</label>
-                    <input
-                        v-model="form.citizen"
-                        class="left"
-                        :placeholder="$t('profile.edit.placeholders.citizen')"
-                        @focus="form.errors.citizen = null"
-                        :class="{'error': form.errors && form.errors.citizen }"
-                    >
-                    <transition name="fade">
-                        <p class="error-message" style="text-align: left" v-if="form.errors && form.errors.citizen">
-                            {{ $t(form.errors.citizen) }}
-                        </p>
-                    </transition>
-                </div>
-                <div class="param-input">
-                    <label>{{ $t('profile.city') }}</label>
-                    <input
-                        v-model="form.city"
-                        class="left"
-                        :placeholder="$t('profile.edit.placeholders.city')"
-                        @focus="form.errors.city = null"
-                        :class="{'error': form.errors && form.errors.city }"
-                    >
-                    <transition name="fade">
-                        <p class="error-message" style="text-align: left" v-if="form.errors && form.errors.city">
-                            {{ $t(form.errors.city) }}
-                        </p>
-                    </transition>
+                            <p>{{ $t('profile.drag_n_drop') }}</p>
+                        </div>
+                        <input
+                            :placeholder="$t('profile.avatar')"
+                            type="file"
+                            ref="fileInput"
+                            accept="image/png, image/jpeg"
+                            :class="{ 'error': form.errors.avatar }"
+                            @change="handleAvatarChange"
+                            @focus="form.errors.avatar = null"
+                        >
+                        <transition name="fade">
+                            <p class="error-message" style="text-align: left" v-if="form.errors && form.errors.avatar">
+                                {{ $t(form.errors.avatar) }}
+                            </p>
+                        </transition>
+                    </div>
                 </div>
                 <div class="param-input">
                     <label>{{ $t('profile.work_experience') }}</label>
@@ -91,13 +121,16 @@
                         <div style="display: flex; align-items: center; gap: 10px">
                             <input
                                 v-model="job.name"
+                                style="width: 70%"
                                 :placeholder="$t('profile.edit.placeholders.company')"
                                 @focus="form.errors['jobs.'+index+'.name'] = null"
                                 :class="{'error': form.errors && form.errors['jobs.'+index+'.name'] }"
                             >
                             <input
                                 v-model="job.start_at"
-                                style="width: 40%"
+                                style="width: 30%"
+                                :disabled="!job.name"
+                                :required="job.name"
                                 :placeholder="$t('profile.edit.placeholders.start_at')"
                                 @focus="form.errors['jobs.'+index+'.start_at'] = null"
                                 :class="{'error': form.errors && form.errors['jobs.'+index+'.start_at'] }"
@@ -111,13 +144,17 @@
                         <div style="display: flex; align-items: center; gap: 10px; margin-top: 5px">
                             <input
                                 v-model="job.jobtitle"
+                                style="width: 70%"
+                                :disabled="!job.name"
+                                :required="job.name"
                                 :placeholder="$t('profile.edit.placeholders.jobtitle')"
                                 @focus="form.errors['jobs.'+index+'.jobtitle'] = null"
                                 :class="{'error': form.errors && form.errors['jobs.'+index+'.jobtitle'] }"
                             >
                             <input
                                 v-model="job.end_at"
-                                style="width: 40%"
+                                style="width: 30%"
+                                :disabled="!job.start_at"
                                 :placeholder="$t('profile.edit.placeholders.end_at')"
                                 @focus="form.errors['jobs.'+index+'.end_at'] = null"
                                 :class="{'error': form.errors && form.errors['jobs.'+index+'.end_at'] }"
@@ -150,13 +187,16 @@
                         <div style="display: flex; align-items: center; gap: 10px">
                             <input
                                 v-model="edu.name"
+                                style="width: 70%"
                                 :placeholder="$t('profile.edit.placeholders.education_name')"
                                 @focus="form.errors['education.'+index+'.name'] = null"
                                 :class="{'error': form.errors && form.errors['education.'+index+'.name'] }"
                             >
                             <input
                                 v-model="edu.start_at"
-                                style="width: 40%"
+                                style="width: 30%"
+                                :disabled="!edu.name"
+                                :required="edu.name"
                                 :placeholder="$t('profile.edit.placeholders.start_at')"
                                 @focus="form.errors['education.'+index+'.start_at'] = null"
                                 :class="{'error': form.errors && form.errors['education.'+index+'.start_at'] }"
@@ -170,13 +210,17 @@
                         <div style="display: flex; align-items: center; gap: 10px; margin-top: 5px">
                             <input
                                 v-model="edu.degree"
+                                style="width: 70%"
+                                :disabled="!edu.name"
+                                :required="edu.name"
                                 :placeholder="$t('profile.edit.placeholders.degree')"
                                 @focus="form.errors['education.'+index+'.degree'] = null"
                                 :class="{'error': form.errors && form.errors['education.'+index+'.degree'] }"
                             >
                             <input
                                 v-model="edu.end_at"
-                                style="width: 40%"
+                                style="width: 30%"
+                                :disabled="!edu.start_at"
                                 :placeholder="$t('profile.edit.placeholders.end_at')"
                                 @focus="form.errors['education.'+index+'.end_at'] = null"
                                 :class="{'error': form.errors && form.errors['education.'+index+'.end_at'] }"
@@ -225,6 +269,31 @@
 </template>
 
 <style scoped>
+    .avatar-upload {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        width: 50%;
+    }
+    .avatar-border {
+        border: dashed 1px var(--gray3);
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        user-select: none;
+    }
+    .avatar-border.error {
+        border-color: var(--red) !important;
+    }
+    .avatar-border.error p {
+        color: var(--red) !important;
+    }
+    .avatar-border p {
+        margin: 40px 0;
+        color: var(--gray3);
+    }
     .profile-edit {
         width: 100%;
         background-color: white;
@@ -266,7 +335,6 @@
         padding: 5px 10px;
         border: 1px solid var(--gray3);
         border-radius: 10px;
-        width: 50%;
         outline: none;
     }
     .param-input input:focus, .param-input textarea:focus {
@@ -315,6 +383,7 @@ export default {
                 citizen: JSON.parse(this.$page.props.auth.user.external_data).citizen || '',
                 city: JSON.parse(this.$page.props.auth.user.external_data).city || '',
                 about: JSON.parse(this.$page.props.auth.user.external_data).about || '',
+                avatar: null,
                 jobs: JSON.parse(this.$page.props.auth.user.external_data).jobs || [
                     {
                         'name': '',
@@ -341,6 +410,30 @@ export default {
 
     },
     methods: {
+        handleDrop(event) {
+            event.preventDefault();
+            const file = event.dataTransfer.files[0];
+            if (file.size > 10 * 1024 * 1024) {
+                this.form.errors.avatar = "validation.avatar.max_file";
+                return;
+            }
+            if (!file.type.match('image/png') && !file.type.match('image/jpeg')) {
+                this.form.errors.avatar = "validation.avatar.mimes";
+                return;
+            }
+            this.form.avatar = file;
+            this.$refs.fileInput.value = null;
+            this.$refs.fileInput.files = event.dataTransfer.files;
+        },
+        handleAvatarChange(event) {
+            const file = event.target.files[0];
+            if (file.size > 10 * 1024 * 1024) {
+                this.form.errors.avatar = "validation.avatar.max_file";
+                return;
+            }
+
+            this.form.avatar = file;
+        },
         formatPhone(event) {
             let inputValue = event.target.value;
             let formattedValue = "";

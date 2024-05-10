@@ -56,6 +56,8 @@
         "date_not_specified": "не указано",
         "preset_time": "н.в.",
         "about_me": "О себе",
+        "avatar": "Аватар",
+        "drag_n_drop": "Drag & drop",
         "security": {
             "change_password": {
                 "title": "Смена пароля"
