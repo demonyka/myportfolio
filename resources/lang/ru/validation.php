@@ -18,4 +18,7 @@ return [
     'regex' => 'validation.:attribute.regex',
     'not_in' => 'validation.:attribute.not_in',
     'mimes' => 'validation.:attribute.mimes',
+    'before' => 'validation.:attribute.before',
+    'after' => 'validation.:attribute.after',
+    'before_or_equal' => 'validation.:attribute.before_or_equal'
 ];

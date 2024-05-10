@@ -36,11 +36,11 @@
                 </svg>
                 <span>
                     <span v-if="userData.city">{{ userData.city }}</span>
-                    <br><span v-if="userData.citizen">Гражданство: {{ userData.citizen }}</span>
+                    <br v-if="userData.citizen && userData.city"><span v-if="userData.citizen">Гражданство: {{ userData.citizen }}</span>
                 </span>
 
             </p>
-            <div>
+            <div v-if="userData.jobs[0].name || userData.jobs[0].jobtitle">
                 <p style="margin-bottom: 5px" class="param">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M16 7V6.2C16 5.0799 16 4.51984 15.782 4.09202C15.5903 3.71569 15.2843 3.40973 14.908 3.21799C14.4802 3 13.9201 3 12.8 3H11.2C10.0799 3 9.51984 3 9.09202 3.21799C8.71569 3.40973 8.40973 3.71569 8.21799 4.09202C8 4.51984 8 5.0799 8 6.2V7M3.02721 10.0263C3.38776 10.3719 7.28572 14 12 14C16.7143 14 20.6122 10.3719 20.9728 10.0263M3.02721 10.0263C3 10.493 3 11.0665 3 11.8V16.2C3 17.8802 3 18.7202 3.32698 19.362C3.6146 19.9265 4.07354 20.3854 4.63803 20.673C5.27976 21 6.11984 21 7.8 21H16.2C17.8802 21 18.7202 21 19.362 20.673C19.9265 20.3854 20.3854 19.9265 20.673 19.362C21 18.7202 21 17.8802 21 16.2V11.8C21 11.0665 21 10.493 20.9728 10.0263M3.02721 10.0263C3.06233 9.4241 3.14276 8.99959 3.32698 8.63803C3.6146 8.07354 4.07354 7.6146 4.63803 7.32698C5.27976 7 6.11984 7 7.8 7H16.2C17.8802 7 18.7202 7 19.362 7.32698C19.9265 7.6146 20.3854 8.07354 20.673 8.63803C20.8572 8.99959 20.9377 9.4241 20.9728 10.0263" stroke="#828282" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -48,7 +48,7 @@
                     <span>Опыт работы</span>
                 </p>
                 <ul class="param" v-if="userData.jobs">
-                    <li v-for="job in userData.jobs">{{ job.name }} ({{ job.start_at }} - {{ job.end_at || 'н.в.' }}) | {{ job.jobtitle }}</li>
+                    <li v-for="job in userData.jobs">{{ job.name }} ({{ formattedDate(job.start_at) || 'не указано' }} - {{ formattedDate(job.end_at) || 'н.в.' }}) {{ job.jobtitle ? ' | ' + job.jobtitle : '' }}</li>
                 </ul>
             </div>
             <p class="param" v-if="userData.github">
@@ -67,9 +67,8 @@
                 </p>
             </div>
 
-            <div v-if="isMyProfile" class="edit-button">
+            <div v-if="isMyProfile" class="edit-button" style="margin-top: 10px">
                 <button :disabled="isEdit" @click="$emit('edit-clicked')" class="secondary">{{ $t('profile.edit.edit') }}</button>
-
             </div>
         </div>
     </div>
@@ -179,13 +178,13 @@ export default {
     name: "UserCard",
     data() {
         return {
-            user: this.$page.props.user,
-            isMyProfile: this.$page.props.auth.user?.id === this.$page.props.user.id,
-            userData: JSON.parse(this.$page.props.user.external_data),
+            isMyProfile: this.$page.props.auth.user?.id === this.user.id,
         };
     },
     props: [
-        'isEdit'
+        'isEdit',
+        'user',
+        'userData'
     ],
     methods: {
         getProfileURL,

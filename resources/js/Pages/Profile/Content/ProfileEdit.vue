@@ -7,41 +7,82 @@
                     <path d="M6.99486 7.00636C6.60433 7.39689 6.60433 8.03005 6.99486 8.42058L10.58 12.0057L6.99486 15.5909C6.60433 15.9814 6.60433 16.6146 6.99486 17.0051C7.38538 17.3956 8.01855 17.3956 8.40907 17.0051L11.9942 13.4199L15.5794 17.0051C15.9699 17.3956 16.6031 17.3956 16.9936 17.0051C17.3841 16.6146 17.3841 15.9814 16.9936 15.5909L13.4084 12.0057L16.9936 8.42059C17.3841 8.03007 17.3841 7.3969 16.9936 7.00638C16.603 6.61585 15.9699 6.61585 15.5794 7.00638L11.9942 10.5915L8.40907 7.00636C8.01855 6.61584 7.38538 6.61584 6.99486 7.00636Z" fill="#0F0F0F"/>
                 </svg>
             </h3>
-            <form>
+            <form @submit.prevent="formSubmit">
                 <div class="param-input">
                     <label>Полное имя</label>
                     <input
+                        required
+                        class="left"
+                        :class="{'error': form.errors && form.errors.fullname }"
                         v-model="form.fullname"
                         :placeholder="'Иванов Иван Иванович'"
+                        @focus="form.errors.fullname = null"
                         >
+                    <transition name="fade">
+                        <p class="error-message" style="text-align: left" v-if="form.errors && form.errors.fullname">
+                            {{ $t(form.errors.fullname) }}
+                        </p>
+                    </transition>
                 </div>
                 <div class="param-input">
                     <label>Дата рождения</label>
                     <input
                         v-model="form.birthday"
+                        class="left"
                         :placeholder="'YYYY-MM-DD'"
+                        @focus="form.errors.birthday = null"
+                        :class="{'error': form.errors && form.errors.birthday }"
                     >
+                    <transition name="fade">
+                        <p class="error-message" style="text-align: left" v-if="form.errors && form.errors.birthday">
+                            {{ $t(form.errors.birthday) }}
+                        </p>
+                    </transition>
                 </div>
                 <div class="param-input">
                     <label>Номер телефона</label>
                     <input
                         v-model="form.phone"
-                        :placeholder="'+79393328336'"
+                        class="left"
+                        :placeholder="'+7 (999) 999-99-99'"
+                        @focus="form.errors.phone = null"
+                        :class="{'error': form.errors && form.errors.phone }"
                     >
+                    <transition name="fade">
+                        <p class="error-message" style="text-align: left" v-if="form.errors && form.errors.phone">
+                            {{ $t(form.errors.phone) }}
+                        </p>
+                    </transition>
                 </div>
                 <div class="param-input">
                     <label>Гражданство</label>
                     <input
                         v-model="form.citizen"
+                        class="left"
                         :placeholder="'Страна'"
+                        @focus="form.errors.citizen = null"
+                        :class="{'error': form.errors && form.errors.citizen }"
                     >
+                    <transition name="fade">
+                        <p class="error-message" style="text-align: left" v-if="form.errors && form.errors.citizen">
+                            {{ $t(form.errors.citizen) }}
+                        </p>
+                    </transition>
                 </div>
                 <div class="param-input">
                     <label>Место жительства</label>
                     <input
                         v-model="form.city"
+                        class="left"
                         :placeholder="'Город'"
+                        @focus="form.errors.city = null"
+                        :class="{'error': form.errors && form.errors.city }"
                     >
+                    <transition name="fade">
+                        <p class="error-message" style="text-align: left" v-if="form.errors && form.errors.city">
+                            {{ $t(form.errors.city) }}
+                        </p>
+                    </transition>
                 </div>
                 <div class="param-input">
                     <label>Опыт работы</label>
@@ -50,11 +91,15 @@
                             <input
                                 v-model="job.name"
                                 :placeholder="'Компания'"
+                                @focus="form.errors['jobs.'+index+'.name'] = null"
+                                :class="{'error': form.errors && form.errors['jobs.'+index+'.name'] }"
                             >
                             <input
                                 v-model="job.start_at"
                                 style="width: 40%"
                                 :placeholder="'Дата приёма'"
+                                @focus="form.errors['jobs.'+index+'.start_at'] = null"
+                                :class="{'error': form.errors && form.errors['jobs.'+index+'.start_at'] }"
                             >
 
                             <svg v-if="index === form.jobs.length - 1 && form.jobs.length < 10" @click="job_add" class="delete" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -66,17 +111,35 @@
                             <input
                                 v-model="job.jobtitle"
                                 :placeholder="'Должность'"
+                                @focus="form.errors['jobs.'+index+'.jobtitle'] = null"
+                                :class="{'error': form.errors && form.errors['jobs.'+index+'.jobtitle'] }"
                             >
                             <input
                                 v-model="job.end_at"
                                 style="width: 40%"
                                 :placeholder="'Дата ухода'"
+                                @focus="form.errors['jobs.'+index+'.end_at'] = null"
+                                :class="{'error': form.errors && form.errors['jobs.'+index+'.end_at'] }"
                             >
                             <svg v-if="index !== 0" @click="delete_job(index)" class="delete" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M4 6H20M16 6L15.7294 5.18807C15.4671 4.40125 15.3359 4.00784 15.0927 3.71698C14.8779 3.46013 14.6021 3.26132 14.2905 3.13878C13.9376 3 13.523 3 12.6936 3H11.3064C10.477 3 10.0624 3 9.70951 3.13878C9.39792 3.26132 9.12208 3.46013 8.90729 3.71698C8.66405 4.00784 8.53292 4.40125 8.27064 5.18807L8 6M18 6V16.2C18 17.8802 18 18.7202 17.673 19.362C17.3854 19.9265 16.9265 20.3854 16.362 20.673C15.7202 21 14.8802 21 13.2 21H10.8C9.11984 21 8.27976 21 7.63803 20.673C7.07354 20.3854 6.6146 19.9265 6.32698 19.362C6 18.7202 6 17.8802 6 16.2V6M14 10V17M10 10V17" stroke="#828282" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                             <span style="width: 24px; height: 24px" v-else/>
                         </div>
+                        <transition-group name="fade">
+                            <p class="error-message" style="text-align: left; margin-top: 5px" v-if="form.errors && form.errors['jobs.'+index+'.name']">
+                                {{ $t(form.errors['jobs.'+index+'.name']) }}
+                            </p>
+                            <p class="error-message" style="text-align: left; margin-top: 5px" v-if="form.errors && form.errors['jobs.'+index+'.jobtitle']">
+                                {{ $t(form.errors['jobs.'+index+'.jobtitle']) }}
+                            </p>
+                            <p class="error-message" style="text-align: left; margin-top: 5px" v-if="form.errors && form.errors['jobs.'+index+'.start_at']">
+                                {{ $t(form.errors['jobs.'+index+'.start_at']) }}
+                            </p>
+                            <p class="error-message" style="text-align: left; margin-top: 5px" v-if="form.errors && form.errors['jobs.'+index+'.end_at']">
+                                {{ $t(form.errors['jobs.'+index+'.end_at']) }}
+                            </p>
+                        </transition-group>
                     </div>
                 </div>
 
@@ -87,11 +150,15 @@
                             <input
                                 v-model="edu.name"
                                 :placeholder="'Учебное заведение'"
+                                @focus="form.errors['education.'+index+'.name'] = null"
+                                :class="{'error': form.errors && form.errors['education.'+index+'.name'] }"
                             >
                             <input
                                 v-model="edu.start_at"
                                 style="width: 40%"
                                 :placeholder="'Дата приёма'"
+                                @focus="form.errors['education.'+index+'.start_at'] = null"
+                                :class="{'error': form.errors && form.errors['education.'+index+'.start_at'] }"
                             >
 
                             <svg v-if="index === form.education.length - 1 && form.education.length < 10" @click="edu_add" class="delete" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -103,17 +170,35 @@
                             <input
                                 v-model="edu.degree"
                                 :placeholder="'Степень'"
+                                @focus="form.errors['education.'+index+'.degree'] = null"
+                                :class="{'error': form.errors && form.errors['education.'+index+'.degree'] }"
                             >
                             <input
                                 v-model="edu.end_at"
                                 style="width: 40%"
                                 :placeholder="'Дата ухода'"
+                                @focus="form.errors['education.'+index+'.end_at'] = null"
+                                :class="{'error': form.errors && form.errors['education.'+index+'.end_at'] }"
                             >
                             <svg v-if="index !== 0" @click="delete_edu(index)" class="delete" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M4 6H20M16 6L15.7294 5.18807C15.4671 4.40125 15.3359 4.00784 15.0927 3.71698C14.8779 3.46013 14.6021 3.26132 14.2905 3.13878C13.9376 3 13.523 3 12.6936 3H11.3064C10.477 3 10.0624 3 9.70951 3.13878C9.39792 3.26132 9.12208 3.46013 8.90729 3.71698C8.66405 4.00784 8.53292 4.40125 8.27064 5.18807L8 6M18 6V16.2C18 17.8802 18 18.7202 17.673 19.362C17.3854 19.9265 16.9265 20.3854 16.362 20.673C15.7202 21 14.8802 21 13.2 21H10.8C9.11984 21 8.27976 21 7.63803 20.673C7.07354 20.3854 6.6146 19.9265 6.32698 19.362C6 18.7202 6 17.8802 6 16.2V6M14 10V17M10 10V17" stroke="#828282" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                             <span style="width: 24px; height: 24px" v-else/>
                         </div>
+                        <transition-group name="fade">
+                            <p class="error-message" style="text-align: left; margin-top: 5px" v-if="form.errors && form.errors['education.'+index+'.name']">
+                                {{ $t(form.errors['education.'+index+'.name']) }}
+                            </p>
+                            <p class="error-message" style="text-align: left; margin-top: 5px" v-if="form.errors && form.errors['education.'+index+'.degree']">
+                                {{ $t(form.errors['education.'+index+'.degree']) }}
+                            </p>
+                            <p class="error-message" style="text-align: left; margin-top: 5px" v-if="form.errors && form.errors['education.'+index+'.start_at']">
+                                {{ $t(form.errors['education.'+index+'.start_at']) }}
+                            </p>
+                            <p class="error-message" style="text-align: left; margin-top: 5px" v-if="form.errors && form.errors['education.'+index+'.end_at']">
+                                {{ $t(form.errors['education.'+index+'.end_at']) }}
+                            </p>
+                        </transition-group>
                     </div>
                 </div>
                 <div class="param-input">
@@ -121,7 +206,14 @@
                     <textarea
                         v-model="form.about"
                         :placeholder="'Расскажите немного о себе'"
+                        @focus="form.errors.about = null"
+                        :class="{'error': form.errors && form.errors.about }"
                     />
+                    <transition name="fade">
+                        <p class="error-message" style="text-align: left" v-if="form.errors && form.errors.about">
+                            {{ $t(form.errors.about) }}
+                        </p>
+                    </transition>
                 </div>
                 <button type="submit" class="primary">
                     Сохранить
@@ -192,8 +284,13 @@
     svg.delete:hover path {
         stroke: var(--blue1);
     }
-    form button.primary:focus {
+    form button.primary {
         scale: 1 !important;
+    }
+    @media screen and (max-width: 1200px) {
+        form input.left {
+            width: auto !important;
+        }
     }
 </style>
 
@@ -211,12 +308,12 @@ export default {
         return {
             isMyProfile: this.$page.props.auth.user?.id === this.$page.props.user.id,
             form: useForm({
-                fullname: JSON.parse(this.$page.props.auth.user.external_data).fullname,
-                birthday: JSON.parse(this.$page.props.auth.user.external_data).birthday,
-                phone: JSON.parse(this.$page.props.auth.user.external_data).phone,
-                citizen: JSON.parse(this.$page.props.auth.user.external_data).citizen,
-                city: JSON.parse(this.$page.props.auth.user.external_data).city,
-                about: JSON.parse(this.$page.props.auth.user.external_data).about,
+                fullname: JSON.parse(this.$page.props.auth.user.external_data).fullname || '',
+                birthday: JSON.parse(this.$page.props.auth.user.external_data).birthday || '',
+                phone: JSON.parse(this.$page.props.auth.user.external_data).phone || '',
+                citizen: JSON.parse(this.$page.props.auth.user.external_data).citizen || '',
+                city: JSON.parse(this.$page.props.auth.user.external_data).city || '',
+                about: JSON.parse(this.$page.props.auth.user.external_data).about || '',
                 jobs: JSON.parse(this.$page.props.auth.user.external_data).jobs || [
                     {
                         'name': '',
@@ -243,6 +340,15 @@ export default {
 
     },
     methods: {
+        formSubmit() {
+            this.form.post(route('api.user.edit.store'), {
+                onFinish: (response) => console.log(response),
+                onSuccess: () => {
+                    this.$emit('update-user');
+                    this.$emit('cancel-clicked');
+                }
+            });
+        },
         job_add() {
             if (this.form.jobs.length < 10) {
                 this.form.jobs.push({

@@ -3,12 +3,12 @@
     <Layout>
         <div class="index">
             <div class="left-side">
-                <UserCard @edit-clicked="isEdit = true" :is-edit="isEdit"/>
+                <UserCard :user="user" :user-data="userData" @edit-clicked="isEdit = true" :is-edit="isEdit"/>
                 <SecurityCard style="margin-top: 20px" v-if="isMyProfile"/>
             </div>
             <div class="content">
                 <PostPublish v-if="!isEdit"/>
-                <ProfileEdit @cancel-clicked="isEdit = false" v-else-if="isMyProfile"/>
+                <ProfileEdit @update-user="updateUser" @cancel-clicked="isEdit = false" v-else-if="isMyProfile"/>
             </div>
             <div class="right-side">
                 <FindUsers/>
@@ -81,7 +81,10 @@ export default {
 
     },
     methods: {
-
+        updateUser() {
+            this.user = this.$page.props.user;
+            this.userData = JSON.parse(this.$page.props.user.external_data)
+        }
     },
 }
 </script>

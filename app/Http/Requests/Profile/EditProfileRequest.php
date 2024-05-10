@@ -77,20 +77,22 @@ class EditProfileRequest extends FormRequest
 
             'phone' => 'nullable|string|min:6|max:24',
 
-            'citizen' => 'nullable|string|min:6|max:128',
-            'city' => 'nullable|string|min:6|max:128',
+            'citizen' => 'nullable|string|min:2|max:128',
+            'city' => 'nullable|string|min:2|max:128',
+
+            'about' => 'nullable|string|min:8|max:1024',
 
             'jobs' => 'nullable|array|max:10',
-            'jobs.name' => 'nullable|string|max:128|min:6',
-            'jobs.jobtitle' => 'nullable|string|max:128|min:6',
-            'jobs.start_at' => 'nullable|date|date_format:Y-m-d',
-            'jobs.end_at' => 'nullable|date|date_format:Y-m-d',
+            'jobs.*.name' => 'nullable|string|max:128|min:3',
+            'jobs.*.jobtitle' => 'nullable|string|max:128|min:3',
+            'jobs.*.start_at' => 'nullable|date|date_format:Y-m-d|before_or_equal:today|before:jobs.*.end_at',
+            'jobs.*.end_at' => 'nullable|date|date_format:Y-m-d|before_or_equal:today|after:jobs.*.start_at',
 
             'education' => 'nullable|array|max:10',
-            'education.name' => 'nullable|string|max:128|min:6',
-            'education.degree' => 'nullable|string|max:128|min:6',
-            'education.start_at' => 'nullable|date|date_format:Y-m-d',
-            'education.end_at' => 'nullable|date|date_format:Y-m-d',
+            'education.*.name' => 'nullable|string|max:128|min:6',
+            'education.*.degree' => 'nullable|string|max:128|min:6',
+            'education.*.start_at' => 'nullable|date|date_format:Y-m-d',
+            'education.*.end_at' => 'nullable|date|date_format:Y-m-d',
         ];
     }
 }
