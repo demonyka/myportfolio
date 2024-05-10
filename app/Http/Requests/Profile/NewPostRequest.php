@@ -6,13 +6,8 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
 /**
- * @property mixed avatar
- * @property mixed fullname
- * @property mixed username
- * @property mixed birthday
- * @property mixed geolocation
- * @property mixed job
- * @property array links
+ * @property mixed text
+ * @property array files
  */
 class NewPostRequest extends FormRequest
 {
@@ -39,7 +34,6 @@ class NewPostRequest extends FormRequest
             'files' => 'nullable|array|max:10',
             'files.*' => 'nullable|file|max:10240',
             'text' => 'required|string|min:20|max:16777215',
-            'section_id' => 'required|integer'
         ];
     }
 }

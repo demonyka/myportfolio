@@ -7,7 +7,7 @@
                 <SecurityCard style="margin-top: 20px" v-if="isMyProfile"/>
             </div>
             <div class="content">
-                <PostPublish v-if="!isEdit"/>
+                <PostPublish :posts="posts" v-if="!isEdit"/>
                 <ProfileEdit @update-user="updateUser" @cancel-clicked="isEdit = false" v-else-if="isMyProfile"/>
             </div>
             <div class="right-side">
@@ -57,7 +57,7 @@ import FindUsers from "@/Pages/Profile/RightSide/FindUsers.vue";
 import ProfileEdit from "@/Pages/Profile/Content/ProfileEdit.vue";
 
 export default {
-    name: "Index",
+    name: "Profile",
     components: {
         PostPublish, ProfileEdit,
         UserCard, SecurityCard,
@@ -75,7 +75,7 @@ export default {
         };
     },
     props: [
-        'popularAuthors'
+        'posts'
     ],
     mounted() {
 

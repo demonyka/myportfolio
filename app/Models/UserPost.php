@@ -2,13 +2,11 @@
 
 namespace App\Models;
 
-use App\Services\LikeService;
-use App\Services\PostService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Facades\DB;
 
 /**
  * @property array $files
@@ -28,46 +26,26 @@ class UserPost extends Model
      *
      * @var array
      */
-    protected $fillable = ['user_id', 'section_id', 'title', 'content', 'files'];
+    protected $fillable = ['user_id', 'text', 'files'];
 
-    /**
-     * Get the user that owns the section.
-     */
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function section(): BelongsTo
-    {
-        return $this->belongsTo(UserSection::class);
-    }
-
-    public function attachFiles($files): void
-    {
-        $postService = new PostService();
-        $filesUrl = $postService->attachFiles($files, $this);
-        $this->files = $filesUrl;
-        $this->save();
-    }
-
-    public function deleteWithFiles(): void
-    {
-        $directory = 'public/posts/' . $this->id;
-        if (Storage::exists($directory)) {
-            Storage::deleteDirectory($directory);
-        }
-        $this->delete();
-    }
-
-    public function like(User $user): void
-    {
-        $likeService = new LikeService();
-        $likeService->like($this, $user);
-    }
-
     public function likes(): HasMany
     {
         return $this->hasMany(PostLike::class, 'post_id', 'id');
+    }
+
+    public function like()
+    {
+        $user = auth()->user();
+        if ($this->likes()->where('user_id', $user->id)->exists()) {
+            $this->likes()->where('user_id', $user->id)->delete();
+        } else {
+            $this->likes()->create(['user_id' => $user->id]);
+        }
     }
 }
