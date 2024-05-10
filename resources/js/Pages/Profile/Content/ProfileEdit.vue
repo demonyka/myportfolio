@@ -2,20 +2,20 @@
     <div class="profile-edit">
         <div class="profile-edit-content">
             <h3 class="title">
-                Редактирование профиля
+                {{ $t('profile.edit.title') }}
                 <svg @click="$emit('cancel-clicked')" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M6.99486 7.00636C6.60433 7.39689 6.60433 8.03005 6.99486 8.42058L10.58 12.0057L6.99486 15.5909C6.60433 15.9814 6.60433 16.6146 6.99486 17.0051C7.38538 17.3956 8.01855 17.3956 8.40907 17.0051L11.9942 13.4199L15.5794 17.0051C15.9699 17.3956 16.6031 17.3956 16.9936 17.0051C17.3841 16.6146 17.3841 15.9814 16.9936 15.5909L13.4084 12.0057L16.9936 8.42059C17.3841 8.03007 17.3841 7.3969 16.9936 7.00638C16.603 6.61585 15.9699 6.61585 15.5794 7.00638L11.9942 10.5915L8.40907 7.00636C8.01855 6.61584 7.38538 6.61584 6.99486 7.00636Z" fill="#0F0F0F"/>
                 </svg>
             </h3>
             <form @submit.prevent="formSubmit">
                 <div class="param-input">
-                    <label>Полное имя</label>
+                    <label>{{ $t('profile.fullname') }}</label>
                     <input
                         required
                         class="left"
                         :class="{'error': form.errors && form.errors.fullname }"
                         v-model="form.fullname"
-                        :placeholder="'Иванов Иван Иванович'"
+                        :placeholder="$t('profile.edit.placeholders.fullname')"
                         @focus="form.errors.fullname = null"
                         >
                     <transition name="fade">
@@ -25,11 +25,11 @@
                     </transition>
                 </div>
                 <div class="param-input">
-                    <label>Дата рождения</label>
+                    <label>{{ $t('profile.birthday') }}</label>
                     <input
                         v-model="form.birthday"
                         class="left"
-                        :placeholder="'YYYY-MM-DD'"
+                        :placeholder="$t('profile.edit.placeholders.date')"
                         @focus="form.errors.birthday = null"
                         :class="{'error': form.errors && form.errors.birthday }"
                     >
@@ -40,11 +40,12 @@
                     </transition>
                 </div>
                 <div class="param-input">
-                    <label>Номер телефона</label>
+                    <label>{{ $t('profile.phone') }}</label>
                     <input
                         v-model="form.phone"
                         class="left"
-                        :placeholder="'+7 (999) 999-99-99'"
+                        :placeholder="$t('profile.edit.placeholders.phone')"
+                        @input="formatPhone"
                         @focus="form.errors.phone = null"
                         :class="{'error': form.errors && form.errors.phone }"
                     >
@@ -55,11 +56,11 @@
                     </transition>
                 </div>
                 <div class="param-input">
-                    <label>Гражданство</label>
+                    <label>{{ $t('profile.citizen') }}</label>
                     <input
                         v-model="form.citizen"
                         class="left"
-                        :placeholder="'Страна'"
+                        :placeholder="$t('profile.edit.placeholders.citizen')"
                         @focus="form.errors.citizen = null"
                         :class="{'error': form.errors && form.errors.citizen }"
                     >
@@ -70,11 +71,11 @@
                     </transition>
                 </div>
                 <div class="param-input">
-                    <label>Место жительства</label>
+                    <label>{{ $t('profile.city') }}</label>
                     <input
                         v-model="form.city"
                         class="left"
-                        :placeholder="'Город'"
+                        :placeholder="$t('profile.edit.placeholders.city')"
                         @focus="form.errors.city = null"
                         :class="{'error': form.errors && form.errors.city }"
                     >
@@ -85,19 +86,19 @@
                     </transition>
                 </div>
                 <div class="param-input">
-                    <label>Опыт работы</label>
+                    <label>{{ $t('profile.work_experience') }}</label>
                     <div v-for="(job, index) in form.jobs" style="margin-bottom: 10px">
                         <div style="display: flex; align-items: center; gap: 10px">
                             <input
                                 v-model="job.name"
-                                :placeholder="'Компания'"
+                                :placeholder="$t('profile.edit.placeholders.company')"
                                 @focus="form.errors['jobs.'+index+'.name'] = null"
                                 :class="{'error': form.errors && form.errors['jobs.'+index+'.name'] }"
                             >
                             <input
                                 v-model="job.start_at"
                                 style="width: 40%"
-                                :placeholder="'Дата приёма'"
+                                :placeholder="$t('profile.edit.placeholders.start_at')"
                                 @focus="form.errors['jobs.'+index+'.start_at'] = null"
                                 :class="{'error': form.errors && form.errors['jobs.'+index+'.start_at'] }"
                             >
@@ -110,14 +111,14 @@
                         <div style="display: flex; align-items: center; gap: 10px; margin-top: 5px">
                             <input
                                 v-model="job.jobtitle"
-                                :placeholder="'Должность'"
+                                :placeholder="$t('profile.edit.placeholders.jobtitle')"
                                 @focus="form.errors['jobs.'+index+'.jobtitle'] = null"
                                 :class="{'error': form.errors && form.errors['jobs.'+index+'.jobtitle'] }"
                             >
                             <input
                                 v-model="job.end_at"
                                 style="width: 40%"
-                                :placeholder="'Дата ухода'"
+                                :placeholder="$t('profile.edit.placeholders.end_at')"
                                 @focus="form.errors['jobs.'+index+'.end_at'] = null"
                                 :class="{'error': form.errors && form.errors['jobs.'+index+'.end_at'] }"
                             >
@@ -144,19 +145,19 @@
                 </div>
 
                 <div class="param-input">
-                    <label>Образование</label>
+                    <label>{{ $t('profile.education') }}</label>
                     <div v-for="(edu, index) in form.education" style="margin-bottom: 10px">
                         <div style="display: flex; align-items: center; gap: 10px">
                             <input
                                 v-model="edu.name"
-                                :placeholder="'Учебное заведение'"
+                                :placeholder="$t('profile.edit.placeholders.education_name')"
                                 @focus="form.errors['education.'+index+'.name'] = null"
                                 :class="{'error': form.errors && form.errors['education.'+index+'.name'] }"
                             >
                             <input
                                 v-model="edu.start_at"
                                 style="width: 40%"
-                                :placeholder="'Дата приёма'"
+                                :placeholder="$t('profile.edit.placeholders.start_at')"
                                 @focus="form.errors['education.'+index+'.start_at'] = null"
                                 :class="{'error': form.errors && form.errors['education.'+index+'.start_at'] }"
                             >
@@ -169,14 +170,14 @@
                         <div style="display: flex; align-items: center; gap: 10px; margin-top: 5px">
                             <input
                                 v-model="edu.degree"
-                                :placeholder="'Степень'"
+                                :placeholder="$t('profile.edit.placeholders.degree')"
                                 @focus="form.errors['education.'+index+'.degree'] = null"
                                 :class="{'error': form.errors && form.errors['education.'+index+'.degree'] }"
                             >
                             <input
                                 v-model="edu.end_at"
                                 style="width: 40%"
-                                :placeholder="'Дата ухода'"
+                                :placeholder="$t('profile.edit.placeholders.end_at')"
                                 @focus="form.errors['education.'+index+'.end_at'] = null"
                                 :class="{'error': form.errors && form.errors['education.'+index+'.end_at'] }"
                             >
@@ -202,10 +203,10 @@
                     </div>
                 </div>
                 <div class="param-input">
-                    <label>О себе</label>
+                    <label>{{ $t('profile.about_me') }}</label>
                     <textarea
                         v-model="form.about"
-                        :placeholder="'Расскажите немного о себе'"
+                        :placeholder="$t('profile.edit.placeholders.about_me')"
                         @focus="form.errors.about = null"
                         :class="{'error': form.errors && form.errors.about }"
                     />
@@ -216,7 +217,7 @@
                     </transition>
                 </div>
                 <button type="submit" class="primary">
-                    Сохранить
+                    {{ $t('profile.edit.submit') }}
                 </button>
             </form>
         </div>
@@ -340,6 +341,29 @@ export default {
 
     },
     methods: {
+        formatPhone(event) {
+            let inputValue = event.target.value;
+            let formattedValue = "";
+            let digitsCount = 0;
+            let plusAdded = false;
+
+            let digitsOnly = inputValue.replace(/[^\d+]/g, "");
+
+            digitsOnly = digitsOnly.substring(0, 30);
+
+            for (let i = 0; i < digitsOnly.length; i++) {
+                if (digitsCount === 0 && !plusAdded) {
+                    formattedValue += "+";
+                    plusAdded = true;
+                }
+                if (digitsOnly[i] !== "+") {
+                    formattedValue += digitsOnly[i];
+                    digitsCount++;
+                }
+            }
+
+            this.form.phone = formattedValue;
+        },
         formSubmit() {
             this.form.post(route('api.user.edit.store'), {
                 onFinish: (response) => console.log(response),

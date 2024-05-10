@@ -75,7 +75,7 @@ class EditProfileRequest extends FormRequest
             'links.*' => 'nullable|string|url:http,https|min:6|max:128',
             'birthday' => 'nullable|date|date_format:Y-m-d',
 
-            'phone' => 'nullable|string|min:6|max:24',
+            'phone' => 'nullable|string|min:6|max:24|regex:/^[+][0-9]{6,32}$/',
 
             'citizen' => 'nullable|string|min:2|max:128',
             'city' => 'nullable|string|min:2|max:128',

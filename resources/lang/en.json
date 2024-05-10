@@ -1,29 +1,28 @@
 {
     "lang": "Eng",
-    "homepage": "Homepage",
-    "sign_in": "Sign in to MyPortfolio",
-    "sign_in_short": "Sign in",
-    "reset_password": "Reset password",
+    "homepage": "home",
+    "sign_in": "Authorization in MyPortfolio",
+    "sign_in_short": "Authorization",
+    "reset_password": "Password recovery",
     "send_button": "Send",
     "remembered_password": "Remember your password?",
     "we_use_cookies": "We use cookies",
-    "cookies_terms": "We use cookies and other data tracking technologies to enhance the user experience on our website, to show you personalized content and targeted advertising, to analyze our website traffic, and to understand where our visitors are coming from. By browsing our website, you consent to the use of cookies and other tracking technologies.",
-    "ok": "OK",
-    "change_lang": "Change language",
-    "copyright": "Copyright © 2024 MyPortfolio. All rights reserved.",
+    "cookies_terms": "We use cookies and other data tracking technologies to improve your browsing experience on our website, to show you personalized content and targeted ads, analyze our website traffic, and understand where our visitors are coming from. ",
+    "ok": "Fine",
+    "change_lang": "Switch language",
+    "copyright": "Copyright © 2024 MyPortfolio. ",
     "about_us": "About Us",
     "privacy_policy": "Privacy Policy",
-    "terms": "Terms",
+    "terms": "Terms of use",
     "welcome-title": "Welcome to MyPortfolio!",
-    "welcome-text": "MyPortfolio is a platform to easily post your cases. Download and share your projects absolutely free!",
-    "welcome-join": "Let's get started",
+    "welcome-text": "MyPortfolio is a platform for conveniently posting your work. ",
+    "welcome-join": "Join",
     "not_registered": "Not registered yet?",
     "already_registered": "Already registered?",
     "forgot_password": "Forgot your password?",
-    "sign_in_button": "Sign in",
-    "sign_up": "Sign up to MyPortfolio",
-    "sign_up_button": "Sign up",
-    "full_name": "Full name",
+    "sign_in_button": "To come in",
+    "sign_up": "Registration in MyPortfolio",
+    "sign_up_button": "Register",
     "password": "Password",
     "password_confirmation": "Confirm Password",
     "email_confirm_title": "Confirm Email Address",
@@ -36,60 +35,82 @@
 
     "profile": {
         "title": "Profile",
-        "fullname": "Full Name",
-        "email": "Email Address",
-        "email_confirm_send": "The email was successfully sent",
+        "fullname": "Full name",
+        "email": "E-mail address",
+        "email_confirm_send": "The letter was sent successfully",
         "email_confirm_success": "Email address confirmed!",
-        "username": "Username",
-        "birthday": "Birthday",
-        "geolocation": "Geolocation",
-        "job": "Job",
+        "username": "Short name",
+        "birthday": "Date of Birth",
+        "phone": "Phone number",
+        "geolocation": "Location",
+        "job": "Place of work",
         "link": "Link",
-        "popular_authors": "Most popular authors",
+        "popular_authors": "Most Popular Authors",
         "find_users": "Search",
-        "search_placeholder": "Fullname",
-        "cv": "CV",
+        "search_placeholder": "Full name",
+        "cv": "Summary",
+        "education": "Education",
+        "citizen": "Citizenship",
+        "work_experience": "Work experience",
+        "city": "Location",
+        "date_not_specified": "not indicated",
+        "preset_time": "present",
+        "about_me": "About Me",
         "security": {
             "change_password": {
-                "title": "Change password"
+                "title": "Change Password"
             },
-            "logout": "Log out"
+            "logout": "Log out of your account"
         },
         "edit": {
+            "placeholders": {
+                "fullname": "Homer Jay Simpson",
+                "date": "YYYY-MM-DD",
+                "phone": "+7 (999) 999-99-99",
+                "citizen": "A country",
+                "city": "City",
+                "company": "Company",
+                "jobtitle": "Job title",
+                "start_at": "Date of receipt",
+                "end_at": "Date of departure",
+                "education_name": "Educational institution",
+                "degree": "Degree",
+                "about_me": "Tell us a little about yourself"
+            },
+            "title": "Editing your profile",
             "edit": "Edit",
             "submit": "Save",
-            "cancel": "Cancel",
             "add_section": "Add a section",
-            "empty_section": "Empty",
-            "section_not_selected": "Section is not selected",
+            "empty_section": "Profile is not complete",
+            "section_not_selected": "No section selected",
+            "cancel": "Cancel",
             "successful": "Profile successfully edited",
             "sections": {
                 "save": "Save",
-                "placeholder": "Section"
+                "placeholder": "Chapter"
             }
         },
         "post": {
             "new_post": {
-                "title": "New publication to the section",
+                "title": "New publication in the section",
                 "submit": "Publish",
-                "max_file": "Maximum file size is 10MB"
+                "max_file": "The maximum size of one file is 10MB"
             }
         }
     },
     "email": {
         "password": {
             "recover_send": "Password recovery email sent",
-            "new_password": "A new password has been sent to your e-mail"
+            "new_send": "A new password has been sent to you by email"
         }
     },
-
     "validation": {
         "user": {
-            "not_found": "User not found"
+            "not_found": "User is not found"
         },
         "email": {
             "required": "Email address is required",
-            "incorrect": "Incorrect email address",
+            "incorrect": "Invalid email address",
             "string": "Email address must be a string",
             "lowercase": "Email address must be in lowercase",
             "max": "Email address is too long",
@@ -99,64 +120,433 @@
         "password": {
             "required": "Password is required",
             "string": "Password must be a string",
-            "confirmed": "Password confirmation does not match",
+            "confirmed": "Password does not match confirmation",
             "max": "Password is too long",
-            "min": "Password is too short"
+            "min": "Too short password"
         },
         "fullname": {
-            "required": "Full name is required",
-            "max": "Full name is too long",
-            "min": "Full name is too short",
-            "string": "Full name must be a string"
+            "required": "Name is required",
+            "max": "Name too long",
+            "min": "The name is too short",
+            "string": "Name must be a string"
         },
         "username": {
             "max": "Username is too long",
-            "min": "Username is too short",
+            "min": "Username too short",
             "string": "Username must be a string",
             "unique": "This username is already registered",
-            "regex": "Usernames can only consist of numbers and Latin characters.",
-            "not_in": "Forbidden username"
+            "regex": "The username can only consist of numbers and Latin characters",
+            "not_in": "Invalid username"
         },
         "date": "Invalid date",
+        "date_format": "Incorrect date format",
         "geolocation": {
-            "max": "Geolocation is too long",
-            "min": "Geolocation is too short",
-            "string": "Geolocation must be a string"
+            "max": "Location too long",
+            "min": "Location too short",
+            "string": "Location must be a string"
         },
         "job": {
-            "max": "Job is too long",
-            "min": "Job is too short",
-            "string": "Job must be a string"
+            "max": "Work place is too long",
+            "min": "Job location too short",
+            "string": "Place of work must be a string"
         },
-        "url": "Invalid link",
+        "url": "Incorrect link",
         "links": {
-            "array": "Invalid array",
             "0": {
-                "max": "Link is too long",
+                "max": "Link too long",
                 "min": "Link is too short",
-                "string": "Link must be a string"
+                "string": "The link must be a string"
             },
             "1": {
-                "max": "Link is too long",
+                "max": "Link too long",
                 "min": "Link is too short",
-                "string": "Link must be a string"
+                "string": "The link must be a string"
             },
             "2": {
-                "max": "Link is too long",
+                "max": "Link too long",
                 "min": "Link is too short",
-                "string": "Link must be a string"
-            }
+                "string": "The link must be a string"
+            },
+            "array": "Invalid array"
         },
         "avatar": {
             "mimes": "The file must be in PNG or JPEG format",
-            "max_file": "Maximum file size is 10MB"
+            "max_file": "Maximum file size - 10MB"
         },
         "text": {
-            "required": "Content required",
+            "required": "Contents are required",
             "min": "Content is too short"
         },
         "files": {
             "max_array": "Too many files"
+        },
+        "jobs": {
+            "0": {
+                "jobtitle": {
+                    "min": "Position too short",
+                    "max": "Post too long"
+                },
+                "name": {
+                    "min": "Company name is too short",
+                    "max": "Company name is too long"
+                },
+                "end_at": {
+                    "before_or_equal": "The date of departure cannot be greater than today",
+                    "after": "The departure date must be after the appointment date."
+                },
+                "start_at": {
+                    "before_or_equal": "The appointment date cannot be later than today",
+                    "before": "The appointment date must be before the departure date."
+                }
+            },
+            "1": {
+                "jobtitle": {
+                    "min": "Position too short",
+                    "max": "Post too long"
+                },
+                "name": {
+                    "min": "Company name is too short",
+                    "max": "Company name is too long"
+                },
+                "end_at": {
+                    "before_or_equal": "The date of departure cannot be greater than today",
+                    "after": "The departure date must be after the appointment date."
+                },
+                "start_at": {
+                    "before_or_equal": "The appointment date cannot be later than today",
+                    "before": "The appointment date must be before the departure date."
+                }
+            },
+            "2": {
+                "jobtitle": {
+                    "min": "Position too short",
+                    "max": "Post too long"
+                },
+                "name": {
+                    "min": "Company name is too short",
+                    "max": "Company name is too long"
+                },
+                "end_at": {
+                    "before_or_equal": "The date of departure cannot be greater than today",
+                    "after": "The departure date must be after the appointment date."
+                },
+                "start_at": {
+                    "before_or_equal": "The appointment date cannot be later than today",
+                    "before": "The appointment date must be before the departure date."
+                }
+            },
+            "3": {
+                "jobtitle": {
+                    "min": "Position too short",
+                    "max": "Post too long"
+                },
+                "name": {
+                    "min": "Company name is too short",
+                    "max": "Company name is too long"
+                },
+                "end_at": {
+                    "before_or_equal": "The date of departure cannot be greater than today",
+                    "after": "The departure date must be after the appointment date."
+                },
+                "start_at": {
+                    "before_or_equal": "The appointment date cannot be later than today",
+                    "before": "The appointment date must be before the departure date."
+                }
+            },
+            "4": {
+                "jobtitle": {
+                    "min": "Position too short",
+                    "max": "Post too long"
+                },
+                "name": {
+                    "min": "Company name is too short",
+                    "max": "Company name is too long"
+                },
+                "end_at": {
+                    "before_or_equal": "The date of departure cannot be greater than today",
+                    "after": "The departure date must be after the appointment date."
+                },
+                "start_at": {
+                    "before_or_equal": "The appointment date cannot be later than today",
+                    "before": "The appointment date must be before the departure date."
+                }
+            },
+            "5": {
+                "jobtitle": {
+                    "min": "Position too short",
+                    "max": "Post too long"
+                },
+                "name": {
+                    "min": "Company name is too short",
+                    "max": "Company name is too long"
+                },
+                "end_at": {
+                    "before_or_equal": "The date of departure cannot be greater than today",
+                    "after": "The departure date must be after the appointment date."
+                },
+                "start_at": {
+                    "before_or_equal": "The appointment date cannot be later than today",
+                    "before": "The appointment date must be before the departure date."
+                }
+            },
+            "6": {
+                "jobtitle": {
+                    "min": "Position too short",
+                    "max": "Post too long"
+                },
+                "name": {
+                    "min": "Company name is too short",
+                    "max": "Company name is too long"
+                },
+                "end_at": {
+                    "before_or_equal": "The date of departure cannot be greater than today",
+                    "after": "The departure date must be after the appointment date."
+                },
+                "start_at": {
+                    "before_or_equal": "The appointment date cannot be later than today",
+                    "before": "The appointment date must be before the departure date."
+                }
+            },
+            "7": {
+                "jobtitle": {
+                    "min": "Position too short",
+                    "max": "Post too long"
+                },
+                "name": {
+                    "min": "Company name is too short",
+                    "max": "Company name is too long"
+                },
+                "end_at": {
+                    "before_or_equal": "The date of departure cannot be greater than today",
+                    "after": "The departure date must be after the appointment date."
+                },
+                "start_at": {
+                    "before_or_equal": "The appointment date cannot be later than today",
+                    "before": "The appointment date must be before the departure date."
+                }
+            },
+            "8": {
+                "jobtitle": {
+                    "min": "Position too short",
+                    "max": "Post too long"
+                },
+                "name": {
+                    "min": "Company name is too short",
+                    "max": "Company name is too long"
+                },
+                "end_at": {
+                    "before_or_equal": "The date of departure cannot be greater than today",
+                    "after": "The departure date must be after the appointment date."
+                },
+                "start_at": {
+                    "before_or_equal": "The appointment date cannot be later than today",
+                    "before": "The appointment date must be before the departure date."
+                }
+            },
+            "9": {
+                "jobtitle": {
+                    "min": "Position too short",
+                    "max": "Post too long"
+                },
+                "name": {
+                    "min": "Company name is too short",
+                    "max": "Company name is too long"
+                },
+                "end_at": {
+                    "before_or_equal": "The date of departure cannot be greater than today",
+                    "after": "The departure date must be after the appointment date."
+                },
+                "start_at": {
+                    "before_or_equal": "The appointment date cannot be later than today",
+                    "before": "The appointment date must be before the departure date."
+                }
+            }
+        },
+        "education": {
+            "0": {
+                "degree": {
+                    "min": "Degree too short",
+                    "max": "Degree too long"
+                },
+                "name": {
+                    "min": "The name of the educational institution is too short",
+                    "max": "The name of the educational institution is too long"
+                },
+                "end_at": {
+                    "before_or_equal": "The date of departure cannot be greater than today",
+                    "after": "The departure date must be after the appointment date."
+                },
+                "start_at": {
+                    "before_or_equal": "The appointment date cannot be later than today",
+                    "before": "The appointment date must be before the departure date."
+                }
+            },
+            "1": {
+                "degree": {
+                    "min": "Degree too short",
+                    "max": "Degree too long"
+                },
+                "name": {
+                    "min": "The name of the educational institution is too short",
+                    "max": "The name of the educational institution is too long"
+                },
+                "end_at": {
+                    "before_or_equal": "The date of departure cannot be greater than today",
+                    "after": "The departure date must be after the appointment date."
+                },
+                "start_at": {
+                    "before_or_equal": "The appointment date cannot be later than today",
+                    "before": "The appointment date must be before the departure date."
+                }
+            },
+            "2": {
+                "degree": {
+                    "min": "Degree too short",
+                    "max": "Degree too long"
+                },
+                "name": {
+                    "min": "The name of the educational institution is too short",
+                    "max": "The name of the educational institution is too long"
+                },
+                "end_at": {
+                    "before_or_equal": "The date of departure cannot be greater than today",
+                    "after": "The departure date must be after the appointment date."
+                },
+                "start_at": {
+                    "before_or_equal": "The appointment date cannot be later than today",
+                    "before": "The appointment date must be before the departure date."
+                }
+            },
+            "3": {
+                "degree": {
+                    "min": "Degree too short",
+                    "max": "Degree too long"
+                },
+                "name": {
+                    "min": "The name of the educational institution is too short",
+                    "max": "The name of the educational institution is too long"
+                },
+                "end_at": {
+                    "before_or_equal": "The date of departure cannot be greater than today",
+                    "after": "The departure date must be after the appointment date."
+                },
+                "start_at": {
+                    "before_or_equal": "The appointment date cannot be later than today",
+                    "before": "The appointment date must be before the departure date."
+                }
+            },
+            "4": {
+                "degree": {
+                    "min": "Degree too short",
+                    "max": "Degree too long"
+                },
+                "name": {
+                    "min": "The name of the educational institution is too short",
+                    "max": "The name of the educational institution is too long"
+                },
+                "end_at": {
+                    "before_or_equal": "The date of departure cannot be greater than today",
+                    "after": "The departure date must be after the appointment date."
+                },
+                "start_at": {
+                    "before_or_equal": "The appointment date cannot be later than today",
+                    "before": "The appointment date must be before the departure date."
+                }
+            },
+            "5": {
+                "degree": {
+                    "min": "Degree too short",
+                    "max": "Degree too long"
+                },
+                "name": {
+                    "min": "The name of the educational institution is too short",
+                    "max": "The name of the educational institution is too long"
+                },
+                "end_at": {
+                    "before_or_equal": "The date of departure cannot be greater than today",
+                    "after": "The departure date must be after the appointment date."
+                },
+                "start_at": {
+                    "before_or_equal": "The appointment date cannot be later than today",
+                    "before": "The appointment date must be before the departure date."
+                }
+            },
+            "6": {
+                "degree": {
+                    "min": "Degree too short",
+                    "max": "Degree too long"
+                },
+                "name": {
+                    "min": "The name of the educational institution is too short",
+                    "max": "The name of the educational institution is too long"
+                },
+                "end_at": {
+                    "before_or_equal": "The date of departure cannot be greater than today",
+                    "after": "The departure date must be after the appointment date."
+                },
+                "start_at": {
+                    "before_or_equal": "The appointment date cannot be later than today",
+                    "before": "The appointment date must be before the departure date."
+                }
+            },
+            "7": {
+                "degree": {
+                    "min": "Degree too short",
+                    "max": "Degree too long"
+                },
+                "name": {
+                    "min": "The name of the educational institution is too short",
+                    "max": "The name of the educational institution is too long"
+                },
+                "end_at": {
+                    "before_or_equal": "The date of departure cannot be greater than today",
+                    "after": "The departure date must be after the appointment date."
+                },
+                "start_at": {
+                    "before_or_equal": "The appointment date cannot be later than today",
+                    "before": "The appointment date must be before the departure date."
+                }
+            },
+            "8": {
+                "degree": {
+                    "min": "Degree too short",
+                    "max": "Degree too long"
+                },
+                "name": {
+                    "min": "The name of the educational institution is too short",
+                    "max": "The name of the educational institution is too long"
+                },
+                "end_at": {
+                    "before_or_equal": "The date of departure cannot be greater than today",
+                    "after": "The departure date must be after the appointment date."
+                },
+                "start_at": {
+                    "before_or_equal": "The appointment date cannot be later than today",
+                    "before": "The appointment date must be before the departure date."
+                }
+            },
+            "9": {
+                "degree": {
+                    "min": "Degree too short",
+                    "max": "Degree too long"
+                },
+                "name": {
+                    "min": "The name of the educational institution is too short",
+                    "max": "The name of the educational institution is too long"
+                },
+                "end_at": {
+                    "before_or_equal": "The date of departure cannot be greater than today",
+                    "after": "The departure date must be after the appointment date."
+                },
+                "start_at": {
+                    "before_or_equal": "The appointment date cannot be later than today",
+                    "before": "The appointment date must be before the departure date."
+                }
+            }
+        },
+        "about": {
+            "min": "Content is too short",
+            "max": "Content is too long"
         }
     },
     "auth": {

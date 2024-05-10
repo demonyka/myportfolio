@@ -41,6 +41,7 @@
         "email_confirm_success": "Адрес электронной почты подтверждён!",
         "username": "Короткое имя",
         "birthday": "Дата рождения",
+        "phone": "Номер телефона",
         "geolocation": "Местоположение",
         "job": "Место работы",
         "link": "Ссылка",
@@ -48,13 +49,36 @@
         "find_users": "Поиск",
         "search_placeholder": "Полное имя",
         "cv": "Резюме",
+        "education": "Образование",
+        "citizen": "Гражданство",
+        "work_experience": "Опыт работы",
+        "city": "Место жительства",
+        "date_not_specified": "не указано",
+        "preset_time": "н.в.",
+        "about_me": "О себе",
         "security": {
             "change_password": {
                 "title": "Смена пароля"
             },
             "logout": "Выйти из аккаунта"
         },
+
         "edit": {
+            "placeholders": {
+                "fullname": "Иванов Иван Иванович",
+                "date": "ГГГГ-ММ-ДД",
+                "phone": "+7 (999) 999-99-99",
+                "citizen": "Страна",
+                "city": "Город",
+                "company": "Компания",
+                "jobtitle": "Должность",
+                "start_at": "Дата приёма",
+                "end_at": "Дата ухода",
+                "education_name": "Учебное заведение",
+                "degree": "Степень",
+                "about_me": "Расскажите немного о себе"
+            },
+            "title": "Редактирование профиля",
             "edit": "Редактировать",
             "submit": "Сохранить",
             "add_section": "Добавьте раздел",
