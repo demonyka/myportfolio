@@ -1,11 +1,14 @@
 export function getProfileURL(user, page) {
-    const params = { username: user.username };
+    const params = {};
     if (page !== 1) {
         params.page = page;
     }
+
     if(user.username) {
+        params.username = user.username;
         return route('profile.view.username', params);
     } else {
+        params.id = user.id;
         return route('profile.view.id', params);
     }
 }
