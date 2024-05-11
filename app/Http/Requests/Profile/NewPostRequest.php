@@ -33,7 +33,10 @@ class NewPostRequest extends FormRequest
         return [
             'files' => 'nullable|array|max:10',
             'files.*' => 'nullable|file|max:10240',
-            'text' => 'required|string|min:20|max:16777215',
+            'title' => 'required|string|min:2|max:128',
+            'text' => 'required|string|min:2|max:8192',
+            'links' => 'nullable|array|max:3',
+            'links.*' => 'nullable|string|url:http,https|min:6|max:128'
         ];
     }
 }

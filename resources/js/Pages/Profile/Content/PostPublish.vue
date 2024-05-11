@@ -13,8 +13,32 @@
                 </div>
                 <p class="date">{{ formatDate(post.created_at) }}</p>
             </div>
-            <div class="text" v-html="postFull[post.id] ? post.text : post.text.substr(0, 1024)"/>
-            <span class="text-full" v-if="post.text.length > 1024 && !postFull[post.id]"  @click="postFull[post.id] = true">Читать полностью</span>
+            <h4 style="margin: 0">{{ formatPost(post).title }}</h4>
+            <div class="text" v-html="postFull[post.id] ? formatPost(post).text : formatPost(post).text.substr(0, 1024)"/>
+            <span class="text-full" v-if="formatPost(post).text.length > 1024 && !postFull[post.id]"  @click="postFull[post.id] = true">Читать полностью</span>
+            <div class="files image">
+                <div v-for="file in JSON.parse(post.files)" :key="file">
+                    <img v-if="isImageFile(file)" :src="file" :alt="getFileName(file)">
+                </div>
+            </div>
+            <div class="files">
+                <div v-for="file in JSON.parse(post.files)" :key="file">
+                    <a v-if="!isImageFile(file)" :href="file" target="_blank">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M19 9V17.8C19 18.9201 19 19.4802 18.782 19.908C18.5903 20.2843 18.2843 20.5903 17.908 20.782C17.4802 21 16.9201 21 15.8 21H8.2C7.07989 21 6.51984 21 6.09202 20.782C5.71569 20.5903 5.40973 20.2843 5.21799 19.908C5 19.4802 5 18.9201 5 17.8V6.2C5 5.07989 5 4.51984 5.21799 4.09202C5.40973 3.71569 5.71569 3.40973 6.09202 3.21799C6.51984 3 7.0799 3 8.2 3H13M19 9L13 3M19 9H14C13.4477 9 13 8.55228 13 8V3" stroke="#828282" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        {{ getFileName(file) }}
+                    </a>
+                </div>
+                <div v-for="link in formatPost(post).links">
+                    <a class="profile-link" target="_blank" :href="link">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9.1718 14.8288L14.8287 9.17192M7.05086 11.293L5.63664 12.7072C4.07455 14.2693 4.07409 16.8022 5.63619 18.3643C7.19829 19.9264 9.7317 19.9259 11.2938 18.3638L12.7065 16.9498M11.2929 7.05L12.7071 5.63579C14.2692 4.07369 16.8016 4.07397 18.3637 5.63607C19.9258 7.19816 19.9257 9.73085 18.3636 11.2929L16.9501 12.7071" stroke="#828282" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        {{ link }}
+                    </a>
+                </div>
+            </div>
             <div class="bottom">
                 <svg v-if="isMyProfile" @click="deletePost(post.id)" class="delete" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M4 6H20M16 6L15.7294 5.18807C15.4671 4.40125 15.3359 4.00784 15.0927 3.71698C14.8779 3.46013 14.6021 3.26132 14.2905 3.13878C13.9376 3 13.523 3 12.6936 3H11.3064C10.477 3 10.0624 3 9.70951 3.13878C9.39792 3.26132 9.12208 3.46013 8.90729 3.71698C8.66405 4.00784 8.53292 4.40125 8.27064 5.18807L8 6M18 6V16.2C18 17.8802 18 18.7202 17.673 19.362C17.3854 19.9265 16.9265 20.3854 16.362 20.673C15.7202 21 14.8802 21 13.2 21H10.8C9.11984 21 8.27976 21 7.63803 20.673C7.07354 20.3854 6.6146 19.9265 6.32698 19.362C6 18.7202 6 17.8802 6 16.2V6M14 10V17M10 10V17" stroke="#828282" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -37,6 +61,38 @@
 </template>
 
 <style scoped>
+    .files {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+    .files div a {
+        color: var(--gray3);
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        width: max-content;
+    }
+    .files div a:hover {
+        scale: 1;
+        color: var(--blue1);
+        path {
+            stroke: var(--blue1);
+        }
+    }
+    .files.image {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row !important;
+        gap: 10px;
+    }
+
+    .files.image img {
+        max-width: 100%;
+        max-height: 200px;
+        object-fit: cover;
+        border-radius: 10px;
+    }
     .content {
         width: 100%;
         display: flex;
@@ -47,7 +103,7 @@
         padding: 20px 30px;
         display: flex;
         flex-direction: column;
-        gap: 20px;
+        gap: 15px;
         background-color: white;
         box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
         border-radius: 20px;
@@ -142,6 +198,16 @@ export default {
         'posts'
     ],
     methods: {
+        isImageFile(fileName) {
+            const extension = fileName.split('.').pop().toLowerCase();
+            return extension === 'png' || extension === 'jpeg' || extension === 'jpg';
+        },
+        getFileName(filePath) {
+            return filePath.split('/').pop();
+        },
+        formatPost(post) {
+            return JSON.parse(post.data)
+        },
         formatDate(dateString) {
             const date = new Date(dateString);
             const now = new Date();
