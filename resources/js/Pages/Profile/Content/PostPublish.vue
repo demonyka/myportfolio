@@ -98,7 +98,7 @@
             <span class="text-full" v-if="formatPost(post).text.length > 1024 && !postFull[post.id]"  @click="postFull[post.id] = true">Читать полностью</span>
             <div v-if="post.files" class="files image">
                 <div v-for="file in JSON.parse(post.files)" :key="file">
-                    <img v-if="isImageFile(file)" :src="file" :alt="getFileName(file)">
+                    <img @click="imageSrc = file; imageFiles = selectImages(JSON.parse(post.files))" v-if="isImageFile(file)" :src="file" :alt="getFileName(file)">
                 </div>
             </div>
             <div v-if="post.files || formatPost(post).links" class="files">
@@ -164,6 +164,8 @@
             </a>
         </div>
     </div>
+
+    <ImageViewer @close-image="closeImageViewer()" v-if="imageSrc" :src="imageSrc" :files="imageFiles"/>
 </template>
 
 <style scoped>
@@ -249,6 +251,7 @@
         max-height: 200px;
         object-fit: cover;
         border-radius: 10px;
+        cursor: pointer;
     }
     .content {
         width: 100%;
@@ -354,10 +357,12 @@
 import {useForm} from "@inertiajs/vue3";
 import {generatePageArray, getProfileURL} from "@/scripts.js";
 import {Link} from "@inertiajs/vue3";
+import ImageViewer from "@/Elements/ImageViewer.vue";
 
 export default {
     name: "PostPublish",
     components: {
+        ImageViewer,
         Link,
     },
     data() {
@@ -372,6 +377,8 @@ export default {
                 links: ['']
             }),
             text: '',
+            imageSrc: '',
+            imageFiles: []
         }
     },
     props: [
@@ -380,6 +387,19 @@ export default {
     methods: {
         getProfileURL,
         generatePageArray,
+        selectImages(files) {
+            const selectedFiles = [];
+            for (const file of files) {
+                if (this.isImageFile(file)) {
+                    selectedFiles.push(file);
+                }
+            }
+            return selectedFiles;
+        },
+        closeImageViewer() {
+            this.imageSrc = '';
+            this.imageFiles = [];
+        },
         postPublish() {
             this.text = this.text.trim();
             this.form.text = this.text.replace(/\n/g, "<br>");
