@@ -266,6 +266,7 @@
     .posts .date {
         margin: 0;
         color: var(--gray3);
+        text-align: end;
     }
     .posts .title {
         display: flex;
