@@ -1,8 +1,12 @@
-export function getProfileURL(user, section, page) {
+export function getProfileURL(user, page) {
+    const params = { username: user.username };
+    if (page !== 1) {
+        params.page = page;
+    }
     if(user.username) {
-        return route('profile.view.username', {username: user.username, section: section, page: page});
+        return route('profile.view.username', params);
     } else {
-        return route('profile.view.id', {id: user.id, section: section, page: page});
+        return route('profile.view.id', params);
     }
 }
 export function generatePageArray(currentPage, lastPage) {

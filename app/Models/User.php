@@ -53,12 +53,12 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function profileRedirect($section = null): RedirectResponse
+    public function profileRedirect(): RedirectResponse
     {
         if ($this->username) {
-            return redirect()->route('profile.view.username', ['username' => $this->username, 'section' => $section]);
+            return redirect()->route('profile.view.username', ['username' => $this->username]);
         } else {
-            return redirect()->route('profile.view.id', ['id' => $this->id, 'section' => $section]);
+            return redirect()->route('profile.view.id', ['id' => $this->id]);
         }
     }
 
@@ -81,14 +81,6 @@ class User extends Authenticatable
         $externalData[$slug] = $value;
         $this->external_data = json_encode($externalData);
         $this->save();
-    }
-
-    /**
-     * Get the sections for the user.
-     */
-    public function sections(): HasMany
-    {
-        return $this->hasMany(UserSection::class);
     }
 
     public function posts(): HasMany

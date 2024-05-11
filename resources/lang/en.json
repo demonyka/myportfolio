@@ -94,7 +94,7 @@
         },
         "post": {
             "new_post": {
-                "title": "New publication in the section",
+                "title": "New publication",
                 "submit": "Publish",
                 "max_file": "The maximum size of one file is 10MB"
             }
@@ -549,6 +549,11 @@
         "about": {
             "min": "Content is too short",
             "max": "Content is too long"
+        },
+        "title": {
+            "required": "Title is required",
+            "min": "Title is too short",
+            "max": "Title is too long"
         }
     },
     "auth": {

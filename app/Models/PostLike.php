@@ -8,30 +8,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class PostLike extends Model
 {
-    /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
+    use HasFactory;
+
     protected $table = 'post_likes';
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = ['user_id', 'post_id'];
-
-    /**
-     * Get the user that owns the section.
-     */
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
 
     public function post(): BelongsTo
     {
-        return $this->belongsTo(UserPost::class);
+        return $this->belongsTo(UserPost::class, 'post_id', 'id');
     }
 }

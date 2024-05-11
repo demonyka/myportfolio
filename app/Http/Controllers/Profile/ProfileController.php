@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Profile;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Profile\EditProfileRequest;
+use App\Models\PostLike;
 use App\Models\User;
-use App\Models\UserSection;
-use App\Services\PostService;
+use App\Models\UserPost;
 use App\Services\ProfileService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -15,36 +15,24 @@ use Illuminate\Http\Request;
 class ProfileController extends Controller
 {
     protected ProfileService $profileService;
-    protected PostService $postService;
 
-    public function __construct(ProfileService $profileService, PostService $postService)
+    public function __construct(ProfileService $profileService)
     {
         $this->profileService = $profileService;
-        $this->postService = $postService;
     }
 
-    public function view($identifier, Request $request)
+    public function view($identifier)
     {
+        /* @var User $user */
         $user = $this->profileService->getUser($identifier);
-        $sections = $user->sections;
-
-        /** @var UserSection $section */
-        if ($request->section) {
-            $section = UserSection::where('name', $request->section)->first();
-        } else {
-            $section = UserSection::where('user_id', $user->id)->first();
-        }
-        $posts = null;
-        if ($section) {
-            $page = $request->page;
-            $posts = $section->posts()->orderBy('created_at', 'desc')->paginate($page);
-            foreach ($posts as $post) {
-                $post->author = $post->user;
-                $this->postService->formatPost($post, auth()->user());
-            }
-        }
-
-        return inertia('Profile/Profile', ['user' => $user, 'sections' => $sections, 'section' => $section, 'posts' => $posts]);
+        $posts = $user->posts()
+            ->latest()
+            ->with('user')
+            ->withCount(['likes', 'likes as is_liked' => function ($query) {
+                $query->where('user_id', optional(auth()->user())->id);
+            }])
+            ->paginate(15);
+        return inertia('Profile/Profile', ['user' => $user, 'posts' => $posts]);
     }
     public function find(Request $request): JsonResponse
     {

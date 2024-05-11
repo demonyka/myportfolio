@@ -260,7 +260,7 @@
                         </p>
                     </transition>
                 </div>
-                <button type="submit" class="primary">
+                <button :disabled="form.processing" type="submit" class="primary">
                     {{ $t('profile.edit.submit') }}
                 </button>
             </form>
@@ -458,7 +458,7 @@ export default {
             this.form.phone = formattedValue;
         },
         formSubmit() {
-            this.form.post(route('api.user.edit.store'), {
+            this.form.post(route('user.edit'), {
                 onFinish: (response) => console.log(response),
                 onSuccess: () => {
                     this.$emit('update-user');
