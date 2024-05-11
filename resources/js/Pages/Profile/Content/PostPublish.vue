@@ -1,5 +1,83 @@
 <template>
     <div class="content">
+        <form @submit.prevent="postPublish" v-if="isMyProfile" class="posts new-post">
+            <h3 class="title">{{ $t('profile.post.new_post.title') }}</h3>
+            <div>
+                <input
+                    placeholder="Заголовок"
+                    type="text"
+                    class="new-post-title"
+                    style="width: calc(100% - 22px);"
+                    :class="{ 'error': form.errors.title }"
+                    v-model="form.title"
+                    @focus="form.errors.title = null"
+                >
+                <transition name="fade">
+                    <p class="error-message" style="text-align: left; margin-top: 4px" v-if="form.errors && form.errors.title">
+                        {{ $t(form.errors.title) }}
+                    </p>
+                </transition>
+            </div>
+            <div>
+                <textarea class="new-post-text"
+                    placeholder="Содержимое"
+                    style="width: calc(100% - 22px);"
+                    :class="{ 'error': form.errors.text }"
+                    v-model="form.text"
+                    @focus="form.errors.text = null"
+                />
+                <transition name="fade">
+                    <p class="error-message" style="text-align: left;" v-if="form.errors && form.errors.text">
+                    {{ $t(form.errors.text) }}
+                    </p>
+                </transition>
+            </div>
+            <div>
+                <input
+                    type="file"
+                    ref="fileInput"
+                    multiple
+                    :class="{ 'error': form.errors.files }"
+                    @change="handleFilesChange"
+                    @focus="form.errors.files = null"
+                >
+                <transition name="fade">
+                    <p class="error-message" style="text-align: left; margin-top: 4px" v-if="form.errors && form.errors.files">
+                        {{ $t(form.errors.files) }}
+                    </p>
+                </transition>
+            </div>
+            <div class="new-post-links">
+                <div class="new-post-link" v-for="(link, index) in form.links" :key="index">
+                    <input
+                        placeholder="Ссылка"
+                        type="text"
+                        class="new-post-link"
+                        v-model="form.links[index]"
+                        :class="{ 'error': form.errors['links.' + index] }"
+                        @focus="form.errors['links.' + index] = null"
+                    >
+                    <svg v-if="index === 0 && form.links.length < 3" @click="link_add()" class="delete" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4 12H20M12 4V20" stroke="#828282" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <svg v-else-if="index !== 0" @click="delete_link(index)" class="delete" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4 6H20M16 6L15.7294 5.18807C15.4671 4.40125 15.3359 4.00784 15.0927 3.71698C14.8779 3.46013 14.6021 3.26132 14.2905 3.13878C13.9376 3 13.523 3 12.6936 3H11.3064C10.477 3 10.0624 3 9.70951 3.13878C9.39792 3.26132 9.12208 3.46013 8.90729 3.71698C8.66405 4.00784 8.53292 4.40125 8.27064 5.18807L8 6M18 6V16.2C18 17.8802 18 18.7202 17.673 19.362C17.3854 19.9265 16.9265 20.3854 16.362 20.673C15.7202 21 14.8802 21 13.2 21H10.8C9.11984 21 8.27976 21 7.63803 20.673C7.07354 20.3854 6.6146 19.9265 6.32698 19.362C6 18.7202 6 17.8802 6 16.2V6M14 10V17M10 10V17" stroke="#828282" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <transition name="fade">
+                    <p class="error-message" style="text-align: left;" v-if="form.errors && form.errors['links.0']">
+                        {{ $t(form.errors['links.0']) }}
+                    </p>
+                    <p class="error-message" style="text-align: left;" v-else-if="form.errors && form.errors['links.1']">
+                        {{ $t(form.errors['links.1']) }}
+                    </p>
+                    <p class="error-message" style="text-align: left;" v-else-if="form.errors && form.errors['links.2']">
+                        {{ $t(form.errors['links.2']) }}
+                    </p>
+                </transition>
+            </div>
+            <button :disabled="form.processing" type="submit" class="primary">{{ $t('profile.post.new_post.submit') }}</button>
+        </form>
         <div class="posts" v-for="post in posts.data">
             <div class="title">
                 <div class="author">
@@ -16,13 +94,13 @@
             <h4 style="margin: 0">{{ formatPost(post).title }}</h4>
             <div class="text" v-html="postFull[post.id] ? formatPost(post).text : formatPost(post).text.substr(0, 1024)"/>
             <span class="text-full" v-if="formatPost(post).text.length > 1024 && !postFull[post.id]"  @click="postFull[post.id] = true">Читать полностью</span>
-            <div class="files image">
+            <div v-if="post.files" class="files image">
                 <div v-for="file in JSON.parse(post.files)" :key="file">
                     <img v-if="isImageFile(file)" :src="file" :alt="getFileName(file)">
                 </div>
             </div>
-            <div class="files">
-                <div v-for="file in JSON.parse(post.files)" :key="file">
+            <div v-if="post.files || formatPost(post).links" class="files">
+                <div style="display: flex" v-for="file in JSON.parse(post.files)" :key="file">
                     <a v-if="!isImageFile(file)" :href="file" target="_blank">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M19 9V17.8C19 18.9201 19 19.4802 18.782 19.908C18.5903 20.2843 18.2843 20.5903 17.908 20.782C17.4802 21 16.9201 21 15.8 21H8.2C7.07989 21 6.51984 21 6.09202 20.782C5.71569 20.5903 5.40973 20.2843 5.21799 19.908C5 19.4802 5 18.9201 5 17.8V6.2C5 5.07989 5 4.51984 5.21799 4.09202C5.40973 3.71569 5.71569 3.40973 6.09202 3.21799C6.51984 3 7.0799 3 8.2 3H13M19 9L13 3M19 9H14C13.4477 9 13 8.55228 13 8V3" stroke="#828282" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -30,7 +108,7 @@
                         {{ getFileName(file) }}
                     </a>
                 </div>
-                <div v-for="link in formatPost(post).links">
+                <div v-if="formatPost(post).links[0] || formatPost(post).links[1] || formatPost(post).links[2]" style="display: flex" v-for="link in formatPost(post).links">
                     <a class="profile-link" target="_blank" :href="link">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M9.1718 14.8288L14.8287 9.17192M7.05086 11.293L5.63664 12.7072C4.07455 14.2693 4.07409 16.8022 5.63619 18.3643C7.19829 19.9264 9.7317 19.9259 11.2938 18.3638L12.7065 16.9498M11.2929 7.05L12.7071 5.63579C14.2692 4.07369 16.8016 4.07397 18.3637 5.63607C19.9258 7.19816 19.9257 9.73085 18.3636 11.2929L16.9501 12.7071" stroke="#828282" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -58,20 +136,97 @@
             </div>
         </div>
     </div>
+
+    <div v-if="posts && posts.total > posts.per_page" class="pagination">
+        <div>
+            <Link v-if="posts.current_page > 2" :href="getProfileURL(user)">
+                ❮
+            </Link>
+            <a class="disactive" v-else>
+                ❮
+            </a>
+        </div>
+
+        <div v-for="page in generatePageArray(posts.current_page, posts.last_page)" :key="page">
+            <Link :href="getProfileURL($page.props.user, page)" :style="{ 'background-color': posts.current_page === page ? 'var(--blue1)' : 'white', 'color': posts.current_page === page ? 'white' : 'black'}">
+                {{ page }}
+            </Link>
+        </div>
+
+        <div>
+            <Link v-if="posts.last_page-posts.current_page >= 2" :href="getProfileURL($page.props.user, posts.last_page)">
+                ❯
+            </Link>
+            <a class="disactive" v-else>
+                ❯
+            </a>
+        </div>
+    </div>
 </template>
 
 <style scoped>
+    .posts.new-post {
+        input[type="text"], textarea {
+            padding: 5px 10px;
+            outline: none;
+            border: 1px solid var(--gray3);
+            resize: vertical;
+            max-height: 200px;
+            transition: height 0s;
+            border-radius: 5px;
+        }
+        textarea {
+            padding: 10px;
+            min-height: 100px;
+        }
+        input[type="text"]:focus, textarea:focus {
+            border-color: var(--blue1);
+        }
+        div {
+            width: 100%;
+        }
+        input.error, textarea.error {
+            color: var(--red);
+            border-color: var(--red);
+        }
+        button {
+            scale: 1;
+        }
+        div.new-post-links {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        div.new-post-link {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        svg.delete {
+            cursor: pointer;
+        }
+        svg.delete:hover path {
+            stroke: var(--blue1);
+        }
+    }
     .files {
         display: flex;
         flex-direction: column;
         gap: 2px;
+    }
+    .files svg {
+        min-width: 24px;
+        min-height: 24px;
     }
     .files div a {
         color: var(--gray3);
         display: flex;
         align-items: center;
         gap: 5px;
-        width: max-content;
+        word-break: break-word;
+    }
+    .files div a span {
+        word-break: break-word;
     }
     .files div a:hover {
         scale: 1;
@@ -117,6 +272,8 @@
         align-items: center;
         justify-content: space-between;
         width: 100%;
+        margin: 0;
+        font-weight: 500;
     }
     .posts .author {
         display: flex;
@@ -186,18 +343,64 @@
 </style>
 
 <script>
+import {useForm} from "@inertiajs/vue3";
+import {generatePageArray, getProfileURL} from "@/scripts.js";
+import {Link} from "@inertiajs/vue3";
+
 export default {
     name: "PostPublish",
+    components: {
+        Link,
+    },
     data() {
         return {
             postFull: {},
             isMyProfile: this.$page.props.auth.user?.id === this.$page.props.user.id,
+            form: useForm({
+                _token: this.$page.props.csrf_token,
+                title: '',
+                text: '',
+                files: null,
+                links: ['']
+            })
         }
     },
     props: [
         'posts'
     ],
     methods: {
+        getProfileURL,
+        generatePageArray,
+        postPublish() {
+            this.form.post(route('post.store'), {
+                onFinish: () => {
+
+                },
+                onSuccess: () => {
+                    this.form.reset();
+                    this.$refs.fileInput.value = '';
+                },
+            });
+        },
+        handleFilesChange(event) {
+            let files = event.target.files;
+            let fileSizeLimit = 10 * 1024 * 1024;
+            for (let i = 0; i < files.length; i++) {
+                if (files[i].size > fileSizeLimit) {
+                    this.$refs.fileInput.value = '';
+                    return this.form.errors.files = 'profile.post.new_post.max_file';
+                }
+            }
+            this.form.files = files;
+        },
+        delete_link(index) {
+            this.form.links.splice(index, 1);
+        },
+        link_add() {
+            if (this.form.links.length < 3) {
+                this.form.links.push('');
+            }
+        },
         isImageFile(fileName) {
             const extension = fileName.split('.').pop().toLowerCase();
             return extension === 'png' || extension === 'jpeg' || extension === 'jpg';
@@ -232,13 +435,13 @@ export default {
             return `${this.$d(date, 'long')} ${hours}:${minutes}`;
         },
         like(id) {
-            axios.post(route('api.user.post.like', {post_id: id}), {})
+            axios.post(route('post.like', {post_id: id}), {})
             const post = this.posts.data.find((post) => post.id === id);
             post.is_liked = !post.is_liked;
             post.is_liked ? post.likes_count += 1 : post.likes_count -= 1;
         },
         deletePost(id) {
-            axios.delete(route('api.user.post.delete', {post_id: id}), {})
+            axios.delete(route('post.delete', {post_id: id}), {})
             this.posts.data = this.posts.data.filter((post) => post.id !== id);
         },
     }

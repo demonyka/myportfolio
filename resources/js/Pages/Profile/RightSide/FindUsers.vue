@@ -98,7 +98,7 @@ export default {
             this.loading = true;
             try {
                 const { data } = await axios.get(
-                    this.route('api.user.find.get', {value: value})
+                    this.route('api.user.find', {value: value})
                 );
                 this.users = data;
             } catch (error) {

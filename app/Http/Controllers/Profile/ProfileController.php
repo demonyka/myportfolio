@@ -26,6 +26,7 @@ class ProfileController extends Controller
         /* @var User $user */
         $user = $this->profileService->getUser($identifier);
         $posts = $user->posts()
+            ->latest()
             ->with('user')
             ->withCount(['likes', 'likes as is_liked' => function ($query) {
                 $query->where('user_id', optional(auth()->user())->id);

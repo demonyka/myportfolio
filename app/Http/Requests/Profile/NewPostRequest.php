@@ -6,7 +6,9 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
 /**
+ * @property mixed title
  * @property mixed text
+ * @property mixed links
  * @property array files
  */
 class NewPostRequest extends FormRequest

@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Log;
 
 class ProfileEditController extends Controller
 {
-    public function store(EditProfileRequest $request)
+    public function edit(EditProfileRequest $request)
     {
         /* @var User $user */
         $user = auth()->user();
