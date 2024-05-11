@@ -1,5 +1,5 @@
 <template>
-    <div class="profile-info">
+    <div style="position: relative; overflow: hidden" class="profile-info">
         <h3 style="margin-bottom: 10px" class="title">
             {{ $t('profile.find_users') }}
         </h3>
@@ -19,8 +19,8 @@
                 </h4>
             </Link>
         </div>
-        <div v-if="this.loading" class="loader" style="transform: translate(-50%, 20px); width: calc(100% + 20px);"></div>
-
+        <div class="loader" v-if="loading"
+             style="position: absolute; transform: translate(-50%, 0); width: 100%; bottom: 0"></div>
     </div>
 </template>
 

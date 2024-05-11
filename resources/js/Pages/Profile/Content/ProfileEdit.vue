@@ -1,5 +1,5 @@
 <template>
-    <div class="profile-edit">
+    <div style="position: relative; overflow: hidden" class="profile-edit">
         <div class="profile-edit-content">
             <h3 class="title">
                 {{ $t('profile.edit.title') }}
@@ -265,6 +265,7 @@
                 </button>
             </form>
         </div>
+        <div v-if="form.processing" class="loader" style="position: absolute; transform: translate(-50%); width: 100%; bottom: 0"></div>
     </div>
 </template>
 

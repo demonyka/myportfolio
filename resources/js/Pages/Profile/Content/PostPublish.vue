@@ -1,6 +1,6 @@
 <template>
     <div class="content">
-        <form @submit.prevent="postPublish" v-if="isMyProfile" class="posts new-post">
+        <form style="position: relative; overflow: hidden" @submit.prevent="postPublish" v-if="isMyProfile" class="posts new-post">
             <h3 class="title">{{ $t('profile.post.new_post.title') }}</h3>
             <div>
                 <input
@@ -77,6 +77,8 @@
                 </transition>
             </div>
             <button :disabled="form.processing" type="submit" class="primary">{{ $t('profile.post.new_post.submit') }}</button>
+            <div class="loader" v-if="form.processing"
+                 style="position: absolute; transform: translate(-50%, 0); width: 100%; bottom: 0"></div>
         </form>
         <div class="posts" v-for="post in posts.data">
             <div class="title">
