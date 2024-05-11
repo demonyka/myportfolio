@@ -23,7 +23,7 @@
                     placeholder="Содержимое"
                     style="width: calc(100% - 22px);"
                     :class="{ 'error': form.errors.text }"
-                    v-model="form.text"
+                    v-model="text"
                     @focus="form.errors.text = null"
                 />
                 <transition name="fade">
@@ -365,7 +365,8 @@ export default {
                 text: '',
                 files: null,
                 links: ['']
-            })
+            }),
+            text: '',
         }
     },
     props: [
@@ -375,12 +376,16 @@ export default {
         getProfileURL,
         generatePageArray,
         postPublish() {
+            this.text = this.text.trim();
+            this.form.text = this.text.replace(/\n/g, "<br>");
+            this.form.title = this.form.title.trim();
             this.form.post(route('post.store'), {
                 onFinish: () => {
 
                 },
                 onSuccess: () => {
                     this.form.reset();
+                    this.text = '';
                     this.$refs.fileInput.value = '';
                 },
             });
