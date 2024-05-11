@@ -297,6 +297,11 @@
     .posts .text {
         width: 100%;
     }
+    .posts .text * {
+        max-width: 100%;
+        word-break: break-all;
+        margin: 0;
+    }
     .posts .text {
         margin: 0;
         max-width: 100%;

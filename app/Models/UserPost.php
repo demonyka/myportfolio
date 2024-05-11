@@ -61,4 +61,13 @@ class UserPost extends Model
         $this->files = $filesUrl;
         $this->save();
     }
+
+    public function delete(): void
+    {
+        $directory = 'public/posts/' . $this->id;
+        if (Storage::exists($directory)) {
+            Storage::deleteDirectory($directory);
+        }
+        $this->delete();
+    }
 }
