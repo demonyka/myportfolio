@@ -54,7 +54,7 @@
                     <span>{{ $t('profile.work_experience') }}</span>
                 </p>
                 <ul class="param" v-if="userData.jobs">
-                    <li v-for="job in userData.jobs">{{ job.name }} ({{ formattedDate(job.start_at) || $t('profile.date_not_specified') }} - {{ formattedDate(job.end_at) || $t('profile.preset_time') }}) {{ job.jobtitle ? ' | ' + job.jobtitle : '' }}</li>
+                    <li v-for="job in userData.jobs">{{ job.name }} ({{ formattedDate(job.start_at) || $t('profile.date_not_specified') }} - {{ job.end_at ? formattedDate(job.end_at) : $t('profile.preset_time') }}) {{ job.jobtitle ? ' | ' + job.jobtitle : '' }}</li>
                 </ul>
             </div>
             <div v-if="userData.education && (userData.education[0].name || userData.education[0].jobtitle)">
@@ -65,7 +65,7 @@
                     <span>{{ $t('profile.education') }}</span>
                 </p>
                 <ul class="param" v-if="userData.education">
-                    <li v-for="education in userData.education">{{ education.name }} ({{ formattedDate(education.start_at) || $t('profile.date_not_specified') }} - {{ formattedDate(education.end_at) || $t('profile.preset_time') }}) {{ education.degree ? ' | ' + education.degree : '' }}</li>
+                    <li v-for="education in userData.education">{{ education.name }} ({{ formattedDate(education.start_at) || $t('profile.date_not_specified') }} - {{ job.end_at ? formattedDate(education.end_at) : $t('profile.preset_time') }}) {{ education.degree ? ' | ' + education.degree : '' }}</li>
                 </ul>
             </div>
             <p class="param" v-if="userData.github">
